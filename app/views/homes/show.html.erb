@@ -1,2 +1,2 @@
-<h1>hello, <%= current_user.user_name %></h1>
+<h1>hello, <%= current_user.user_name.blank? ? current_user.email : current_user.user_name %></h1>
 <p>Find me in app/views/homes/show.html.erb</p>

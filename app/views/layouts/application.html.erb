@@ -12,9 +12,9 @@
     <header>
       <nav>
         <% if user_signed_in? %>
-          <%= link_to 'home', homes_index_path %>
+          <%= link_to 'top', homes_index_path %>
           /
-          <strong><%= link_to current_user.user_name.blank? ? current_user.email : current_user.user_name, homes_show_path %></strong>
+          <strong><%= link_to 'my_home', homes_show_path %></strong>
           /
           <%= link_to 'edit profile', edit_user_registration_path %>
           /

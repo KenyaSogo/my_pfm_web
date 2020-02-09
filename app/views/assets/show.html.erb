@@ -1,6 +1,8 @@
 <p>
   <strong>User:</strong>
-  <%= @asset.user %>
+  <%= user_display_name(@asset.user) %><br />
+  <strong>Name:</strong>
+  <%= @asset.name %>
 </p>
 
 <%= link_to 'Edit', edit_asset_path(@asset) %> |

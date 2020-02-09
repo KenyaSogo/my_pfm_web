@@ -4,22 +4,22 @@
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="field">
-    <%= f.label :user_name %><br />
+    <%= f.label :user_name %>
     <%= f.text_field :user_name %>
   </div>
 
   <div class="field">
-    <%= f.label :pfm_account_id %><br />
+    <%= f.label :pfm_account_id %>
     <%= f.text_field :pfm_account_id %>
   </div>
 
   <div class="field">
-    <%= f.label :pfm_account_password %><br />
+    <%= f.label :pfm_account_password %>
     <%= f.password_field :pfm_account_password, value: @user.pfm_account_password.blank? ? '' : @user.pfm_account_password %>
   </div>
 
   <div class="field">
-    <%= f.label :email %><br />
+    <%= f.label :email %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
   </div>
 
@@ -37,7 +37,7 @@
   </div>
 
   <div class="field">
-    <%= f.label :password_confirmation %><br />
+    <%= f.label :password_confirmation %>
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div>
 
@@ -51,6 +51,7 @@
   </div>
 <% end %>
 
+<br />
 <h3>Cancel my account</h3>
 
 <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>

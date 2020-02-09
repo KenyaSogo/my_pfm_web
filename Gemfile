@@ -59,6 +59,7 @@ gem 'attr_encrypted'
 gem 'pry-rails'
 
 gem 'nokogiri'
+gem 'mechanize'
 
 gem 'sidekiq'
 

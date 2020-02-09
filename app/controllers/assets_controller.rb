@@ -1,6 +1,6 @@
 class AssetsController < ApplicationController
   before_action :sign_in_required
-  before_action :set_asset, only: [:show, :edit, :update, :destroy]
+  before_action :set_asset, only: [:show, :edit, :update, :destroy, :aggregate]
 
   # GET /assets
   # GET /assets.json
@@ -59,6 +59,13 @@ class AssetsController < ApplicationController
     @asset.destroy
     respond_to do |format|
       format.html { redirect_to assets_url, notice: 'Asset was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  def aggregate
+    respond_to do |format|
+      format.html { redirect_to assets_url, notice: 'Asset Aggregation was successfully kicked.' }
       format.json { head :no_content }
     end
   end

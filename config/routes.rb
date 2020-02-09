@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   resources :asset_activities
   resources :asset_accounts
-  resources :assets
+  resources :assets do
+    member do
+      get 'aggregate'
+    end
+  end
   root 'homes#index'
 
   get 'homes/index'

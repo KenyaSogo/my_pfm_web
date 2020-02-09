@@ -26,6 +26,7 @@ class AssetsController < ApplicationController
   # POST /assets.json
   def create
     @asset = Asset.new(asset_params)
+    @asset.user = current_user
 
     respond_to do |format|
       if @asset.save
@@ -70,6 +71,6 @@ class AssetsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def asset_params
-      params.require(:asset).permit(:user_id)
+      params.require(:asset).permit(:name)
     end
 end

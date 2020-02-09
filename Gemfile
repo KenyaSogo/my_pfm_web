@@ -61,3 +61,5 @@ gem 'pry-rails'
 gem 'nokogiri'
 
 gem 'sidekiq'
+
+gem 'redis-rails'

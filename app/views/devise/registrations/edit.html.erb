@@ -14,6 +14,11 @@
   </div>
 
   <div class="field">
+    <%= f.label :pfm_account_password %><br />
+    <%= f.password_field :pfm_account_password, value: @user.pfm_account_password.blank? ? '' : @user.pfm_account_password %>
+  </div>
+
+  <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
   </div>

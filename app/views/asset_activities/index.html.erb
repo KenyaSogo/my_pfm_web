@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Asset Activities</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Asset account</th>
+      <th>Transaction date</th>
+      <th>Description</th>
+      <th>Amount</th>
+      <th>Item</th>
+      <th>Sub item</th>
+      <th>Is transfer</th>
+      <th>Is calculation target</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @asset_activities.each do |asset_activity| %>
+      <tr>
+        <td><%= asset_activity.asset_account %></td>
+        <td><%= asset_activity.transaction_date %></td>
+        <td><%= asset_activity.description %></td>
+        <td><%= asset_activity.amount %></td>
+        <td><%= asset_activity.item %></td>
+        <td><%= asset_activity.sub_item %></td>
+        <td><%= asset_activity.is_transfer %></td>
+        <td><%= asset_activity.is_calculation_target %></td>
+        <td><%= link_to 'Show', asset_activity %></td>
+        <td><%= link_to 'Edit', edit_asset_activity_path(asset_activity) %></td>
+        <td><%= link_to 'Destroy', asset_activity, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Asset Activity', new_asset_activity_path %>

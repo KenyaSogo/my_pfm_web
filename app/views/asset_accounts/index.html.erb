@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Asset Accounts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Asset</th>
+      <th>AssetType</th>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @asset_accounts.each do |asset_account| %>
+      <tr>
+        <td><%= asset_account.asset %></td>
+        <td><%= asset_account.asset_type %></td>
+        <td><%= asset_account.name %></td>
+        <td><%= link_to 'Show', asset_account %></td>
+        <td><%= link_to 'Edit', edit_asset_account_path(asset_account) %></td>
+        <td><%= link_to 'Destroy', asset_account, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Asset Account', new_asset_account_path %>

@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :asset_activities
+  resources :asset_accounts
+  resources :assets
   root 'homes#index'
 
   get 'homes/index'

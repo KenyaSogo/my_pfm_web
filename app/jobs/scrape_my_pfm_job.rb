@@ -10,7 +10,7 @@ class ScrapeMyPfmJob < ApplicationJob
   def perform(user_id, asset_id)
     user = User.find(user_id)
     asset = Asset.find(asset_id)
-    return if user.blank? || user&.pfm_account_id.blank? || user&.pfm_account_password.blank? || asset.blank? || asset.user_id != user_id
+    return if user.blank? || user&.pfm_account_id.blank? || user&.pfm_account_password.blank? || asset.blank? || asset.user_id != user.id
 
     agent = Mechanize.new
     agent.user_agent = 'Windows Chrome'

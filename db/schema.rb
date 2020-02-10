@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200209110835) do
+ActiveRecord::Schema.define(version: 20200210171815) do
 
   create_table "asset_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "asset_id"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20200209110835) do
     t.integer  "sub_item_id"
     t.boolean  "is_transfer"
     t.boolean  "is_calculation_target"
+    t.string   "unique_key"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.index ["asset_account_id"], name: "index_asset_activities_on_asset_account_id", using: :btree
@@ -54,9 +55,11 @@ ActiveRecord::Schema.define(version: 20200209110835) do
 
   create_table "items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "user_id"
+    t.integer  "asset_id"
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["asset_id"], name: "index_items_on_asset_id", using: :btree
     t.index ["user_id"], name: "index_items_on_user_id", using: :btree
   end
 
@@ -90,6 +93,7 @@ ActiveRecord::Schema.define(version: 20200209110835) do
   add_foreign_key "asset_activities", "items"
   add_foreign_key "asset_activities", "sub_items"
   add_foreign_key "assets", "users"
+  add_foreign_key "items", "assets"
   add_foreign_key "items", "users"
   add_foreign_key "sub_items", "items"
 end

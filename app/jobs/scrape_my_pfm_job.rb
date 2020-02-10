@@ -7,9 +7,10 @@ class ScrapeMyPfmJob < ApplicationJob
 
   queue_as :default
 
-  def perform(user_id)
+  def perform(user_id, asset_id)
     user = User.find(user_id)
-    return if user&.pfm_account_id.blank? or user&.pfm_account_password.blank?
+    asset = Asset.find(asset_id)
+    return if user&.pfm_account_id.blank? || user&.pfm_account_password.blank? || asset.blank? || asset.user_id != user_id
 
     agent = Mechanize.new
     agent.user_agent = 'Windows Chrome'
@@ -31,6 +32,19 @@ class ScrapeMyPfmJob < ApplicationJob
     fail ScrapingError, 'invalid header' unless cf_strings.first.include?('計算対象')
 
     cf_hashes = convert_cf_strings_to_hashes(cf_strings)
+
+    ActiveRecord::Base.transaction do
+      cf_hashes.map { |r| r[:asset_account_name] }.uniq.each do |asset_account_name|
+        AssetAccount.find_or_create_by!(asset_id: asset.id, name: asset_account_name)
+      end
+      cf_hashes.map { |r| r[:item_name] }.uniq.each do |item_name|
+        Item.find_or_create_by!(asset_id: asset.id, name: item_name)
+      end
+      cf_hashes.map { |r| { item_name: r[:item_name], sub_item_name: r[:sub_item_name] } }.uniq.each do |item_and_sub_item_name|
+        parent_item = Item.find_by(asset_id: asset.id, name: item_and_sub_item_name[:item_name])
+        SubItem.find_or_create_by!(item_id: parent_item.id, name: item_and_sub_item_name[:sub_item_name])
+      end
+    end
   end
 
   private
@@ -49,10 +63,22 @@ class ScrapeMyPfmJob < ApplicationJob
       is_transfer: cf_header_string.index('振替'),
       unique_key: cf_header_string.index('ID'),
     }
+    required_column_names = [
+      :is_calculattion_target,
+      :transaction_date,
+      :amount,
+      :asset_account_name,
+      :item_name,
+      :sub_item_name,
+      :is_transfer,
+      :unique_key,
+    ]
     cf_data_strings = cf_strings - [cf_header_string]
     cf_hashes = cf_data_strings.each_with_object([]) do |cf_string_row, a|
       a << cf_column_index.each_with_object({}) do |(column_name, index), h|
-        h[column_name] = cf_string_row[index]
+        value = cf_string_row[index]
+        fail ScrapingError, 'unexpected blank data' if value.blank? && column_name.in?(required_column_names)
+        h[column_name] = value
       end
     end
 

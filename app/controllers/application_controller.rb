@@ -18,4 +18,8 @@ class ApplicationController < ActionController::Base
   def sign_in_required
     redirect_to new_user_session_url unless user_signed_in?
   end
+
+  def current_users_resource_filter(resource)
+    redirect_to homes_show_path, alert: 'Unknown resource requested.' if resource&.user_id != current_user.id
+  end
 end

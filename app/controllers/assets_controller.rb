@@ -1,6 +1,7 @@
 class AssetsController < ApplicationController
   before_action :sign_in_required
   before_action :set_asset, only: [:show, :edit, :update, :destroy, :aggregate]
+  before_action -> { current_users_resource_filter(@asset) }, only: [:show, :edit, :update, :destroy, :aggregate]
 
   # GET /assets
   # GET /assets.json

@@ -52,7 +52,7 @@ class ScrapeMyPfmJob < ApplicationJob
   def convert_cf_strings_to_hashes(cf_strings)
     cf_header_string = cf_strings.first
     cf_column_index = {
-      is_calculattion_target: cf_header_string.index('計算対象'),
+      is_calculation_target: cf_header_string.index('計算対象'),
       transaction_date: cf_header_string.index('日付'),
       description: cf_header_string.index('内容'),
       amount: cf_header_string.index('金額（円）'),
@@ -64,7 +64,7 @@ class ScrapeMyPfmJob < ApplicationJob
       unique_key: cf_header_string.index('ID'),
     }
     required_column_names = [
-      :is_calculattion_target,
+      :is_calculation_target,
       :transaction_date,
       :amount,
       :asset_account_name,

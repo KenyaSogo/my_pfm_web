@@ -4,7 +4,7 @@ class AssetAccountsController < ApplicationController
   # GET /asset_accounts
   # GET /asset_accounts.json
   def index
-    @asset_accounts = AssetAccount.all
+    # @asset_accounts = AssetAccount.all
   end
 
   # GET /asset_accounts/1

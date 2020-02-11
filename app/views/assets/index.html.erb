@@ -5,6 +5,7 @@
     <tr>
       <th>User</th>
       <th>AssetName</th>
+      <th>LastAggregatedAt</th>
       <th colspan="4">Actions</th>
     </tr>
   </thead>
@@ -14,6 +15,7 @@
       <tr>
         <td><%= user_display_name(current_user) %></td>
         <td>-</td>
+        <td>-</td>
         <td colspan="4">-</td>
       </tr>
     <% else %>
@@ -21,6 +23,7 @@
         <tr>
           <td><%= user_display_name(asset.user) %></td>
           <td><%= asset.name %></td>
+          <td><%= last_aggregated_at(asset) %></td>
           <td><%= link_to 'Aggregate', aggregate_asset_path(asset) %></td>
           <td><%= link_to 'Show', asset %></td>
           <td><%= link_to 'Edit', edit_asset_path(asset) %></td>

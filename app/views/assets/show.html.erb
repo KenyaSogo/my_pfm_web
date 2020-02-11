@@ -13,7 +13,28 @@
   <%= display_date_string(@asset.last_aggregate_succeeded_at) %><br />
 </p>
 
-
+<p>
+  <h2>AssetAccounts</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th colspan="2">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @asset.asset_accounts.each do |asset_account| %>
+        <tr>
+          <td><%= asset_account.name %></td>
+          <td><%= asset_account.asset_type_id %></td>
+          <td><%= link_to 'Show', asset_account %></td>
+          <td><%= link_to 'Edit', edit_asset_account_path(asset_account) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</p>
 
 <%= link_to 'Edit', edit_asset_path(@asset) %> |
 <%= link_to 'Back', assets_path %>

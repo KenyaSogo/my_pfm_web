@@ -20,6 +20,7 @@
       <tr>
         <th>Name</th>
         <th>Type</th>
+        <th>AssetActivity_Counts</th>
         <th colspan="2">Actions</th>
       </tr>
     </thead>
@@ -28,6 +29,7 @@
         <tr>
           <td><%= asset_account.name %></td>
           <td><%= asset_account.asset_type&.name.presence || '-' %></td>
+          <td><%= asset_account.asset_activities.size %></td>
           <td><%= link_to 'Show', asset_account %></td>
           <td><%= link_to 'Edit', edit_asset_account_path(asset_account) %></td>
         </tr>

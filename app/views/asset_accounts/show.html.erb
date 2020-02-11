@@ -6,7 +6,9 @@
   <strong>Name:</strong>
   <%= @asset_account.name %><br />
   <strong>AssetType:</strong>
-  <%= @asset_account.asset_type&.name.presence || '-' %>
+  <%= @asset_account.asset_type&.name.presence || '-' %><br />
+  <strong>AssetActivity_Counts:</strong>
+  <%= @asset_account.asset_activities.size %>
 </p>
 
 <%= link_to 'Edit', edit_asset_account_path(@asset_account) %> |

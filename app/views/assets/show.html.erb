@@ -27,7 +27,7 @@
       <% @asset.asset_accounts.each do |asset_account| %>
         <tr>
           <td><%= asset_account.name %></td>
-          <td><%= asset_account.asset_type_id %></td>
+          <td><%= asset_account.asset_type&.name.presence || '-' %></td>
           <td><%= link_to 'Show', asset_account %></td>
           <td><%= link_to 'Edit', edit_asset_account_path(asset_account) %></td>
         </tr>

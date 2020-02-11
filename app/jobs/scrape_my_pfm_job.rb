@@ -48,12 +48,13 @@ class ScrapeMyPfmJob < ApplicationJob
       end
 
       cf_hashes.each do |cf_hash|
-        exist_asset_activity = AssetActivity.find_by(unique_key: cf_hash[:unique_key])
+        asset_account = AssetAccount.find_by(asset_id: asset.id, name: cf_hash[:asset_account_name])
+        exist_asset_activity = AssetActivity.find_by(asset_account_id: asset_account.id, unique_key: cf_hash[:unique_key])
         if exist_asset_activity.present?
-          exist_asset_activity.attributes = asset_activity_attributes(cf_hash)
+          exist_asset_activity.attributes = asset_activity_attributes(asset_account, cf_hash)
           exist_asset_activity.save! if exist_asset_activity.changed?
         else
-          AssetActivity.create!(asset_activity_attributes(cf_hash))
+          AssetActivity.create!(asset_activity_attributes(asset_account, cf_hash))
         end
       end
 
@@ -99,14 +100,16 @@ class ScrapeMyPfmJob < ApplicationJob
     cf_hashes
   end
 
-  def asset_activity_attributes(cf_hash)
+  def asset_activity_attributes(asset_account, cf_hash)
+    item = Item.find_by(asset_id: asset_account.asset.id, name: cf_hash[:item_name])
+    sub_item = SubItem.find_by(item_id: item.id, name: cf_hash[:sub_item_name])
     {
-      asset_account_id: AssetAccount.find_by(name: cf_hash[:asset_account_name]).id,
+      asset_account_id: asset_account.id,
       transaction_date: cf_hash[:transaction_date],
       description: cf_hash[:description],
       amount: cf_hash[:amount],
-      item_id: Item.find_by(name: cf_hash[:item_name]).id,
-      sub_item_id: SubItem.find_by(name: cf_hash[:sub_item_name]).id,
+      item_id: item.id,
+      sub_item_id: sub_item.id,
       is_transfer: cf_hash[:is_transfer],
       is_calculation_target: cf_hash[:is_calculation_target],
       unique_key: cf_hash[:unique_key],

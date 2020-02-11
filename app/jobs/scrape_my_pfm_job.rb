@@ -12,6 +12,8 @@ class ScrapeMyPfmJob < ApplicationJob
     asset = Asset.find(asset_id)
     return if user.blank? || user&.pfm_account_id.blank? || user&.pfm_account_password.blank? || asset.blank? || asset.user_id != user.id
 
+    asset.update!(last_aggregate_started_at: DateTime.now)
+
     agent = Mechanize.new
     agent.user_agent = 'Windows Chrome'
 
@@ -54,6 +56,8 @@ class ScrapeMyPfmJob < ApplicationJob
           AssetActivity.create!(asset_activity_attributes(cf_hash))
         end
       end
+
+      asset.update!(last_aggregate_succeeded_at: DateTime.now)
     end
   end
 

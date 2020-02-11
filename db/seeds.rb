@@ -5,3 +5,32 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+AssetType.create!(
+  [
+    {
+      name: 'cash',
+    },
+    {
+      name: 'bank',
+    },
+    {
+      name: 'credit_card',
+    },
+    {
+      name: 'e-money',
+    },
+    {
+      name: 'point',
+    },
+    {
+      name: 'loan',
+    },
+    {
+      name: 'other_asset',
+    },
+    {
+      name: 'other_debt',
+    },
+  ]
+)

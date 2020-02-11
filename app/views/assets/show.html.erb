@@ -1,8 +1,14 @@
+<h1>Assets Detail</h1>
+
 <p>
   <strong>User:</strong>
   <%= user_display_name(@asset.user) %><br />
   <strong>Name:</strong>
-  <%= @asset.name %>
+  <%= @asset.name %><br />
+  <strong>LastAggregateStartedAt:</strong>
+  <%= display_date_string(@asset.last_aggregate_started_at) %><br />
+  <strong>LastAggregateSucceededAt:</strong>
+  <%= display_date_string(@asset.last_aggregate_succeeded_at) %><br />
 </p>
 
 <%= link_to 'Edit', edit_asset_path(@asset) %> |

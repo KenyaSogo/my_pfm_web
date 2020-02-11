@@ -1,6 +1,17 @@
 <h1>Editing Asset Account</h1>
 
-<%= render 'form', asset_account: @asset_account %>
+<p>
+  <strong>Name:</strong>
+  <%= @asset_account.name %>
+</p>
+
+<%= form_for @asset_account do |f| %>
+  <%= f.label :asset_type %>
+  <%= f.select :asset_type_id, AssetType.all.map { |r| [r.name, r.id] }, include_blank: true, selected: @asset_account.asset_type_id %><br /><br />
+  <%= f.submit %>
+<% end %>
+
+<br />
 
 <%= link_to 'Show', @asset_account %> |
-<%= link_to 'Back', asset_accounts_path %>
+<%= link_to 'Back', @asset_account.asset %>

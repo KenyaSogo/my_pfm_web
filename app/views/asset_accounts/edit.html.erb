@@ -7,7 +7,7 @@
 
 <%= form_for @asset_account do |f| %>
   <%= f.label :asset_type %>
-  <%= f.select :asset_type_id, AssetType.all.map { |r| [r.name, r.id] }, include_blank: true, selected: @asset_account.asset_type_id %><br /><br />
+  <%= f.select :asset_type_id, asset_type_options, include_blank: true, selected: @asset_account.asset_type_id %><br /><br />
   <%= f.submit %>
 <% end %>
 

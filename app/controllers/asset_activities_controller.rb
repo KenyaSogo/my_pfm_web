@@ -1,10 +1,16 @@
 class AssetActivitiesController < ApplicationController
+  before_action :sign_in_required
   before_action :set_asset_activity, only: [:show, :edit, :update, :destroy]
+  before_action -> { current_users_resource_filter(@asset_activity.asset_account.asset) }, only: [:show, :edit, :update, :destroy]
 
   # GET /asset_activities
   # GET /asset_activities.json
   def index
-    @asset_activities = AssetActivity.all
+    if params[:asset_id].present?
+      asset = Asset.find(params[:asset_id])
+      current_users_resource_filter(asset)
+      @asset_activities = AssetActivity.where(asset_account_id: asset.asset_accounts.map(&:id)).order(transaction_date: :desc)
+    end
   end
 
   # GET /asset_activities/1

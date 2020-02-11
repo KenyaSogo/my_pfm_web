@@ -38,5 +38,10 @@
   </table>
 </p>
 
+<p>
+  <h2>AssetActivities</h2>
+  <%= link_to 'BulkInquiry', asset_activities_path(asset_id: @asset.id) %>
+</p>
+
 <%= link_to 'Edit', edit_asset_path(@asset) %> |
 <%= link_to 'Back', assets_path %>

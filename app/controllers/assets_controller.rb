@@ -14,6 +14,7 @@ class AssetsController < ApplicationController
   # GET /assets/1
   # GET /assets/1.json
   def show
+    @asset_activity_count = @asset.asset_accounts.map { |r| r.asset_activities.size }.sum
   end
 
   # GET /assets/new

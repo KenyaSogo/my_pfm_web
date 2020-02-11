@@ -6,6 +6,9 @@ class AssetsController < ApplicationController
   # GET /assets.json
   def index
     @assets = Asset.all
+    @asset_activity_counts = @assets.each_with_object({}) do |asset, h|
+      h[asset.id] = asset.asset_accounts.map { |r| r.asset_activities.size }.sum
+    end
   end
 
   # GET /assets/1

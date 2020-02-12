@@ -6,6 +6,7 @@
 </p>
 
 <p>
+  <%= paginate @asset_activities %>
   <table>
     <thead>
       <tr>
@@ -38,6 +39,7 @@
       <% end %>
     </tbody>
   </table>
+  <%= paginate @asset_activities %>
 </p>
 
 <%= link_to 'Back', @asset_activities.first&.asset_account&.asset.presence || assets_path %>

@@ -9,7 +9,7 @@ class AssetActivitiesController < ApplicationController
     if params[:asset_id].present?
       asset = Asset.find(params[:asset_id])
       current_users_resource_filter(asset)
-      @asset_activities = AssetActivity.where(asset_account_id: asset.asset_accounts.map(&:id)).order(transaction_date: :desc)
+      @asset_activities = AssetActivity.where(asset_account_id: asset.asset_accounts.map(&:id)).page(params[:page]).per(30).order(transaction_date: :desc)
     end
   end
 

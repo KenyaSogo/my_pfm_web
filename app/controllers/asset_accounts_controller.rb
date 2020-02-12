@@ -12,6 +12,7 @@ class AssetAccountsController < ApplicationController
   # GET /asset_accounts/1
   # GET /asset_accounts/1.json
   def show
+    @asset_activities = @asset_account.asset_activities.page(params[:page]).per(30).order(transaction_date: :desc)
   end
 
   # GET /asset_accounts/new

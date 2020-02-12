@@ -66,3 +66,5 @@ gem 'sidekiq'
 gem 'redis-rails'
 
 gem 'kaminari'
+
+gem 'ransack'

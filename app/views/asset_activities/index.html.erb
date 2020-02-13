@@ -1,19 +1,18 @@
 <h1>AssetActivities</h1>
 
 <p>
-  <strong>AssetName:</strong>
-  <%= @asset.name %>
-</p>
-
-<p>
   <%= search_form_for @query do |f| %>
     <%= f.hidden_field :asset_id, value: @asset.id %>
-    <div class="form-inline">
-      <strong><%= f.label :TransactioDate %></strong>
-      <%= f.date_select :transaction_date_gteq, {include_blank: true, use_month_numbers: true, date_separator: ' / '}, class: "form-control" %> ~
-      <%= f.date_select :transaction_date_lteq, {include_blank: true, use_month_numbers: true, date_separator: ' / '}, class: "form-control" %>
-    </div>
-    <div class="actions"><%= f.submit "Search" %></div>
+    <table>
+      <tr>
+        <td><strong>AssetName:</strong>
+        <td><%= @asset.name %>
+      <tr>
+        <td><strong><%= f.label :transaction_date, "TransactionDate:" %></strong>
+        <td><%= f.date_select :transaction_date_gteq, {include_blank: true, use_month_numbers: true, date_separator: ' / '}, class: "form-control" %> ~
+        <td><%= f.date_select :transaction_date_lteq, {include_blank: true, use_month_numbers: true, date_separator: ' / '}, class: "form-control" %>
+        <td width="300" align="right"><span class="actions"><%= f.submit "Search" %></span>
+    </table>
   <% end %>
 </p>
 

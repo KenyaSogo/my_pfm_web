@@ -3,6 +3,15 @@
 <h1>AssetActivities</h1>
 
 <p>
+  <%= search_form_for @query do |f| %>
+    <%= f.hidden_field :asset_id, value: @asset.id %>
+    <div class="form-inline">
+      <strong><%= f.label :TransactioDate %></strong>
+      <%= f.date_select :transaction_date_gteq, {include_blank: true, use_month_numbers: true, date_separator: ' / '}, class: "form-control" %> ~
+      <%= f.date_select :transaction_date_lteq, {include_blank: true, use_month_numbers: true, date_separator: ' / '}, class: "form-control" %>
+    </div>
+    <div class="actions"><%= f.submit "Search" %></div>
+  <% end %>
 </p>
 
 <p>

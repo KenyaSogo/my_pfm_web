@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  asset: one
+  name: MyString
+  last_generated_at: 2020-02-16 15:46:02
+
+two:
+  asset: two
+  name: MyString
+  last_generated_at: 2020-02-16 15:46:02

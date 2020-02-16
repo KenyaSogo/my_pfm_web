@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Asset:</strong>
+  <%= @simulation.asset %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @simulation.name %>
+</p>
+
+<p>
+  <strong>Last generated at:</strong>
+  <%= @simulation.last_generated_at %>
+</p>
+
+<%= link_to 'Edit', edit_simulation_path(@simulation) %> |
+<%= link_to 'Back', simulations_path %>

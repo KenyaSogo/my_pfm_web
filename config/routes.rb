@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :simulations
   resources :asset_activities
   resources :asset_accounts
   resources :assets do

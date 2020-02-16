@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Simulation:</strong>
+  <%= @simulation_entry.simulation %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @simulation_entry.name %>
+</p>
+
+<p>
+  <strong>Simulation entry type:</strong>
+  <%= @simulation_entry.simulation_entry_type %>
+</p>
+
+<p>
+  <strong>Apply from:</strong>
+  <%= @simulation_entry.apply_from %>
+</p>
+
+<p>
+  <strong>Apply to:</strong>
+  <%= @simulation_entry.apply_to %>
+</p>
+
+<%= link_to 'Edit', edit_simulation_entry_path(@simulation_entry) %> |
+<%= link_to 'Back', simulation_entries_path %>

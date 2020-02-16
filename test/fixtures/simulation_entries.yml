@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  simulation: one
+  name: MyString
+  simulation_entry_type: one
+  apply_from: 2020-02-16
+  apply_to: 2020-02-16
+
+two:
+  simulation: two
+  name: MyString
+  simulation_entry_type: two
+  apply_from: 2020-02-16
+  apply_to: 2020-02-16

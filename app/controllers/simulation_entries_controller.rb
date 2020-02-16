@@ -1,0 +1,74 @@
+class SimulationEntriesController < ApplicationController
+  before_action :set_simulation_entry, only: [:show, :edit, :update, :destroy]
+
+  # GET /simulation_entries
+  # GET /simulation_entries.json
+  def index
+    @simulation_entries = SimulationEntry.all
+  end
+
+  # GET /simulation_entries/1
+  # GET /simulation_entries/1.json
+  def show
+  end
+
+  # GET /simulation_entries/new
+  def new
+    @simulation_entry = SimulationEntry.new
+  end
+
+  # GET /simulation_entries/1/edit
+  def edit
+  end
+
+  # POST /simulation_entries
+  # POST /simulation_entries.json
+  def create
+    @simulation_entry = SimulationEntry.new(simulation_entry_params)
+
+    respond_to do |format|
+      if @simulation_entry.save
+        format.html { redirect_to @simulation_entry, notice: 'Simulation entry was successfully created.' }
+        format.json { render :show, status: :created, location: @simulation_entry }
+      else
+        format.html { render :new }
+        format.json { render json: @simulation_entry.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /simulation_entries/1
+  # PATCH/PUT /simulation_entries/1.json
+  def update
+    respond_to do |format|
+      if @simulation_entry.update(simulation_entry_params)
+        format.html { redirect_to @simulation_entry, notice: 'Simulation entry was successfully updated.' }
+        format.json { render :show, status: :ok, location: @simulation_entry }
+      else
+        format.html { render :edit }
+        format.json { render json: @simulation_entry.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /simulation_entries/1
+  # DELETE /simulation_entries/1.json
+  def destroy
+    @simulation_entry.destroy
+    respond_to do |format|
+      format.html { redirect_to simulation_entries_url, notice: 'Simulation entry was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_simulation_entry
+      @simulation_entry = SimulationEntry.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def simulation_entry_params
+      params.require(:simulation_entry).permit(:simulation_id, :name, :simulation_entry_type_id, :apply_from, :apply_to)
+    end
+end

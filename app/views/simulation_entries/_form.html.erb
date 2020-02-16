@@ -1,0 +1,42 @@
+<%= form_for(simulation_entry) do |f| %>
+  <% if simulation_entry.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(simulation_entry.errors.count, "error") %> prohibited this simulation_entry from being saved:</h2>
+
+      <ul>
+      <% simulation_entry.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :simulation_id %>
+    <%= f.text_field :simulation_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :simulation_entry_type_id %>
+    <%= f.text_field :simulation_entry_type_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :apply_from %>
+    <%= f.date_select :apply_from %>
+  </div>
+
+  <div class="field">
+    <%= f.label :apply_to %>
+    <%= f.date_select :apply_to %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

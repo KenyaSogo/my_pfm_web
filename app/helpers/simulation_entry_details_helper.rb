@@ -1,0 +1,2 @@
+module SimulationEntryDetailsHelper
+end

@@ -1,0 +1,64 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Simulation entry:</strong>
+  <%= @simulation_entry_detail.simulation_entry %>
+</p>
+
+<p>
+  <strong>Asset account:</strong>
+  <%= @simulation_entry_detail.asset_account %>
+</p>
+
+<p>
+  <strong>Transaction date year:</strong>
+  <%= @simulation_entry_detail.transaction_date_year %>
+</p>
+
+<p>
+  <strong>Transaction date month:</strong>
+  <%= @simulation_entry_detail.transaction_date_month %>
+</p>
+
+<p>
+  <strong>Transaction date day:</strong>
+  <%= @simulation_entry_detail.transaction_date_day %>
+</p>
+
+<p>
+  <strong>Transaction date weekday:</strong>
+  <%= @simulation_entry_detail.transaction_date_weekday %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @simulation_entry_detail.description %>
+</p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @simulation_entry_detail.amount %>
+</p>
+
+<p>
+  <strong>Item:</strong>
+  <%= @simulation_entry_detail.item %>
+</p>
+
+<p>
+  <strong>Sub item:</strong>
+  <%= @simulation_entry_detail.sub_item %>
+</p>
+
+<p>
+  <strong>Is transfer:</strong>
+  <%= @simulation_entry_detail.is_transfer %>
+</p>
+
+<p>
+  <strong>Is calculation target:</strong>
+  <%= @simulation_entry_detail.is_calculation_target %>
+</p>
+
+<%= link_to 'Edit', edit_simulation_entry_detail_path(@simulation_entry_detail) %> |
+<%= link_to 'Back', simulation_entry_details_path %>

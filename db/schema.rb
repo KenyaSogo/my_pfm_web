@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200211050311) do
+ActiveRecord::Schema.define(version: 20200216142748) do
 
   create_table "asset_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "asset_id"
@@ -61,6 +61,12 @@ ActiveRecord::Schema.define(version: 20200211050311) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["asset_id"], name: "index_items_on_asset_id", using: :btree
+  end
+
+  create_table "simulation_entry_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "sub_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

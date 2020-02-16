@@ -6,31 +6,51 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-AssetType.create!(
-  [
-    {
-      name: 'cash',
-    },
-    {
-      name: 'bank',
-    },
-    {
-      name: 'credit_card',
-    },
-    {
-      name: 'e-money',
-    },
-    {
-      name: 'point',
-    },
-    {
-      name: 'loan',
-    },
-    {
-      name: 'other_asset',
-    },
-    {
-      name: 'other_debt',
-    },
-  ]
-)
+[
+  {
+    name: 'cash',
+  },
+  {
+    name: 'bank',
+  },
+  {
+    name: 'credit_card',
+  },
+  {
+    name: 'e-money',
+  },
+  {
+    name: 'point',
+  },
+  {
+    name: 'loan',
+  },
+  {
+    name: 'other_asset',
+  },
+  {
+    name: 'other_debt',
+  },
+].each do |r|
+  AssetType.find_or_create_by!(r)
+end
+
+[
+  {
+    name: 'any_time',
+  },
+  {
+    name: 'daily',
+  },
+  {
+    name: 'weekly',
+  },
+  {
+    name: 'monthly',
+  },
+  {
+    name: 'yearly',
+  },
+].each do |r|
+  SimulationEntryType.find_or_create_by!(r)
+end

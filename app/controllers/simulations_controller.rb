@@ -28,6 +28,7 @@ class SimulationsController < ApplicationController
   # POST /simulations.json
   def create
     @simulation = Simulation.new(simulation_params)
+    @simulation.asset = @asset
 
     respond_to do |format|
       if @simulation.save
@@ -77,6 +78,6 @@ class SimulationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def simulation_params
-      params.require(:simulation).permit(:asset_id, :name)
+      params.require(:simulation).permit(:name)
     end
 end

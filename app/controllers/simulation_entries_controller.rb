@@ -1,5 +1,8 @@
 class SimulationEntriesController < ApplicationController
+  before_action :set_simulation, only: [:index, :new, :create]
+  before_action -> { current_users_resource_filter(@simulation.asset) }, only: [:index, :new, :create]
   before_action :set_simulation_entry, only: [:show, :edit, :update, :destroy]
+  before_action -> { current_users_resource_filter(@simulation_entry.simulation.asset) }, only: [:show, :edit, :update, :destroy]
 
   # GET /simulation_entries
   # GET /simulation_entries.json
@@ -25,6 +28,7 @@ class SimulationEntriesController < ApplicationController
   # POST /simulation_entries.json
   def create
     @simulation_entry = SimulationEntry.new(simulation_entry_params)
+    @simulation_entry.simulation = @simulation
 
     respond_to do |format|
       if @simulation_entry.save
@@ -62,6 +66,11 @@ class SimulationEntriesController < ApplicationController
   end
 
   private
+    def set_simulation
+      simulation_id = params[:simulation_id] || params[:simulation_entry][:simulation_id]
+      @simulation = Simulation.find(simulation_id)
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_simulation_entry
       @simulation_entry = SimulationEntry.find(params[:id])
@@ -69,6 +78,6 @@ class SimulationEntriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def simulation_entry_params
-      params.require(:simulation_entry).permit(:simulation_id, :name, :simulation_entry_type_id, :apply_from, :apply_to)
+      params.require(:simulation_entry).permit(:name, :simulation_entry_type_id, :apply_from, :apply_to)
     end
 end

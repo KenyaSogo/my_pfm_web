@@ -7,7 +7,7 @@ class SimulationsController < ApplicationController
   # GET /simulations
   # GET /simulations.json
   def index
-    @simulations = Simulation.all
+    @simulations = Simulation.where(asset_id: @asset.id)
   end
 
   # GET /simulations/1

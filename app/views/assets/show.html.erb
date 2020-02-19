@@ -67,7 +67,7 @@
         <tr>
           <td>-</td>
           <td>-</td>
-          <td colspan="2">-</td>
+          <td colspan="3">-</td>
         </tr>
       <% else %>
         <% @asset.simulations.each do |simulation| %>
@@ -76,6 +76,7 @@
             <td><%= simulation.last_generated_at.presence || '-' %></td>
             <td><%= link_to 'Show', simulation %></td>
             <td><%= link_to 'Edit', edit_simulation_path(simulation) %></td>
+            <td><%= link_to 'Destroy', simulation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
           </tr>
         <% end %>
       <% end %>

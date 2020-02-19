@@ -58,9 +58,10 @@ class SimulationsController < ApplicationController
   # DELETE /simulations/1
   # DELETE /simulations/1.json
   def destroy
+    asset = @simulation.asset
     @simulation.destroy
     respond_to do |format|
-      format.html { redirect_to simulations_url, notice: 'Simulation was successfully destroyed.' }
+      format.html { redirect_to asset, notice: 'Simulation was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

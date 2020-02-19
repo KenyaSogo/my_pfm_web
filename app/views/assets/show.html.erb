@@ -52,5 +52,38 @@
   <%= link_to 'BulkInquiry', asset_activities_path(asset_id: @asset.id) %>
 </p>
 
+<p>
+  <h2>Simulations</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>LastGeneratedAt</th>
+        <th colspan="2">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @asset.simulations.blank? %>
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td colspan="2">-</td>
+        </tr>
+      <% else %>
+        <% @asset.simulations.each do |simulation| %>
+          <tr>
+            <td><%= simulation.name.presence || '-' %></td>
+            <td><%= simulation.last_generated_at.presence || '-' %></td>
+            <td><%= link_to 'Show', simulation %></td>
+            <td><%= link_to 'Edit', edit_simulation_path(simulation) %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <br />
+  <%= link_to 'New Simulation', new_simulation_path(asset_id: @asset.id) %>
+</p>
+
 <%= link_to 'Edit', edit_asset_path(@asset) %> |
 <%= link_to 'Back', assets_path %>

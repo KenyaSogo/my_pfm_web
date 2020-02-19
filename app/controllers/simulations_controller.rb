@@ -1,5 +1,8 @@
 class SimulationsController < ApplicationController
+  before_action :set_asset, only: [:index, :new, :create]
+  before_action -> { current_users_resource_filter(@asset) }, only: [:index, :new, :create]
   before_action :set_simulation, only: [:show, :edit, :update, :destroy]
+  before_action -> { current_users_resource_filter(@simulation.asset) }, only: [:show, :edit, :update, :destroy]
 
   # GET /simulations
   # GET /simulations.json
@@ -62,6 +65,11 @@ class SimulationsController < ApplicationController
   end
 
   private
+    def set_asset
+      asset_id = params[:asset_id] || params[:simulation][:asset_id]
+      @asset = Asset.find(asset_id)
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_simulation
       @simulation = Simulation.find(params[:id])
@@ -69,6 +77,6 @@ class SimulationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def simulation_params
-      params.require(:simulation).permit(:asset_id, :name, :last_generated_at)
+      params.require(:simulation).permit(:asset_id, :name)
     end
 end

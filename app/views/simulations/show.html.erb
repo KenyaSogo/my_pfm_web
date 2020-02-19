@@ -1,19 +1,13 @@
-<p id="notice"><%= notice %></p>
+<h1>Simulation Detail</h1>
 
 <p>
-  <strong>Asset:</strong>
-  <%= @simulation.asset %>
-</p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @simulation.name %>
-</p>
-
-<p>
-  <strong>Last generated at:</strong>
-  <%= @simulation.last_generated_at %>
+  <strong>AssetName:</strong>
+  <%= @simulation.asset.name %><br />
+  <strong>SimulationName:</strong>
+  <%= @simulation.name %><br />
+  <strong>LastGeneratedAt:</strong>
+  <%= @simulation.last_generated_at.presence || '-' %>
 </p>
 
 <%= link_to 'Edit', edit_simulation_path(@simulation) %> |
-<%= link_to 'Back', simulations_path %>
+<%= link_to 'Back', @simulation.asset %>

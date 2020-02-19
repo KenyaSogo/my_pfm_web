@@ -1,6 +1,11 @@
 <h1>Editing Simulation</h1>
 
-<%= render 'form', simulation: @simulation %>
+<%= form_for @simulation do |f| %>
+  <%= f.label :name %><%= f.text_field :name, id: :simulation_name %><br /><br />
+  <%= f.submit %>
+<% end %>
+
+<br />
 
 <%= link_to 'Show', @simulation %> |
-<%= link_to 'Back', simulations_path %>
+<%= link_to 'Back', @simulation.asset %>

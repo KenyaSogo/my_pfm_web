@@ -9,5 +9,48 @@
   <%= @simulation.last_generated_at.presence || '-' %>
 </p>
 
+<p>
+  <h2>SimulationEntries</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>EntryType</th>
+        <th>ApplyFrom</th>
+        <th>ApplyTo</th>
+        <th>Detail_Counts</th>
+        <th colspan="3">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @simulation.simulation_entries.blank? %>
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td colspan="3">-</td>
+        </tr>
+      <% else %>
+        <% @simulation.simulation_entries.each do |simulation_entry| %>
+          <tr>
+            <td><%= simulation_entry.name %></td>
+            <td><%= simulation_entry.simulation_entry_type&.name.presence || '-' %></td>
+            <td><%= simulation_entry.apply_from %></td>
+            <td><%= simulation_entry.apply_to %></td>
+            <td><%= simulation_entry.simulation_entry_details.size %></td>
+            <td><%= link_to 'Show', simulation_entry %></td>
+            <td><%= link_to 'Edit', edit_simulation_entry_path(simulation_entry) %></td>
+            <td><%= link_to 'Destroy', simulation_entry, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <br />
+  <%= link_to 'New SimulationEntry', new_simulation_entry_path(simulation_id: @simulation.id) %>
+</p>
+
 <%= link_to 'Edit', edit_simulation_path(@simulation) %> |
 <%= link_to 'Back', @simulation.asset %>

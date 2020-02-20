@@ -5,4 +5,7 @@ module ApplicationHelper
   def display_datetime_string(datetime)
     datetime.blank? ? '-' : datetime.strftime('%Y/%m/%d %H:%M:%S')
   end
+  def display_date_string(date)
+    date.blank? ? '-' : date.strftime('%Y/%m/%d')
+  end
 end

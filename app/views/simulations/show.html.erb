@@ -37,8 +37,8 @@
           <tr>
             <td><%= simulation_entry.name %></td>
             <td><%= simulation_entry.simulation_entry_type&.name.presence || '-' %></td>
-            <td><%= simulation_entry.apply_from %></td>
-            <td><%= simulation_entry.apply_to %></td>
+            <td><%= display_date_string(simulation_entry.apply_from) %></td>
+            <td><%= display_date_string(simulation_entry.apply_to) %></td>
             <td><%= simulation_entry.simulation_entry_details.size %></td>
             <td><%= link_to 'Show', simulation_entry %></td>
             <td><%= link_to 'Edit', edit_simulation_entry_path(simulation_entry) %></td>

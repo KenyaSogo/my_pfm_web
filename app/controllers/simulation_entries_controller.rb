@@ -7,7 +7,7 @@ class SimulationEntriesController < ApplicationController
   # GET /simulation_entries
   # GET /simulation_entries.json
   def index
-    @simulation_entries = SimulationEntry.all
+    @simulation_entries = SimulationEntry.where(simulation_id: @simulation.id)
   end
 
   # GET /simulation_entries/1

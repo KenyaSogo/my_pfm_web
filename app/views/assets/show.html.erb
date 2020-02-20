@@ -8,9 +8,9 @@
   <strong>AssetActivity_Counts:</strong>
   <%= @asset_activity_count %><br />
   <strong>LastAggregateStartedAt:</strong>
-  <%= display_date_string(@asset.last_aggregate_started_at) %><br />
+  <%= display_datetime_string(@asset.last_aggregate_started_at) %><br />
   <strong>LastAggregateSucceededAt:</strong>
-  <%= display_date_string(@asset.last_aggregate_succeeded_at) %><br />
+  <%= display_datetime_string(@asset.last_aggregate_succeeded_at) %><br />
 </p>
 
 <p>

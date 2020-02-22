@@ -13,5 +13,67 @@
   <%= display_date_string(@simulation_entry.apply_to) %>
 </p>
 
+<p>
+  <h2>SimulationEntryDetails</h2>
+  <table>
+    <% entry_type_id = @simulation_entry.simulation_entry_type&.id %>
+    <% date_header_name = simulation_entry_detail_date_header_name(entry_type_id) %>
+    <thead>
+      <tr>
+        <% if date_header_name.present? %>
+          <th><%= date_header_name %></th>
+        <% end %>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>AssetAccountName</th>
+        <th>ItemName</th>
+        <th>SubItemName</th>
+        <th>IsTransfer</th>
+        <th>IsCalculationTarget</th>
+        <th>CreatedAt</th>
+        <th>UpdatedAt</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @simulation_entry_details.blank? %>
+        <tr>
+          <% if date_header_name.present? %>
+            <td>-</td>
+          <% end %>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+      <% else %>
+        <% @simulation_entry_details.each do |simulation_entry_detail| %>
+          <tr>
+            <% if date_header_name.present? %>
+              <td><%= simulation_entry_detail_date_value(entry_type_id, simulation_entry_detail) %></td>
+            <% end %>
+            <td><%= simulation_entry_detail.description.slice(0...25) %></td>
+            <td><%= simulation_entry_detail.amount %></td>
+            <td><%= simulation_entry_detail.asset_account.name %></td>
+            <td><%= simulation_entry_detail.item.name %></td>
+            <td><%= simulation_entry_detail.sub_item.name %></td>
+            <td><%= simulation_entry_detail.is_transfer %></td>
+            <td><%= simulation_entry_detail.is_calculation_target %></td>
+            <td><%= display_datetime_string(simulation_entry_detail.created_at) %></td>
+            <td><%= display_datetime_string(simulation_entry_detail.updated_at) %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <%= paginate @simulation_entry_details %>
+  <br />
+  <%= link_to 'New SimulationEntryDetail', new_simulation_entry_detail_path(simulation_entry_id: @simulation_entry.id) %>
+</p>
+
 <%= link_to 'Edit', edit_simulation_entry_path(@simulation_entry) %> |
 <%= link_to 'Back', @simulation_entry.simulation %>

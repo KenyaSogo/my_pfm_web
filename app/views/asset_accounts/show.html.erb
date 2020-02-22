@@ -31,7 +31,7 @@
     <tbody>
       <% @asset_activities.each do |asset_activity| %>
         <tr>
-          <td><%= asset_activity.transaction_date.strftime('%Y/%m/%d') %></td>
+          <td><%= display_date_string(asset_activity.transaction_date) %></td>
           <td><%= asset_activity.description.slice(0...25) %></td>
           <td><%= asset_activity.amount %></td>
           <td><%= asset_activity.asset_account.name %></td>
@@ -39,8 +39,8 @@
           <td><%= asset_activity.sub_item.name %></td>
           <td><%= asset_activity.is_transfer %></td>
           <td><%= asset_activity.is_calculation_target %></td>
-          <td><%= asset_activity.created_at.strftime('%Y/%m/%d %H:%M:%S') %></td>
-          <td><%= asset_activity.updated_at.strftime('%Y/%m/%d %H:%M:%S') %></td>
+          <td><%= display_datetime_string(asset_activity.created_at) %></td>
+          <td><%= display_datetime_string(asset_activity.updated_at) %></td>
         </tr>
       <% end %>
     </tbody>

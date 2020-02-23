@@ -6,6 +6,7 @@
 </p>
 
 <%= form_for @simulation_entry_detail do |f| %>
+  <%= render "devise/shared/error_messages", resource: f.object %>
   <%= f.hidden_field :simulation_entry_id, value: @simulation_entry.id %>
   <% asset = @simulation_entry.simulation.asset %>
   <% simulation_entry_type_id = @simulation_entry.simulation_entry_type_id %>
@@ -23,9 +24,9 @@
   <% end %>
   <%= f.label :description %><%= f.text_area :description %><br />
   <%= f.label :amount %><%= f.text_field :amount %><br />
-  <%= f.label :asset_account_name %><%= f.select :asset_account_id, asset_account_options(asset), include_blank: true %><br />
-  <%= f.label :item_name %><%= f.select :item_id, item_options(asset), include_blank: true %><br />
-  <%= f.label :sub_item_name %><%= f.select :sub_item_id, sub_item_options(asset), include_blank: true %><br />
+  <%= f.label :asset_account_id, 'Asset account name' %><%= f.select :asset_account_id, asset_account_options(asset), include_blank: true %><br />
+  <%= f.label :item_id, 'Item name' %><%= f.select :item_id, item_options(asset), include_blank: true %><br />
+  <%= f.label :sub_item_id, 'Sub item name' %><%= f.select :sub_item_id, sub_item_options(asset), include_blank: true %><br />
   <%= f.label :is_transfer %><%= f.check_box :is_transfer %><br />
   <%= f.label :is_calculation_target %><%= f.check_box :is_calculation_target %><br />
   <br />

@@ -36,7 +36,7 @@ module SimulationEntriesHelper
     when 4
       day
     when 5
-      Date.new(1900, month, day).strftime('%m/%d')
+      Date.new(2000, month, day).strftime('%m/%d')
     else
       '-'
     end

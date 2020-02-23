@@ -7,4 +7,6 @@ class User < ApplicationRecord
   attr_encrypted :pfm_account_password, key: 'pfm_account_password_key_encrypt'
 
   has_many :assets, dependent: :destroy
+
+  validates :user_name, presence: true
 end

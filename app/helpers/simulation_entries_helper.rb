@@ -32,7 +32,7 @@ module SimulationEntriesHelper
     when 2
       '-'
     when 3
-      weekday
+      weekday_name(weekday)
     when 4
       day
     when 5

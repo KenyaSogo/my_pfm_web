@@ -1,6 +1,7 @@
 <h1>New Simulation</h1>
 
 <%= form_for @simulation do |f| %>
+  <%= render "devise/shared/error_messages", resource: f.object %>
   <%= f.hidden_field :asset_id, value: @asset.id %>
   <%= f.label :name %><%= f.text_field :name, id: :simulation_name %><br /><br />
   <%= f.submit %>

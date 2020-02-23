@@ -8,7 +8,7 @@ class AssetsController < ApplicationController
   def index
     @assets = Asset.where(user_id: current_user.id)
     @asset_activity_counts = @assets.each_with_object({}) do |asset, h|
-      h[asset.id] = asset.asset_accounts.map { |r| r.asset_activities.size }.sum
+      h[asset.id] = asset.asset_accounts.joins(:asset_activities).size
     end
   end
 

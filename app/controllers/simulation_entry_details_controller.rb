@@ -1,4 +1,6 @@
 class SimulationEntryDetailsController < ApplicationController
+  before_action :set_simulation_entry, only: [:index, :new, :create]
+  before_action -> { current_users_resource_filter(@simulation_entry.simulation.asset) }, only: [:index, :new, :create]
   before_action :set_simulation_entry_detail, only: [:show, :edit, :update, :destroy]
 
   # GET /simulation_entry_details
@@ -25,6 +27,7 @@ class SimulationEntryDetailsController < ApplicationController
   # POST /simulation_entry_details.json
   def create
     @simulation_entry_detail = SimulationEntryDetail.new(simulation_entry_detail_params)
+    @simulation_entry_detail.simulation_entry = @simulation_entry
 
     respond_to do |format|
       if @simulation_entry_detail.save
@@ -62,6 +65,11 @@ class SimulationEntryDetailsController < ApplicationController
   end
 
   private
+    def set_simulation_entry
+      simulation_entry_id = params[:simulation_entry_id] || params[:simulation_entry_detail][:simulation_entry_id]
+      @simulation_entry = SimulationEntry.find(simulation_entry_id)
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_simulation_entry_detail
       @simulation_entry_detail = SimulationEntryDetail.find(params[:id])
@@ -69,6 +77,6 @@ class SimulationEntryDetailsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def simulation_entry_detail_params
-      params.require(:simulation_entry_detail).permit(:simulation_entry_id, :asset_account_id, :transaction_date_year, :transaction_date_month, :transaction_date_day, :transaction_date_weekday, :description, :amount, :item_id, :sub_item_id, :is_transfer, :is_calculation_target)
+      params.require(:simulation_entry_detail).permit(:asset_account_id, :transaction_date_year, :transaction_date_month, :transaction_date_day, :transaction_date_weekday, :description, :amount, :item_id, :sub_item_id, :is_transfer, :is_calculation_target)
     end
 end

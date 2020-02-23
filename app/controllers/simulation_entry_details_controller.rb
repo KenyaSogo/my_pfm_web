@@ -2,11 +2,12 @@ class SimulationEntryDetailsController < ApplicationController
   before_action :set_simulation_entry, only: [:index, :new, :create]
   before_action -> { current_users_resource_filter(@simulation_entry.simulation.asset) }, only: [:index, :new, :create]
   before_action :set_simulation_entry_detail, only: [:show, :edit, :update, :destroy]
+  before_action -> { current_users_resource_filter(@simulation_entry_detail.simulation_entry.simulation.asset) }, only: [:show, :edit, :update, :destroy]
 
   # GET /simulation_entry_details
   # GET /simulation_entry_details.json
   def index
-    @simulation_entry_details = SimulationEntryDetail.all
+    @simulation_entry_details = SimulationEntryDetail.where(simulation_entry_id: @simulation_entry.id)
   end
 
   # GET /simulation_entry_details/1

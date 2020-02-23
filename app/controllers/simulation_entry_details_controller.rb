@@ -58,9 +58,10 @@ class SimulationEntryDetailsController < ApplicationController
   # DELETE /simulation_entry_details/1
   # DELETE /simulation_entry_details/1.json
   def destroy
+    simulation_entry = @simulation_entry_detail.simulation_entry
     @simulation_entry_detail.destroy
     respond_to do |format|
-      format.html { redirect_to simulation_entry_details_url, notice: 'Simulation entry detail was successfully destroyed.' }
+      format.html { redirect_to simulation_entry, notice: 'Simulation entry detail was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

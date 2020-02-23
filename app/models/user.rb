@@ -8,5 +8,5 @@ class User < ApplicationRecord
 
   has_many :assets, dependent: :destroy
 
-  validates :user_name, presence: true
+  validates :user_name, presence: true, uniqueness: true
 end

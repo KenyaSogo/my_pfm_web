@@ -4,5 +4,5 @@ class Asset < ApplicationRecord
   has_many :simulations, dependent: :destroy
   has_many :items, dependent: :destroy
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: { scope: :user }
 end

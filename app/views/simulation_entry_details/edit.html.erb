@@ -1,6 +1,38 @@
 <h1>Editing Simulation Entry Detail</h1>
 
-<%= render 'form', simulation_entry_detail: @simulation_entry_detail %>
+<p>
+  <strong>SimulationEntryType:</strong>
+  <%= @simulation_entry_detail.simulation_entry.simulation_entry_type.name %>
+</p>
+
+<%= form_for @simulation_entry_detail do |f| %>
+  <%= render "devise/shared/error_messages", resource: f.object %>
+  <% asset = @simulation_entry_detail.simulation_entry.simulation.asset %>
+  <% simulation_entry_type_id = @simulation_entry_detail.simulation_entry.simulation_entry_type_id %>
+  <% if simulation_entry_type_id.in?([1]) # any_time %>
+    <%= f.label :transaction_date_year %><%= f.select :transaction_date_year, year_options, include_blank: true %><br />
+  <% end %>
+  <% if simulation_entry_type_id.in?([1, 5]) # any_time, yearly %>
+    <%= f.label :transaction_date_month %><%= f.select :transaction_date_month, month_options, include_blank: true %><br />
+  <% end %>
+  <% if simulation_entry_type_id.in?([1, 4, 5]) # any_time, monthly, yearly %>
+    <%= f.label :transaction_date_day %><%= f.select :transaction_date_day, day_options, include_blank: true %><br />
+  <% end %>
+  <% if simulation_entry_type_id.in?([3]) # weekly %>
+    <%= f.label :transaction_date_weekday %><%= f.select :transaction_date_weekday, weekday_options, include_blank: true %><br />
+  <% end %>
+  <%= f.label :description %><%= f.text_area :description %><br />
+  <%= f.label :amount %><%= f.text_field :amount %><br />
+  <%= f.label :asset_account_id, 'Asset account name' %><%= f.select :asset_account_id, asset_account_options(asset), include_blank: true %><br />
+  <%= f.label :item_id, 'Item name' %><%= f.select :item_id, item_options(asset), include_blank: true %><br />
+  <%= f.label :sub_item_id, 'Sub item name' %><%= f.select :sub_item_id, sub_item_options(asset), include_blank: true %><br />
+  <%= f.label :is_transfer %><%= f.check_box :is_transfer %><br />
+  <%= f.label :is_calculation_target %><%= f.check_box :is_calculation_target %><br />
+  <br />
+  <%= f.submit %>
+<% end %>
+
+<br />
 
 <%= link_to 'Show', @simulation_entry_detail %> |
-<%= link_to 'Back', simulation_entry_details_path %>
+<%= link_to 'Back', @simulation_entry_detail.simulation_entry %>

@@ -1,6 +1,7 @@
 <h1>Editing Asset</h1>
 
 <%= form_for @asset do |f| %>
+  <%= render "devise/shared/error_messages", resource: f.object %>
   <%= f.label :name %> <%= f.text_field :name, id: :asset_name %><br /><br />
   <%= f.submit %>
 <% end %>

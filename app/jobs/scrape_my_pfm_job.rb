@@ -35,7 +35,7 @@ class ScrapeMyPfmJob < ApplicationJob
 
     cf_hashes = convert_cf_strings_to_hashes(cf_strings)
 
-    ActiveRecord::Base.transaction do
+    ApplicationRecord.transaction do
       cf_hashes.map { |r| r[:asset_account_name] }.uniq.each do |asset_account_name|
         AssetAccount.find_or_create_by!(asset_id: asset.id, name: asset_account_name)
       end

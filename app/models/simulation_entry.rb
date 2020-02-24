@@ -19,7 +19,7 @@ class SimulationEntry < ApplicationRecord
   def validate_apply_from_to_range
     return if apply_from.blank? || apply_to.blank?
     errors.add(:apply_to, 'must be greater than or equal to apply from') unless apply_to >= apply_from
-    errors.add(:apply_to, 'and from range must be less than or equal to 5 years') unless apply_to <= apply_from.next_year(5)
+    errors.add(:apply_to, 'must be less than or equal to 5 years later than apply from') unless apply_to <= apply_from.next_year(5)
   end
 
   def validate_entry_type_change

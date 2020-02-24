@@ -19,12 +19,14 @@
         <th>ApplyFrom</th>
         <th>ApplyTo</th>
         <th>Detail_Counts</th>
+        <th>Activity_Counts</th>
         <th colspan="3">Actions</th>
       </tr>
     </thead>
     <tbody>
       <% if @simulation.simulation_entries.blank? %>
         <tr>
+          <td>-</td>
           <td>-</td>
           <td>-</td>
           <td>-</td>
@@ -40,6 +42,7 @@
             <td><%= display_date_string(simulation_entry.apply_from) %></td>
             <td><%= display_date_string(simulation_entry.apply_to) %></td>
             <td><%= simulation_entry.simulation_entry_details.size %></td>
+            <td><%= simulation_entry.simulation_entry_details.joins(:simulation_result_activities).size %></td>
             <td><%= link_to 'Show', simulation_entry %></td>
             <td><%= link_to 'Edit', edit_simulation_entry_path(simulation_entry) %></td>
             <td><%= link_to 'Destroy', simulation_entry, method: :delete, data: { confirm: 'Are you sure?' } %></td>

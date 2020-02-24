@@ -32,6 +32,7 @@
         <th>IsCalculationTarget</th>
         <th>CreatedAt</th>
         <th>UpdatedAt</th>
+        <th>Activity_Counts</th>
         <th colspan="3">Actions</th>
       </tr>
     </thead>
@@ -41,6 +42,7 @@
           <% if date_header_name.present? %>
             <td>-</td>
           <% end %>
+          <td>-</td>
           <td>-</td>
           <td>-</td>
           <td>-</td>
@@ -67,6 +69,7 @@
             <td><%= simulation_entry_detail.is_calculation_target %></td>
             <td><%= display_datetime_string(simulation_entry_detail.created_at) %></td>
             <td><%= display_datetime_string(simulation_entry_detail.updated_at) %></td>
+            <td><%= simulation_entry_detail.simulation_result_activities.size %></td>
             <td><%= link_to 'Show', simulation_entry_detail %></td>
             <td><%= link_to 'Edit', edit_simulation_entry_detail_path(simulation_entry_detail) %></td>
             <td><%= link_to 'Destroy', simulation_entry_detail, method: :delete, data: { confirm: 'Are you sure?' } %></td>

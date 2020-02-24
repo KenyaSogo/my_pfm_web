@@ -1,0 +1,2 @@
+module SimulationResultActivitiesHelper
+end

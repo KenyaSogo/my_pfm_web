@@ -1,0 +1,62 @@
+<%= form_for(simulation_result_activity) do |f| %>
+  <% if simulation_result_activity.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(simulation_result_activity.errors.count, "error") %> prohibited this simulation_result_activity from being saved:</h2>
+
+      <ul>
+      <% simulation_result_activity.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :simulation_entry_detail_id %>
+    <%= f.text_field :simulation_entry_detail_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :asset_account_id %>
+    <%= f.text_field :asset_account_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :transaction_date %>
+    <%= f.date_select :transaction_date %>
+  </div>
+
+  <div class="field">
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+
+  <div class="field">
+    <%= f.label :amount %>
+    <%= f.text_field :amount %>
+  </div>
+
+  <div class="field">
+    <%= f.label :item_id %>
+    <%= f.text_field :item_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :sub_item_id %>
+    <%= f.text_field :sub_item_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :is_transfer %>
+    <%= f.check_box :is_transfer %>
+  </div>
+
+  <div class="field">
+    <%= f.label :is_calculation_target %>
+    <%= f.check_box :is_calculation_target %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

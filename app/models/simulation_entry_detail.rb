@@ -3,6 +3,7 @@ class SimulationEntryDetail < ApplicationRecord
   belongs_to :asset_account
   belongs_to :item
   belongs_to :sub_item
+  has_many :simulation_result_activities, dependent: :destroy
 
   validates :asset_account_id, inclusion: { in: :related_asset_account_ids }
   # date validation (presence, absence, inclusion, valid_date)

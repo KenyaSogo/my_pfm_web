@@ -13,6 +13,18 @@ class SimulationEntry < ApplicationRecord
   def entry_type_any_time?
     simulation_entry_type_id == 1
   end
+  def entry_type_daily?
+    simulation_entry_type_id == 2
+  end
+  def entry_type_weekly?
+    simulation_entry_type_id == 3
+  end
+  def entry_type_monthly?
+    simulation_entry_type_id == 4
+  end
+  def entry_type_yearly?
+    simulation_entry_type_id == 5
+  end
 
   private
 

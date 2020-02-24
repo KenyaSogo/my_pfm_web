@@ -59,7 +59,7 @@
       <tr>
         <th>Name</th>
         <th>LastGeneratedAt</th>
-        <th colspan="2">Actions</th>
+        <th colspan="4">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -67,13 +67,14 @@
         <tr>
           <td>-</td>
           <td>-</td>
-          <td colspan="3">-</td>
+          <td colspan="4">-</td>
         </tr>
       <% else %>
         <% @asset.simulations.each do |simulation| %>
           <tr>
             <td><%= simulation.name.presence || '-' %></td>
-            <td><%= simulation.last_generated_at.presence || '-' %></td>
+            <td><%= display_datetime_string(simulation.last_generated_at) %></td>
+            <td><%= link_to 'Generate', generate_simulation_path(simulation) %></td>
             <td><%= link_to 'Show', simulation %></td>
             <td><%= link_to 'Edit', edit_simulation_path(simulation) %></td>
             <td><%= link_to 'Destroy', simulation, method: :delete, data: { confirm: 'Are you sure?' } %></td>

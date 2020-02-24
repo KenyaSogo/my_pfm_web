@@ -2,7 +2,11 @@ Rails.application.routes.draw do
   resources :simulation_result_activities
   resources :simulation_entry_details
   resources :simulation_entries
-  resources :simulations
+  resources :simulations do
+    member do
+      get 'generate'
+    end
+  end
   resources :asset_activities
   resources :asset_accounts
   resources :assets do

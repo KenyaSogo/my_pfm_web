@@ -6,7 +6,7 @@
   <strong>SimulationName:</strong>
   <%= @simulation.name %><br />
   <strong>LastGeneratedAt:</strong>
-  <%= @simulation.last_generated_at.presence || '-' %>
+  <%= display_datetime_string(@simulation.last_generated_at) %>
 </p>
 
 <p>

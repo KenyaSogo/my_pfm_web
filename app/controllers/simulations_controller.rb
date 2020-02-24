@@ -1,8 +1,8 @@
 class SimulationsController < ApplicationController
   before_action :set_asset, only: [:index, :new, :create]
   before_action -> { current_users_resource_filter(@asset) }, only: [:index, :new, :create]
-  before_action :set_simulation, only: [:show, :edit, :update, :destroy]
-  before_action -> { current_users_resource_filter(@simulation.asset) }, only: [:show, :edit, :update, :destroy]
+  before_action :set_simulation, only: [:show, :edit, :update, :destroy, :generate]
+  before_action -> { current_users_resource_filter(@simulation.asset) }, only: [:show, :edit, :update, :destroy, :generate]
 
   # GET /simulations
   # GET /simulations.json
@@ -62,6 +62,15 @@ class SimulationsController < ApplicationController
     @simulation.destroy
     respond_to do |format|
       format.html { redirect_to asset, notice: 'Simulation was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  def generate
+    asset = @simulation.asset
+    SimulationResultGenerateJob.perform_later(@simulation.id)
+    respond_to do |format|
+      format.html { redirect_to asset, notice: 'Simulation generate was successfully kicked.' }
       format.json { head :no_content }
     end
   end

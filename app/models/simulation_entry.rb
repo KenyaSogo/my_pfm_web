@@ -3,10 +3,16 @@ class SimulationEntry < ApplicationRecord
   belongs_to :simulation_entry_type
   has_many :simulation_entry_details, dependent: :destroy
 
-  validates :name, :simulation_entry_type_id, :apply_from, :apply_to, presence: true
+  validates :name, :simulation_entry_type_id, presence: true
+  validates :apply_from, :apply_to, presence: true, unless: :entry_type_any_time?
+  validates :apply_from, :apply_to, absence: { message: 'must be blank when entry type is any_time', if: :entry_type_any_time? }
   validates :name, uniqueness: { scope: :simulation }
   validate :validate_apply_from_to_range
   validate :validate_entry_type_change, on: :update
+
+  def entry_type_any_time?
+    simulation_entry_type_id == 1
+  end
 
   private
 

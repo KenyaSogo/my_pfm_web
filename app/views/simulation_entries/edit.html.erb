@@ -3,8 +3,10 @@
 <%= form_for @simulation_entry do |f| %>
   <%= render "devise/shared/error_messages", resource: f.object %>
   <%= f.label :name %><%= f.text_field :name, id: :simulation_entry_name %><br />
-  <%= f.label :apply_from %><%= f.date_select :apply_from, {include_blank: true, use_month_numbers: true, date_separator: ' / ', selected: @simulation_entry.apply_from} %><br />
-  <%= f.label :apply_to %><%= f.date_select :apply_to, {include_blank: true, use_month_numbers: true, date_separator: ' / ', selected: @simulation_entry.apply_to} %><br />
+  <% unless @simulation_entry.entry_type_any_time? %>
+    <%= f.label :apply_from %><%= f.date_select :apply_from, {include_blank: true, use_month_numbers: true, date_separator: ' / ', selected: @simulation_entry.apply_from} %><br />
+    <%= f.label :apply_to %><%= f.date_select :apply_to, {include_blank: true, use_month_numbers: true, date_separator: ' / ', selected: @simulation_entry.apply_to} %><br />
+  <% end %>
   <br />
   <%= f.submit %>
 <% end %>

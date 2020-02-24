@@ -59,12 +59,16 @@
       <tr>
         <th>Name</th>
         <th>LastGeneratedAt</th>
+        <th>EntryDetail_Counts</th>
+        <th>ResultActivity_Counts</th>
         <th colspan="4">Actions</th>
       </tr>
     </thead>
     <tbody>
       <% if @asset.simulations.blank? %>
         <tr>
+          <td>-</td>
+          <td>-</td>
           <td>-</td>
           <td>-</td>
           <td colspan="4">-</td>
@@ -74,6 +78,8 @@
           <tr>
             <td><%= simulation.name.presence || '-' %></td>
             <td><%= display_datetime_string(simulation.last_generated_at) %></td>
+            <td><%= simulation.simulation_entries.joins(:simulation_entry_details).size %></td>
+            <td><%= simulation.simulation_entries.joins(simulation_entry_details: :simulation_result_activities).size %></td>
             <td><%= link_to 'Generate', generate_simulation_path(simulation) %></td>
             <td><%= link_to 'Show', simulation %></td>
             <td><%= link_to 'Edit', edit_simulation_path(simulation) %></td>

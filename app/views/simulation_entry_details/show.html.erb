@@ -28,7 +28,62 @@
   <strong>CreatedAt:</strong>
   <%= display_datetime_string(@simulation_entry_detail.created_at) %><br />
   <strong>UpdatedAt:</strong>
-  <%= display_datetime_string(@simulation_entry_detail.updated_at) %>
+  <%= display_datetime_string(@simulation_entry_detail.updated_at) %><br />
+  <strong>ResultActivity_Counts:</strong>
+  <%= @simulation_entry_detail.simulation_result_activities.size %><br />
+</p>
+
+<p>
+  <h2>SimulationResultActivities</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>TransactionDate</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>AssetAccountName</th>
+        <th>ItemName</th>
+        <th>SubItemName</th>
+        <th>IsTransfer</th>
+        <th>IsCalculationTarget</th>
+        <th>CreatedAt</th>
+        <th>UpdatedAt</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @simulation_result_activities.blank? %>
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+      <% else %>
+        <% @simulation_result_activities.each do |simulation_result_activity| %>
+          <tr>
+            <td><%= display_date_string(simulation_result_activity.transaction_date) %></td>
+            <td><%= simulation_result_activity.description.slice(0...25) %></td>
+            <td><%= simulation_result_activity.amount %></td>
+            <td><%= simulation_result_activity.asset_account.name %></td>
+            <td><%= simulation_result_activity.item.name %></td>
+            <td><%= simulation_result_activity.sub_item.name %></td>
+            <td><%= simulation_result_activity.is_transfer %></td>
+            <td><%= simulation_result_activity.is_calculation_target %></td>
+            <td><%= display_datetime_string(simulation_result_activity.created_at) %></td>
+            <td><%= display_datetime_string(simulation_result_activity.updated_at) %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <%= paginate @simulation_result_activities %>
+  <br />
 </p>
 
 <%= link_to 'Edit', edit_simulation_entry_detail_path(@simulation_entry_detail) %> |

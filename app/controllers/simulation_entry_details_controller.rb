@@ -13,6 +13,7 @@ class SimulationEntryDetailsController < ApplicationController
   # GET /simulation_entry_details/1
   # GET /simulation_entry_details/1.json
   def show
+    @simulation_result_activities = @simulation_entry_detail.simulation_result_activities.page(params[:page]).per(30).order(transaction_date: :desc)
   end
 
   # GET /simulation_entry_details/new

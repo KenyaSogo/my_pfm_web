@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200224031911) do
+ActiveRecord::Schema.define(version: 20200229081419) do
 
   create_table "asset_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "asset_id"
@@ -53,6 +53,28 @@ ActiveRecord::Schema.define(version: 20200224031911) do
     t.datetime "last_aggregate_started_at"
     t.datetime "last_aggregate_succeeded_at"
     t.index ["user_id"], name: "index_assets_on_user_id", using: :btree
+  end
+
+  create_table "billing_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "simulation_id"
+    t.integer  "credit_account_id"
+    t.integer  "billing_closing_day"
+    t.integer  "withdrawal_day"
+    t.integer  "withdrawal_month_offset"
+    t.integer  "billing_item_id"
+    t.integer  "billing_sub_item_id"
+    t.integer  "debit_account_id"
+    t.integer  "debit_item_id"
+    t.integer  "debit_sub_item_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.index ["billing_item_id"], name: "index_billing_accounts_on_billing_item_id", using: :btree
+    t.index ["billing_sub_item_id"], name: "index_billing_accounts_on_billing_sub_item_id", using: :btree
+    t.index ["credit_account_id"], name: "index_billing_accounts_on_credit_account_id", using: :btree
+    t.index ["debit_account_id"], name: "index_billing_accounts_on_debit_account_id", using: :btree
+    t.index ["debit_item_id"], name: "index_billing_accounts_on_debit_item_id", using: :btree
+    t.index ["debit_sub_item_id"], name: "index_billing_accounts_on_debit_sub_item_id", using: :btree
+    t.index ["simulation_id"], name: "index_billing_accounts_on_simulation_id", using: :btree
   end
 
   create_table "items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -159,6 +181,13 @@ ActiveRecord::Schema.define(version: 20200224031911) do
   add_foreign_key "asset_activities", "items"
   add_foreign_key "asset_activities", "sub_items"
   add_foreign_key "assets", "users"
+  add_foreign_key "billing_accounts", "asset_accounts", column: "credit_account_id"
+  add_foreign_key "billing_accounts", "asset_accounts", column: "debit_account_id"
+  add_foreign_key "billing_accounts", "items", column: "billing_item_id"
+  add_foreign_key "billing_accounts", "items", column: "debit_item_id"
+  add_foreign_key "billing_accounts", "simulations"
+  add_foreign_key "billing_accounts", "sub_items", column: "billing_sub_item_id"
+  add_foreign_key "billing_accounts", "sub_items", column: "debit_sub_item_id"
   add_foreign_key "items", "assets"
   add_foreign_key "simulation_entries", "simulation_entry_types"
   add_foreign_key "simulation_entries", "simulations"

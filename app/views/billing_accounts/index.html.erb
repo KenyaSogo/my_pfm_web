@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Billing Accounts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Simulation</th>
+      <th>Credit account</th>
+      <th>Billing closing day</th>
+      <th>Withdrawal day</th>
+      <th>Withdrawal month offset</th>
+      <th>Billing item</th>
+      <th>Billing sub item</th>
+      <th>Debit account</th>
+      <th>Debit item</th>
+      <th>Debit sub item</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @billing_accounts.each do |billing_account| %>
+      <tr>
+        <td><%= billing_account.simulation %></td>
+        <td><%= billing_account.credit_account %></td>
+        <td><%= billing_account.billing_closing_day %></td>
+        <td><%= billing_account.withdrawal_day %></td>
+        <td><%= billing_account.withdrawal_month_offset %></td>
+        <td><%= billing_account.billing_item %></td>
+        <td><%= billing_account.billing_sub_item %></td>
+        <td><%= billing_account.debit_account %></td>
+        <td><%= billing_account.debit_item %></td>
+        <td><%= billing_account.debit_sub_item %></td>
+        <td><%= link_to 'Show', billing_account %></td>
+        <td><%= link_to 'Edit', edit_billing_account_path(billing_account) %></td>
+        <td><%= link_to 'Destroy', billing_account, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Billing Account', new_billing_account_path %>

@@ -1,0 +1,67 @@
+<%= form_for(billing_account) do |f| %>
+  <% if billing_account.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(billing_account.errors.count, "error") %> prohibited this billing_account from being saved:</h2>
+
+      <ul>
+      <% billing_account.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :simulation_id %>
+    <%= f.text_field :simulation_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :credit_account_id %>
+    <%= f.text_field :credit_account_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :billing_closing_day %>
+    <%= f.number_field :billing_closing_day %>
+  </div>
+
+  <div class="field">
+    <%= f.label :withdrawal_day %>
+    <%= f.number_field :withdrawal_day %>
+  </div>
+
+  <div class="field">
+    <%= f.label :withdrawal_month_offset %>
+    <%= f.number_field :withdrawal_month_offset %>
+  </div>
+
+  <div class="field">
+    <%= f.label :billing_item_id %>
+    <%= f.text_field :billing_item_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :billing_sub_item_id %>
+    <%= f.text_field :billing_sub_item_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :debit_account_id %>
+    <%= f.text_field :debit_account_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :debit_item_id %>
+    <%= f.text_field :debit_item_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :debit_sub_item_id %>
+    <%= f.text_field :debit_sub_item_id %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

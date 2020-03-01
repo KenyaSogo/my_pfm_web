@@ -2,6 +2,7 @@ class BillingAccountsController < ApplicationController
   before_action :set_simulation, only: [:index, :new, :create]
   before_action -> { current_users_resource_filter(@simulation.asset) }, only: [:index, :new, :create]
   before_action :set_billing_account, only: [:show, :edit, :update, :destroy]
+  before_action -> { current_users_resource_filter(@billing_account.simulation.asset) }, only: [:show, :edit, :update, :destroy]
 
   # GET /billing_accounts
   # GET /billing_accounts.json

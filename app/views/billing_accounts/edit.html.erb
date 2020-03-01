@@ -1,6 +1,22 @@
 <h1>Editing Billing Account</h1>
 
-<%= render 'form', billing_account: @billing_account %>
+<%= form_for @billing_account do |f| %>
+  <%= render "devise/shared/error_messages", resource: f.object %>
+  <% simulation = @billing_account.simulation %>
+  <%= f.label :credit_account %><%= f.select :credit_account_id, credit_account_options(simulation), include_blank: true %><br />
+  <%= f.label :billing_closing_day %><%= f.text_field :billing_closing_day %><br />
+  <%= f.label :withdrawal_month_offset %><%= f.select :withdrawal_month_offset, withdrawal_month_offset_options, include_blank: true %><br />
+  <%= f.label :withdrawal_day %><%= f.text_field :withdrawal_day %><br />
+  <%= f.label :billing_item %><%= f.select :billing_item_id, billing_item_options(simulation), include_blank: true %><br />
+  <%= f.label :billing_sub_item %><%= f.select :billing_sub_item_id, billing_sub_item_options(simulation), include_blank: true %><br />
+  <%= f.label :debit_account %><%= f.select :debit_account_id, debit_account_options(simulation), include_blank: true %><br />
+  <%= f.label :debit_item %><%= f.select :debit_item_id, debit_item_options(simulation), include_blank: true %><br />
+  <%= f.label :debit_sub_item %><%= f.select :debit_sub_item_id, debit_sub_item_options(simulation), include_blank: true %><br />
+  <br />
+  <%= f.submit %>
+<% end %>
+
+<br />
 
 <%= link_to 'Show', @billing_account %> |
-<%= link_to 'Back', billing_accounts_path %>
+<%= link_to 'Back', @billing_account.simulation %>

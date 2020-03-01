@@ -66,7 +66,7 @@ class BillingAccountsController < ApplicationController
 
   private
     def set_simulation
-      simulation_id = params[:simulation_id] || params[:simulation_entry][:simulation_id]
+      simulation_id = params[:simulation_id] || params[:billing_account][:simulation_id]
       @simulation = Simulation.find(simulation_id)
     end
 

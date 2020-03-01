@@ -27,6 +27,7 @@ class BillingAccountsController < ApplicationController
   # POST /billing_accounts.json
   def create
     @billing_account = BillingAccount.new(billing_account_params)
+    @billing_account.simulation = @simulation
 
     respond_to do |format|
       if @billing_account.save

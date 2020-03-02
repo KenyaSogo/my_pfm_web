@@ -60,7 +60,7 @@
             <% if date_header_name.present? %>
               <td><%= simulation_entry_detail_date_value(entry_type_id, simulation_entry_detail) %></td>
             <% end %>
-            <td><%= simulation_entry_detail.description.slice(0...25) %></td>
+            <td><%= simulation_entry_detail.description&.slice(0...25) %></td>
             <td><%= simulation_entry_detail.amount %></td>
             <td><%= simulation_entry_detail.asset_account.name %></td>
             <td><%= simulation_entry_detail.item.name %></td>

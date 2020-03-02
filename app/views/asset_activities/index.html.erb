@@ -36,7 +36,7 @@
       <% @asset_activities.each do |asset_activity| %>
         <tr>
           <td><%= asset_activity.transaction_date.strftime('%Y/%m/%d') %></td>
-          <td><%= asset_activity.description.slice(0...25) %></td>
+          <td><%= asset_activity.description&.slice(0...25) %></td>
           <td><%= asset_activity.amount %></td>
           <td><%= asset_activity.asset_account.name %></td>
           <td><%= asset_activity.item.name %></td>

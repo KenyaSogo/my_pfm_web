@@ -68,7 +68,7 @@
         <% @simulation_result_activities.each do |simulation_result_activity| %>
           <tr>
             <td><%= display_date_string(simulation_result_activity.transaction_date) %></td>
-            <td><%= simulation_result_activity.description.slice(0...25) %></td>
+            <td><%= simulation_result_activity.description&.slice(0...25) %></td>
             <td><%= simulation_result_activity.amount %></td>
             <td><%= simulation_result_activity.asset_account.name %></td>
             <td><%= simulation_result_activity.item.name %></td>

@@ -79,7 +79,7 @@
             <td><%= simulation.name.presence || '-' %></td>
             <td><%= display_datetime_string(simulation.last_generated_at) %></td>
             <td><%= simulation.simulation_entries.joins(:simulation_entry_details).size %></td>
-            <td><%= simulation.simulation_entries.joins(simulation_entry_details: :simulation_result_activities).size %></td>
+            <td><%= result_activity_counts(simulation) %></td>
             <td><%= link_to 'Generate', generate_simulation_path(simulation) %></td>
             <td><%= link_to 'Show', simulation %></td>
             <td><%= link_to 'Edit', edit_simulation_path(simulation) %></td>

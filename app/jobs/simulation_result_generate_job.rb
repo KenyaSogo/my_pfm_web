@@ -20,11 +20,85 @@ class SimulationResultGenerateJob < ApplicationJob
           end
         end
       end
+
+      simulation.billing_accounts.each do |billing_account|
+        billing_account.billing_activities.each { |a| a.destroy! } if billing_account.updated_at >= last_generated_at
+
+        current_month_closing_date = Date.new(Date.today.year, Date.today.month, billing_account.billing_closing_day)
+        aggregate_target_activities = fetch_aggregate_target_activities(simulation.id, billing_account, current_month_closing_date)
+
+        billing_periods(current_month_closing_date).each do |billing_period|
+          target_activities_in_period = aggregate_target_activities.select { |a| a.transaction_date.to_date.in?(billing_period) }
+          next if target_activities_in_period.blank?
+
+          billing_amount = target_activities_in_period.map { |a| - a.amount }.sum
+          withdrawal_date = Date.new(billing_period.last.year, billing_period.last.month, billing_account.withdrawal_day) + billing_account.withdrawal_month_offset.month
+
+          create_or_update_billing_activity_set!(billing_account, withdrawal_date, billing_amount)
+        end
+      end
+
       simulation.update!(last_generated_at: Time.now)
     end
   end
 
   private
+
+  def create_or_update_billing_activity_set!(billing_account, withdrawal_date, billing_amount)
+    create_or_update_billing_activity_if_changed!(
+      billing_account_id: billing_account.id,
+      account_id: billing_account.credit_account_id,
+      withdrawal_date: withdrawal_date,
+      billing_amount: billing_amount,
+      item_id: billing_account.billing_item_id,
+      sub_item_id: billing_account.billing_sub_item_id
+    )
+    create_or_update_billing_activity_if_changed!(
+      billing_account_id: billing_account.id,
+      account_id: billing_account.debit_account_id,
+      withdrawal_date: withdrawal_date,
+      billing_amount: - billing_amount,
+      item_id: billing_account.debit_item_id,
+      sub_item_id: billing_account.debit_sub_item_id
+    )
+  end
+
+  def fetch_aggregate_target_activities(simulation_id, billing_account, current_month_closing_date)
+    billing_aggregate_start_date = billing_account.billing_activities.blank? ? current_month_closing_date.ago(2.years).tomorrow
+      : current_month_closing_date.ago(2.month).tomorrow
+    target_asset_activities = AssetActivity.where(asset_account_id: billing_account.credit_account_id)
+      .where('transaction_date >= ?', billing_aggregate_start_date)
+    target_simulation_result_activities = SimulationResultActivity.joins(simulation_entry_detail: :simulation_entry)
+      .where(simulation_entries: { simulation_id: simulation_id })
+      .where(asset_account_id: billing_account.credit_account_id)
+      .where('transaction_date > ?', target_asset_activities.map(&:transaction_date).max)
+
+    target_asset_activities + target_simulation_result_activities
+  end
+
+  def billing_periods(current_month_closing_date)
+    (-72..24).to_a.reverse.map do |i|
+      closing_date = current_month_closing_date.ago(i.month)
+      starting_date = closing_date.last_month.tomorrow
+      starting_date.to_date..closing_date.to_date
+    end
+  end
+
+  def create_or_update_billing_activity_if_changed!(billing_account_id:, account_id:, withdrawal_date:, billing_amount:, item_id:, sub_item_id:)
+    billing_activity = BillingActivity.find_or_initialize_by(
+      billing_account_id: billing_account_id,
+      asset_account_id: account_id,
+      transaction_date: withdrawal_date
+    )
+    billing_activity.assign_attributes(
+      amount: billing_amount,
+      item_id: item_id,
+      sub_item_id: sub_item_id,
+      is_transfer: true,
+      is_calculation_target: true
+    )
+    billing_activity.save! if billing_activity.changed?
+  end
 
   def updated_simulation_entry_details(simulation_entry, last_generated_at)
     if simulation_entry.updated_at >= last_generated_at

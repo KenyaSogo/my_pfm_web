@@ -1,0 +1,43 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Billing Activities</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Billing account</th>
+      <th>Asset account</th>
+      <th>Transaction date</th>
+      <th>Description</th>
+      <th>Amount</th>
+      <th>Item</th>
+      <th>Sub item</th>
+      <th>Is transfer</th>
+      <th>Is calculation target</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @billing_activities.each do |billing_activity| %>
+      <tr>
+        <td><%= billing_activity.billing_account %></td>
+        <td><%= billing_activity.asset_account %></td>
+        <td><%= billing_activity.transaction_date %></td>
+        <td><%= billing_activity.description %></td>
+        <td><%= billing_activity.amount %></td>
+        <td><%= billing_activity.item %></td>
+        <td><%= billing_activity.sub_item %></td>
+        <td><%= billing_activity.is_transfer %></td>
+        <td><%= billing_activity.is_calculation_target %></td>
+        <td><%= link_to 'Show', billing_activity %></td>
+        <td><%= link_to 'Edit', edit_billing_activity_path(billing_activity) %></td>
+        <td><%= link_to 'Destroy', billing_activity, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Billing Activity', new_billing_activity_path %>

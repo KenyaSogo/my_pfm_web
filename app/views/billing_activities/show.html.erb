@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Billing account:</strong>
+  <%= @billing_activity.billing_account %>
+</p>
+
+<p>
+  <strong>Asset account:</strong>
+  <%= @billing_activity.asset_account %>
+</p>
+
+<p>
+  <strong>Transaction date:</strong>
+  <%= @billing_activity.transaction_date %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @billing_activity.description %>
+</p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @billing_activity.amount %>
+</p>
+
+<p>
+  <strong>Item:</strong>
+  <%= @billing_activity.item %>
+</p>
+
+<p>
+  <strong>Sub item:</strong>
+  <%= @billing_activity.sub_item %>
+</p>
+
+<p>
+  <strong>Is transfer:</strong>
+  <%= @billing_activity.is_transfer %>
+</p>
+
+<p>
+  <strong>Is calculation target:</strong>
+  <%= @billing_activity.is_calculation_target %>
+</p>
+
+<%= link_to 'Edit', edit_billing_activity_path(@billing_activity) %> |
+<%= link_to 'Back', billing_activities_path %>

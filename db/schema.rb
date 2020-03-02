@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200229081419) do
+ActiveRecord::Schema.define(version: 20200302061937) do
 
   create_table "asset_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "asset_id"
@@ -75,6 +75,24 @@ ActiveRecord::Schema.define(version: 20200229081419) do
     t.index ["debit_item_id"], name: "index_billing_accounts_on_debit_item_id", using: :btree
     t.index ["debit_sub_item_id"], name: "index_billing_accounts_on_debit_sub_item_id", using: :btree
     t.index ["simulation_id"], name: "index_billing_accounts_on_simulation_id", using: :btree
+  end
+
+  create_table "billing_activities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "billing_account_id"
+    t.integer  "asset_account_id"
+    t.date     "transaction_date"
+    t.text     "description",           limit: 65535
+    t.bigint   "amount"
+    t.integer  "item_id"
+    t.integer  "sub_item_id"
+    t.boolean  "is_transfer"
+    t.boolean  "is_calculation_target"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.index ["asset_account_id"], name: "index_billing_activities_on_asset_account_id", using: :btree
+    t.index ["billing_account_id"], name: "index_billing_activities_on_billing_account_id", using: :btree
+    t.index ["item_id"], name: "index_billing_activities_on_item_id", using: :btree
+    t.index ["sub_item_id"], name: "index_billing_activities_on_sub_item_id", using: :btree
   end
 
   create_table "items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -188,6 +206,10 @@ ActiveRecord::Schema.define(version: 20200229081419) do
   add_foreign_key "billing_accounts", "simulations"
   add_foreign_key "billing_accounts", "sub_items", column: "billing_sub_item_id"
   add_foreign_key "billing_accounts", "sub_items", column: "debit_sub_item_id"
+  add_foreign_key "billing_activities", "asset_accounts"
+  add_foreign_key "billing_activities", "billing_accounts"
+  add_foreign_key "billing_activities", "items"
+  add_foreign_key "billing_activities", "sub_items"
   add_foreign_key "items", "assets"
   add_foreign_key "simulation_entries", "simulation_entry_types"
   add_foreign_key "simulation_entries", "simulations"

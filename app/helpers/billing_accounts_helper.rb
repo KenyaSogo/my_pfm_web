@@ -12,6 +12,10 @@ module BillingAccountsHelper
     }.merge((3..12).map { |i| ["#{i}ヶ月後", i] }.to_h)
   end
 
+  def withdrawal_month_offset_value(offset)
+    withdrawal_month_offset_options.key(offset)
+  end
+
   def billing_item_options(simulation)
     simulation.asset.items.map { |i| [i.name, i.id] }
   end

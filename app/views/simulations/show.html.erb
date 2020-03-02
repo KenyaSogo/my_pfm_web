@@ -89,7 +89,7 @@
           <tr>
             <td><%= billing_account.credit_account.name %></td>
             <td><%= billing_account.billing_closing_day %></td>
-            <td><%= billing_account.withdrawal_day %></td>
+            <td><%= "#{billing_account.withdrawal_day}(#{withdrawal_month_offset_value(billing_account.withdrawal_month_offset)})" %></td>
             <td><%= billing_account.billing_item.name %></td>
             <td><%= billing_account.billing_sub_item.name %></td>
             <td><%= billing_account.debit_account.name %></td>

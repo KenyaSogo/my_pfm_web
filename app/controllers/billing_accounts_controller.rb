@@ -58,9 +58,10 @@ class BillingAccountsController < ApplicationController
   # DELETE /billing_accounts/1
   # DELETE /billing_accounts/1.json
   def destroy
+    simulation = @billing_account.simulation
     @billing_account.destroy
     respond_to do |format|
-      format.html { redirect_to billing_accounts_url, notice: 'Billing account was successfully destroyed.' }
+      format.html { redirect_to simulation, notice: 'Billing account was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

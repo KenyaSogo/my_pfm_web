@@ -19,5 +19,58 @@
   <%= @billing_account.debit_sub_item.name %>
 </p>
 
+<p>
+  <h2>BillingActivities</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>TransactionDate</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>AssetAccountName</th>
+        <th>ItemName</th>
+        <th>SubItemName</th>
+        <th>IsTransfer</th>
+        <th>IsCalculationTarget</th>
+        <th>CreatedAt</th>
+        <th>UpdatedAt</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @billing_activities.blank? %>
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+      <% else %>
+        <% @billing_activities.each do |billing_activity| %>
+          <tr>
+            <td><%= display_date_string(billing_activity.transaction_date) %></td>
+            <td><%= billing_activity.description&.slice(0...25) %></td>
+            <td><%= billing_activity.amount %></td>
+            <td><%= billing_activity.asset_account.name %></td>
+            <td><%= billing_activity.item.name %></td>
+            <td><%= billing_activity.sub_item.name %></td>
+            <td><%= billing_activity.is_transfer %></td>
+            <td><%= billing_activity.is_calculation_target %></td>
+            <td><%= display_datetime_string(billing_activity.created_at) %></td>
+            <td><%= display_datetime_string(billing_activity.updated_at) %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <%= paginate @billing_activities %>
+  <br />
+</p>
+
 <%= link_to 'Edit', edit_billing_account_path(@billing_account) %> |
 <%= link_to 'Back', @billing_account.simulation %>

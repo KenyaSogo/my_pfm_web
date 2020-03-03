@@ -22,9 +22,11 @@ class SimulationResultGenerateJob < ApplicationJob
       end
 
       simulation.billing_accounts.each do |billing_account|
-        billing_account.billing_activities.each { |a| a.destroy! } if billing_account.updated_at >= last_generated_at
+        if billing_account.updated_at >= last_generated_at
+          (billing_account.billing_activities + billing_account.billing_complement_activities).each { |a| a.destroy! }
+        end
 
-        current_month_closing_date = Date.new(Date.today.year, Date.today.month, billing_account.billing_closing_day)
+        current_month_closing_date = Date.new(today.year, today.month, billing_account.billing_closing_day)
         aggregate_target_activities = fetch_aggregate_target_activities(simulation.id, billing_account, current_month_closing_date)
 
         billing_periods(current_month_closing_date, aggregate_target_activities).each do |billing_period|
@@ -36,6 +38,15 @@ class SimulationResultGenerateJob < ApplicationJob
 
           create_or_update_billing_activity_set!(billing_account, withdrawal_date, billing_amount)
         end
+
+        debit_asset_activities = AssetActivity.where(asset_account_id: billing_account.debit_account_id)
+        complement_start_date = billing_account.billing_complement_activities.blank? ? debit_asset_activities.minimum(:transaction_date)
+          : Date.new(today.year, today.month, 1).last_month
+        (0..month_diff(today, complement_start_date)).to_a.reverse.each do |month_index|
+          withdrawal_debit_asset_activity = fetch_withdrawal_debit_asset_activity(billing_account, month_index.month, debit_asset_activities)
+          next if withdrawal_debit_asset_activity.blank? || transfered_credit_asset_activity_exists?(billing_account, withdrawal_debit_asset_activity)
+          create_or_update_billing_complement_activity_if_changed!(billing_account, withdrawal_debit_asset_activity)
+        end
       end
 
       simulation.update!(last_generated_at: Time.now)
@@ -43,6 +54,26 @@ class SimulationResultGenerateJob < ApplicationJob
   end
 
   private
+
+  def transfered_credit_asset_activity_exists?(billing_account, withdrawal_debit_asset_activity)
+    AssetActivity.where(asset_account_id: billing_account.credit_account_id)
+      .where(transaction_date: withdrawal_debit_asset_activity.transaction_date)
+      .where(amount: - withdrawal_debit_asset_activity.amount)
+      .exists?
+  end
+
+  def fetch_withdrawal_debit_asset_activity(billing_account, ago_month, target_debit_asset_activities)
+    withdrawal_date = Date.new(today.year, today.month, billing_account.withdrawal_day).ago(ago_month)
+    target_debit_asset_activities
+      .where('transaction_date >= ?', withdrawal_date - 5.days).where('transaction_date <= ?', withdrawal_date + 5.days)
+      .where('amount < 0')
+      .where(item_id: billing_account.debit_item_id).where(sub_item_id: billing_account.debit_sub_item_id)
+      .first
+  end
+
+  def today
+    @today ||= Date.today
+  end
 
   def create_or_update_billing_activity_set!(billing_account, withdrawal_date, billing_amount)
     create_or_update_billing_activity_if_changed!(
@@ -110,6 +141,22 @@ class SimulationResultGenerateJob < ApplicationJob
       is_calculation_target: true
     )
     billing_activity.save! if billing_activity.changed?
+  end
+
+  def create_or_update_billing_complement_activity_if_changed!(billing_account, withdrawal_debit_asset_activity)
+    billing_complement_activity = BillingComplementActivity.find_or_initialize_by(
+      billing_account_id: billing_account.id,
+      asset_account_id: billing_account.credit_account_id,
+      transaction_date: withdrawal_debit_asset_activity.transaction_date
+    )
+    billing_complement_activity.assign_attributes(
+      amount: - withdrawal_debit_asset_activity.amount,
+      item_id: billing_account.billing_item_id,
+      sub_item_id: billing_account.billing_sub_item_id,
+      is_transfer: true,
+      is_calculation_target: true
+    )
+    billing_complement_activity.save! if billing_complement_activity.changed?
   end
 
   def updated_simulation_entry_details(simulation_entry, last_generated_at)

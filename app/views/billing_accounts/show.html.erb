@@ -20,7 +20,11 @@
 </p>
 
 <p>
-  <h2>BillingActivities</h2>
+  <% if @is_billing_complement_activities %>
+    <h2>BillingComplementActivities</h2>
+  <% else %>
+    <h2>BillingActivities</h2>
+  <% end %>
   <table>
     <thead>
       <tr>
@@ -70,6 +74,11 @@
   </table>
   <%= paginate @billing_activities %>
   <br />
+  <% if @is_billing_complement_activities %>
+    <%= link_to 'BillingActivities', @billing_account %>
+  <% else %>
+    <%= link_to 'BillingComplementActivities', billing_account_path(@billing_account, is_billing_complement_activities: 1) %>
+  <% end %>
 </p>
 
 <%= link_to 'Edit', edit_billing_account_path(@billing_account) %> |

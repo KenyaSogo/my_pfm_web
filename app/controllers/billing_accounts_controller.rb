@@ -13,7 +13,9 @@ class BillingAccountsController < ApplicationController
   # GET /billing_accounts/1
   # GET /billing_accounts/1.json
   def show
-    @billing_activities = @billing_account.billing_activities.page(params[:page]).per(30).order(transaction_date: :desc)
+    @is_billing_complement_activities = params[:is_billing_complement_activities].to_i == 1
+    activities = @is_billing_complement_activities ? @billing_account.billing_complement_activities : @billing_account.billing_activities
+    @billing_activities = activities.page(params[:page]).per(30).order(transaction_date: :desc)
   end
 
   # GET /billing_accounts/new

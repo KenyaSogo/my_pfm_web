@@ -97,7 +97,7 @@
             <td><%= billing_account.debit_account.name %></td>
             <td><%= billing_account.debit_item.name %></td>
             <td><%= billing_account.debit_sub_item.name %></td>
-            <td><%= billing_account.billing_activities.size %></td>
+            <td><%= billing_account.billing_activities.size + billing_account.billing_complement_activities.size %></td>
             <td><%= link_to 'Show', billing_account %></td>
             <td><%= link_to 'Edit', edit_billing_account_path(billing_account) %></td>
             <td><%= link_to 'Destroy', billing_account, method: :delete, data: { confirm: 'Are you sure?' } %></td>

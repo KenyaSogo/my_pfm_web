@@ -27,7 +27,7 @@ class SimulationResultGenerateJob < ApplicationJob
         current_month_closing_date = Date.new(Date.today.year, Date.today.month, billing_account.billing_closing_day)
         aggregate_target_activities = fetch_aggregate_target_activities(simulation.id, billing_account, current_month_closing_date)
 
-        billing_periods(current_month_closing_date).each do |billing_period|
+        billing_periods(current_month_closing_date, aggregate_target_activities).each do |billing_period|
           target_activities_in_period = aggregate_target_activities.select { |a| a.transaction_date.to_date.in?(billing_period) }
           next if target_activities_in_period.blank?
 
@@ -64,10 +64,15 @@ class SimulationResultGenerateJob < ApplicationJob
   end
 
   def fetch_aggregate_target_activities(simulation_id, billing_account, current_month_closing_date)
-    billing_aggregate_start_date = billing_account.billing_activities.blank? ? current_month_closing_date.ago(2.years).tomorrow
-      : current_month_closing_date.ago(2.month).tomorrow
-    target_asset_activities = AssetActivity.where(asset_account_id: billing_account.credit_account_id)
-      .where('transaction_date >= ?', billing_aggregate_start_date)
+    asset_activities = AssetActivity.where(asset_account_id: billing_account.credit_account_id)
+    billing_aggregate_start_date = if billing_account.billing_activities.blank?
+        go_back_months = [month_diff(current_month_closing_date, asset_activities.minimum(:transaction_date)), 0].max
+        current_month_closing_date.ago((go_back_months + 1).month).tomorrow
+      else
+        current_month_closing_date.ago(2.month).tomorrow
+      end
+
+    target_asset_activities = asset_activities.where('transaction_date >= ?', billing_aggregate_start_date)
     target_simulation_result_activities = SimulationResultActivity.joins(simulation_entry_detail: :simulation_entry)
       .where(simulation_entries: { simulation_id: simulation_id })
       .where(asset_account_id: billing_account.credit_account_id)
@@ -76,12 +81,19 @@ class SimulationResultGenerateJob < ApplicationJob
     target_asset_activities + target_simulation_result_activities
   end
 
-  def billing_periods(current_month_closing_date)
-    (-72..24).to_a.reverse.map do |i|
+  def billing_periods(current_month_closing_date, aggregate_target_activities)
+    target_transaction_dates = aggregate_target_activities.map(&:transaction_date)
+    go_back_months = [month_diff(current_month_closing_date, target_transaction_dates.min), 0].max
+    go_ahead_months = [month_diff(target_transaction_dates.max, current_month_closing_date), 0].max
+    ((- go_ahead_months)..go_back_months).to_a.reverse.map do |i|
       closing_date = current_month_closing_date.ago(i.month)
       starting_date = closing_date.last_month.tomorrow
       starting_date.to_date..closing_date.to_date
     end
+  end
+
+  def month_diff(compare_date, base_date)
+    (compare_date.year * 12 + compare_date.month) - (base_date.year * 12 + base_date.month)
   end
 
   def create_or_update_billing_activity_if_changed!(billing_account_id:, account_id:, withdrawal_date:, billing_amount:, item_id:, sub_item_id:)

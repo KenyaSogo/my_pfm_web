@@ -18,7 +18,7 @@ class ScrapeMyPfmJob < ApplicationJob
     agent.user_agent = 'Windows Chrome'
 
     url = 'https://moneyforward.com/cf'
-    cf_strings = nil
+    cf_strings_array = []
     agent.get(url) do |page|
       cf_page = page.form_with(id: 'new_sign_in_session_service') do |form|
         form.field_with(id: 'sign_in_session_service_email').value = user.pfm_account_id
@@ -26,9 +26,21 @@ class ScrapeMyPfmJob < ApplicationJob
       end.submit
 
       cf_csv_file = cf_page.links.find { |l| l.text == 'CSVファイル' }&.click
-      cf_strings = cf_csv_file&.body&.toutf8&.split("\n")&.map { |r| CSV.parse(r).flatten }
+      cf_strings_array << cf_csv_file_to_strings(cf_csv_file)
     end
 
+    cf_strings_array.each { |cf_strings| parse_and_save_cf_strings!(asset, cf_strings) }
+
+    asset.update!(last_aggregate_succeeded_at: DateTime.now)
+  end
+
+  private
+
+  def cf_csv_file_to_strings(cf_csv_file)
+    cf_csv_file&.body&.toutf8&.split("\n")&.map { |r| CSV.parse(r).flatten }
+  end
+
+  def parse_and_save_cf_strings!(asset, cf_strings)
     return if cf_strings.blank?
     fail ScrapingError, 'invalid size row' unless cf_strings.all? { |r| r.size == 10 }
     fail ScrapingError, 'invalid header' unless cf_strings.first.include?('計算対象')
@@ -57,12 +69,8 @@ class ScrapeMyPfmJob < ApplicationJob
           AssetActivity.create!(asset_activity_attributes(asset_account, cf_hash))
         end
       end
-
-      asset.update!(last_aggregate_succeeded_at: DateTime.now)
     end
   end
-
-  private
 
   def convert_cf_strings_to_hashes(cf_strings)
     cf_header_string = cf_strings.first

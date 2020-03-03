@@ -7,6 +7,7 @@ class BillingAccount < ApplicationRecord
   belongs_to :debit_item, class_name: 'Item'
   belongs_to :debit_sub_item, class_name: 'SubItem'
   has_many :billing_activities, dependent: :destroy
+  has_many :billing_complement_activities, dependent: :destroy
 
   validates :simulation, :credit_account, :billing_closing_day, :withdrawal_day, :withdrawal_month_offset,
     :billing_item, :billing_sub_item, :debit_account, :debit_item, :debit_sub_item, presence: true

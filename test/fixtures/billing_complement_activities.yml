@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  billing_account: one
+  asset_account: one
+  transaction_date: 2020-03-03
+  description: MyText
+  amount: 
+  item: one
+  sub_item: one
+  is_transfer: false
+  is_calculation_target: false
+
+two:
+  billing_account: two
+  asset_account: two
+  transaction_date: 2020-03-03
+  description: MyText
+  amount: 
+  item: two
+  sub_item: two
+  is_transfer: false
+  is_calculation_target: false

@@ -25,8 +25,13 @@ class ScrapeMyPfmJob < ApplicationJob
         form.field_with(id: 'sign_in_session_service_password').value = user.pfm_account_password
       end.submit
 
-      cf_csv_file = cf_page.links.find { |l| l.text == 'CSVファイル' }&.click
+      csv_link = cf_page.links.find { |l| l.text == 'CSVファイル' }
+      fail ScrapingError, 'csv_link cant detected' if csv_link.blank?
+      cf_csv_file = csv_link.click
       cf_strings_array << cf_csv_file_to_strings(cf_csv_file)
+
+      prev_month_cf_csv_file = agent.get(prev_month_csv_request_url(csv_link))
+      cf_strings_array << cf_csv_file_to_strings(prev_month_cf_csv_file)
     end
 
     cf_strings_array.each { |cf_strings| parse_and_save_cf_strings!(asset, cf_strings) }
@@ -35,6 +40,15 @@ class ScrapeMyPfmJob < ApplicationJob
   end
 
   private
+
+  def prev_month_csv_request_url(csv_link)
+    prev_month_from = Date.new(csv_link.href.match(/.*year=([0-9]{4})/)[1].to_i, csv_link.href.match(/.*month=([0-9]{1,2}).*/)[1].to_i, 25).last_month
+    csv_link.resolved_uri.to_s.match(/(http.*csv\?).*/)[1] + [
+      "from=#{[prev_month_from.year, prev_month_from.strftime('%m'), prev_month_from.strftime('%d')].join('%2F')}",
+      "month=#{prev_month_from.month}",
+      "year=#{prev_month_from.year}",
+    ].join('&')
+  end
 
   def cf_csv_file_to_strings(cf_csv_file)
     cf_csv_file&.body&.toutf8&.split("\n")&.map { |r| CSV.parse(r).flatten }

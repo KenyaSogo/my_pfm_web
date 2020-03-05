@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :simulation_summaries
   resources :billing_activities
   resources :billing_accounts
   resources :simulation_result_activities

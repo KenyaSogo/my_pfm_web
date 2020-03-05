@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Simulation:</strong>
+  <%= @simulation_summary.simulation %>
+</p>
+
+<p>
+  <strong>Summarized at:</strong>
+  <%= @simulation_summary.summarized_at %>
+</p>
+
+<%= link_to 'Edit', edit_simulation_summary_path(@simulation_summary) %> |
+<%= link_to 'Back', simulation_summaries_path %>

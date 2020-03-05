@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200303125338) do
+ActiveRecord::Schema.define(version: 20200305004751) do
 
   create_table "asset_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "asset_id"
@@ -178,6 +178,14 @@ ActiveRecord::Schema.define(version: 20200303125338) do
     t.index ["sub_item_id"], name: "index_simulation_result_activities_on_sub_item_id", using: :btree
   end
 
+  create_table "simulation_summaries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "simulation_id"
+    t.datetime "summarized_at"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["simulation_id"], name: "index_simulation_summaries_on_simulation_id", using: :btree
+  end
+
   create_table "simulations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "asset_id"
     t.string   "name"
@@ -243,6 +251,7 @@ ActiveRecord::Schema.define(version: 20200303125338) do
   add_foreign_key "simulation_result_activities", "items"
   add_foreign_key "simulation_result_activities", "simulation_entry_details"
   add_foreign_key "simulation_result_activities", "sub_items"
+  add_foreign_key "simulation_summaries", "simulations"
   add_foreign_key "simulations", "assets"
   add_foreign_key "sub_items", "items"
 end

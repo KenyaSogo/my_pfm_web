@@ -1,0 +1,27 @@
+<%= form_for(simulation_summary) do |f| %>
+  <% if simulation_summary.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(simulation_summary.errors.count, "error") %> prohibited this simulation_summary from being saved:</h2>
+
+      <ul>
+      <% simulation_summary.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :simulation_id %>
+    <%= f.text_field :simulation_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :summarized_at %>
+    <%= f.datetime_select :summarized_at %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

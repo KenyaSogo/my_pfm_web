@@ -7,6 +7,8 @@
   <%= @asset_account.name %><br />
   <strong>AssetType:</strong>
   <%= @asset_account.asset_type&.name.presence || '-' %><br />
+  <strong>InitialBalance:</strong>
+  <%= @asset_account.initial_balance.presence || '-' %><br />
   <strong>AssetActivity_Counts:</strong>
   <%= @asset_account.asset_activities.size %>
 </p>

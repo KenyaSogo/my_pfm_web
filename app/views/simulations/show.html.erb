@@ -10,6 +10,33 @@
 </p>
 
 <p>
+  <h2>SimulationSummary</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>SummarizedAt</th>
+        <th colspan="1">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @simulation.simulation_summary.blank? %>
+        <tr>
+          <td>-</td>
+          <td colspan="1">-</td>
+        </tr>
+      <% else %>
+        <% simulation_summary = @simulation.simulation_summary %>
+        <tr>
+          <td><%= display_datetime_string(simulation_summary.summarized_at) %></td>
+          <td><%= link_to 'Show', simulation_summary %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <br />
+</p>
+
+<p>
   <h2>SimulationEntries</h2>
   <table>
     <thead>

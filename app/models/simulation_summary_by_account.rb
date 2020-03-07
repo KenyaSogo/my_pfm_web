@@ -1,6 +1,7 @@
 class SimulationSummaryByAccount < ApplicationRecord
   belongs_to :simulation_summary
 
+  validates :memo, length: { maximum: 400 }
   validate :validate_unity_within_simulation_summary, on: :create
 
   private

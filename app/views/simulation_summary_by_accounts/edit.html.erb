@@ -1,6 +1,13 @@
 <h1>Editing Simulation Summary By Account</h1>
 
-<%= render 'form', simulation_summary_by_account: @simulation_summary_by_account %>
+<%= form_for @simulation_summary_by_account do |f| %>
+  <%= render "devise/shared/error_messages", resource: f.object %>
+  <%= f.label :is_active %><%= f.check_box :is_active %><br />
+  <%= f.label :memo %><%= f.text_area :memo %><br /><br />
+  <%= f.submit %>
+<% end %>
+
+<br />
 
 <%= link_to 'Show', @simulation_summary_by_account %> |
-<%= link_to 'Back', simulation_summary_by_accounts_path %>
+<%= link_to 'Back', @simulation_summary_by_account.simulation_summary %>

@@ -1,5 +1,6 @@
 class SimulationSummaryByAccountsController < ApplicationController
   before_action :set_simulation_summary_by_account, only: [:show, :edit, :update, :destroy]
+  before_action -> { current_users_resource_filter(@simulation_summary_by_account.simulation_summary.simulation.asset) }, only: [:show, :edit, :update, :destroy, :generate]
 
   # GET /simulation_summary_by_accounts
   # GET /simulation_summary_by_accounts.json
@@ -69,6 +70,6 @@ class SimulationSummaryByAccountsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def simulation_summary_by_account_params
-      params.require(:simulation_summary_by_account).permit(:simulation_summary_id, :is_active, :memo)
+      params.require(:simulation_summary_by_account).permit(:is_active, :memo)
     end
 end

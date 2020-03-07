@@ -1,0 +1,32 @@
+<%= form_for(simulation_summary_by_account) do |f| %>
+  <% if simulation_summary_by_account.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(simulation_summary_by_account.errors.count, "error") %> prohibited this simulation_summary_by_account from being saved:</h2>
+
+      <ul>
+      <% simulation_summary_by_account.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :simulation_summary_id %>
+    <%= f.text_field :simulation_summary_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :is_active %>
+    <%= f.check_box :is_active %>
+  </div>
+
+  <div class="field">
+    <%= f.label :memo %>
+    <%= f.text_area :memo %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

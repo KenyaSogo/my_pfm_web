@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200305150825) do
+ActiveRecord::Schema.define(version: 20200307073948) do
 
   create_table "asset_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "asset_id"
@@ -187,6 +187,15 @@ ActiveRecord::Schema.define(version: 20200305150825) do
     t.index ["simulation_id"], name: "index_simulation_summaries_on_simulation_id", using: :btree
   end
 
+  create_table "simulation_summary_by_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "simulation_summary_id"
+    t.boolean  "is_active"
+    t.text     "memo",                  limit: 65535
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.index ["simulation_summary_id"], name: "index_simulation_summary_by_accounts_on_simulation_summary_id", using: :btree
+  end
+
   create_table "simulations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "asset_id"
     t.string   "name"
@@ -253,6 +262,7 @@ ActiveRecord::Schema.define(version: 20200305150825) do
   add_foreign_key "simulation_result_activities", "simulation_entry_details"
   add_foreign_key "simulation_result_activities", "sub_items"
   add_foreign_key "simulation_summaries", "simulations"
+  add_foreign_key "simulation_summary_by_accounts", "simulation_summaries"
   add_foreign_key "simulations", "assets"
   add_foreign_key "sub_items", "items"
 end

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  simulation_summary: one
+  is_active: false
+  memo: MyText
+
+two:
+  simulation_summary: two
+  is_active: false
+  memo: MyText

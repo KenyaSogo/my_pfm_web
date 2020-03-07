@@ -1,0 +1,1 @@
+json.partial! "simulation_summary_by_accounts/simulation_summary_by_account", simulation_summary_by_account: @simulation_summary_by_account

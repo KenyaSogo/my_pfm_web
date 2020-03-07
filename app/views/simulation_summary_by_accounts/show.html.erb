@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Simulation summary:</strong>
+  <%= @simulation_summary_by_account.simulation_summary %>
+</p>
+
+<p>
+  <strong>Is active:</strong>
+  <%= @simulation_summary_by_account.is_active %>
+</p>
+
+<p>
+  <strong>Memo:</strong>
+  <%= @simulation_summary_by_account.memo %>
+</p>
+
+<%= link_to 'Edit', edit_simulation_summary_by_account_path(@simulation_summary_by_account) %> |
+<%= link_to 'Back', simulation_summary_by_accounts_path %>

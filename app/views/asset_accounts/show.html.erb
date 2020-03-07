@@ -9,6 +9,8 @@
   <%= @asset_account.asset_type&.name.presence || '-' %><br />
   <strong>InitialBalance:</strong>
   <%= @asset_account.initial_balance.presence || '-' %><br />
+  <strong>InitialBalanceBaseDate:</strong>
+  <%= display_date_string(@asset_account.initial_balance_base_date) %><br />
   <strong>AssetActivity_Counts:</strong>
   <%= @asset_account.asset_activities.size %>
 </p>

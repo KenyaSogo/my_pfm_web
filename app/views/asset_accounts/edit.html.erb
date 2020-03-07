@@ -8,7 +8,8 @@
 <%= form_for @asset_account do |f| %>
   <%= render "devise/shared/error_messages", resource: f.object %>
   <%= f.label :asset_type %><%= f.select :asset_type_id, asset_type_options, include_blank: true, selected: @asset_account.asset_type_id %><br />
-  <%= f.label :initial_balance %><%= f.text_field :initial_balance %><br /><br />
+  <%= f.label :initial_balance %><%= f.text_field :initial_balance %><br />
+  <%= f.label :initial_balance_base_date %><%= f.date_select :initial_balance_base_date , {include_blank: true, use_month_numbers: true, date_separator: ' / '}%><br /><br />
   <%= f.submit %>
 <% end %>
 

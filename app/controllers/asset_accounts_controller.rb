@@ -72,6 +72,6 @@ class AssetAccountsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def asset_account_params
-      params.require(:asset_account).permit(:asset_type_id, :initial_balance)
+      params.require(:asset_account).permit(:asset_type_id, :initial_balance, :initial_balance_base_date)
     end
 end

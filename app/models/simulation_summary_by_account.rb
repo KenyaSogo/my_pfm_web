@@ -1,5 +1,6 @@
 class SimulationSummaryByAccount < ApplicationRecord
   belongs_to :simulation_summary
+  has_many :sum_account_dailies, dependent: :destroy
 
   validates :memo, length: { maximum: 400 }
   validate :validate_unity_within_simulation_summary, on: :create

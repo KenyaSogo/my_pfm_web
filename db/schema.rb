@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200307073948) do
+ActiveRecord::Schema.define(version: 20200307133218) do
 
   create_table "asset_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "asset_id"
@@ -191,6 +191,7 @@ ActiveRecord::Schema.define(version: 20200307073948) do
     t.integer  "simulation_summary_id"
     t.boolean  "is_active"
     t.text     "memo",                  limit: 65535
+    t.datetime "summarized_at"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.index ["simulation_summary_id"], name: "index_simulation_summary_by_accounts_on_simulation_summary_id", using: :btree

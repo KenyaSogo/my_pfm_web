@@ -49,7 +49,8 @@ class SimulationResultGenerateJob < ApplicationJob
         end
       end
 
-      SimulationSummary.find_or_create_by!(simulation_id: simulation.id)
+      simulation_summary = SimulationSummary.find_or_create_by!(simulation_id: simulation.id)
+      SimulationSummaryByAccount.find_or_create_by!(simulation_summary_id: simulation_summary.id)
 
       simulation.update!(last_generated_at: Time.now)
     end

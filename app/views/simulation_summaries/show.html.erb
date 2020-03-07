@@ -1,14 +1,10 @@
-<p id="notice"><%= notice %></p>
+<h1>SimulationSummary Detail</h1>
 
 <p>
-  <strong>Simulation:</strong>
-  <%= @simulation_summary.simulation %>
+  <strong>SimulationName:</strong>
+  <%= @simulation_summary.simulation.name %><br />
+  <strong>SummarizedAt:</strong>
+  <%= display_datetime_string(@simulation_summary.summarized_at) %>
 </p>
 
-<p>
-  <strong>Summarized at:</strong>
-  <%= @simulation_summary.summarized_at %>
-</p>
-
-<%= link_to 'Edit', edit_simulation_summary_path(@simulation_summary) %> |
-<%= link_to 'Back', simulation_summaries_path %>
+<%= link_to 'Back', @simulation_summary.simulation %>

@@ -50,13 +50,90 @@ class SimulationResultGenerateJob < ApplicationJob
       end
 
       simulation_summary = SimulationSummary.find_or_create_by!(simulation_id: simulation.id)
-      SimulationSummaryByAccount.find_or_create_by!(simulation_summary_id: simulation_summary.id)
+      simulation_summary_by_account = SimulationSummaryByAccount.find_or_create_by!(simulation_summary_id: simulation_summary.id)
+      if simulation_summary_by_account.is_active
+        asset_activity_daily_sums = fetch_asset_activity_daily_sums(simulation)
+        simulations_activity_daily_sums = fetch_simulation_activity_daily_sums(simulation)
+        daily_sum_results = fetch_daily_sum_results(asset_activity_daily_sums, simulations_activity_daily_sums)
+
+        simulation_summary_by_account.sum_account_dailies.each { |s| s.destroy! }
+        daily_sum_results.each do |account_id, daily_sums|
+          prev_balance = AssetAccount.find(account_id).initial_balance.presence || 0
+          daily_sums.sort.to_h.each do |date, amount|
+            current_balance = prev_balance + amount
+            SumAccountDaily.create!(
+              simulation_summary_by_account_id: simulation_summary_by_account.id,
+              base_date: date,
+              asset_account_id: account_id,
+              balance: current_balance,
+            )
+            prev_balance = current_balance
+          end
+        end
+
+        simulation_summary_by_account.update!(summarized_at: Time.now)
+        simulation_summary.update!(summarized_at: Time.now)
+      end
 
       simulation.update!(last_generated_at: Time.now)
     end
   end
 
   private
+
+  def fetch_daily_sum_results(asset_activity_daily_sums, simulations_activity_daily_sums)
+    asset_account_ids = (asset_activity_daily_sums.keys + simulations_activity_daily_sums.keys).uniq
+
+    asset_account_ids.each_with_object({}) do |account_id, h|
+      asset_activity_max_date = asset_activity_daily_sums[account_id]&.keys&.max.presence || Date.new(2000, 1, 1)
+      target_simulation_activity_sums = simulations_activity_daily_sums[account_id]&.select { |date, amount| date > asset_activity_max_date }
+      merged_sums = (asset_activity_daily_sums[account_id].presence || {}).merge(target_simulation_activity_sums.presence || {})
+
+      initial_balance_base_date = AssetAccount.find(account_id).initial_balance_base_date.presence || Date.new(2000, 1, 1)
+      merged_sums_since_initial_balance = merged_sums.select { |date, amount| date >= initial_balance_base_date }
+
+      h[account_id] = merged_sums_since_initial_balance
+    end
+  end
+
+  def fetch_simulation_activity_daily_sums(simulation)
+    simulation_result_activity_daily_sums = SimulationResultActivity
+      .where(simulation_entry_detail_id: SimulationEntryDetail.where(simulation_entry_id: simulation.simulation_entries.pluck(:id)))
+      .group(:asset_account_id, :transaction_date).sum(:amount)
+    billing_activity_daily_sums = BillingActivity
+      .where(billing_account_id: simulation.billing_accounts.pluck(:id))
+      .group(:asset_account_id, :transaction_date).sum(:amount)
+    billing_complement_activity_daily_sums = BillingComplementActivity
+      .where(billing_account_id: simulation.billing_accounts.pluck(:id))
+      .group(:asset_account_id, :transaction_date).sum(:amount)
+
+    simulations_daily_sum_keys = (simulation_result_activity_daily_sums.keys + billing_activity_daily_sums.keys + billing_complement_activity_daily_sums.keys).uniq
+    simulations_activity_daily_sums = simulations_daily_sum_keys.map do |key|
+      simulations_daily_sum_amount = simulation_result_activity_daily_sums[key].to_i + billing_activity_daily_sums[key].to_i + billing_complement_activity_daily_sums[key].to_i
+      [key, simulations_daily_sum_amount]
+    end.to_h
+
+    activity_daily_sums_to_h(simulations_activity_daily_sums)
+  end
+
+  def fetch_asset_activity_daily_sums(simulation)
+    asset_activity_daily_sums = AssetActivity.joins(:asset_account)
+      .where(asset_account_id: simulation.asset.asset_accounts.pluck(:id))
+      .where('asset_activities.transaction_date >= ifnull(asset_accounts.initial_balance_base_date, "0")')
+      .group(:asset_account_id, :transaction_date).sum(:amount)
+
+    activity_daily_sums_to_h(asset_activity_daily_sums)
+  end
+
+  def activity_daily_sums_to_h(activity_daily_sums)
+    activity_daily_sums.keys.each_with_object({}) do |k, h|
+      account_id = k[0]
+      transaction_date = k[1]
+      daily_sum_amount = activity_daily_sums[k]
+      h[account_id] ||= {}
+      h[account_id][transaction_date] = daily_sum_amount
+    end
+  end
 
   def transfered_credit_asset_activity_exists?(billing_account, withdrawal_debit_asset_activity)
     AssetActivity.where(asset_account_id: billing_account.credit_account_id)

@@ -68,3 +68,5 @@ gem 'redis-rails'
 gem 'kaminari'
 
 gem 'ransack'
+
+gem 'chartkick'

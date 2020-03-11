@@ -1,11 +1,27 @@
 <h1>SimulationSummaryByAccount Detail</h1>
 
 <p>
-  <strong>IsActive:</strong>
-  <%= @simulation_summary_by_account.is_active.presence || '-' %><br />
-  <strong>SummarizedAt:</strong>
-  <%= display_datetime_string(@simulation_summary_by_account.summarized_at) %>
+  <%= search_form_for(@query, url: @simulation_summary_by_account) do |f| %>
+    <table>
+      <tr>
+        <td><strong>IsActive:</strong>
+        <td><%= @simulation_summary_by_account.is_active.presence || '-' %>
+      <tr>
+        <td><strong>SummarizedAt:</strong>
+        <td><%= display_datetime_string(@simulation_summary_by_account.summarized_at) %>
+      <tr>
+        <td><strong>AssetAccountName:</strong>
+        <td><%= f.select :asset_account_id_eq, asset_account_options(@simulation_summary_by_account) %>
+        <td width="300" align="right"><span class="actions"><%= f.submit "Search" %></span>
+    </table>
+  <% end %>
 </p>
+
+<p>
+  <%= area_chart @data, points: false, thousands: ',' %>
+</p>
+
+<br />
 
 <%= link_to 'Edit', edit_simulation_summary_by_account_path(@simulation_summary_by_account) %> |
 <%= link_to 'Back', @simulation_summary_by_account.simulation_summary %>

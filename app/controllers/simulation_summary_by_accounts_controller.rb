@@ -11,6 +11,11 @@ class SimulationSummaryByAccountsController < ApplicationController
   # GET /simulation_summary_by_accounts/1
   # GET /simulation_summary_by_accounts/1.json
   def show
+    sum_account_dailies = @simulation_summary_by_account.sum_account_dailies
+    asset_account_id_condition = params[:q]&.dig(:asset_account_id_eq).present? ? params[:q]
+      : { asset_account_id_eq: sum_account_dailies.select(:asset_account_id).distinct.min.asset_account_id }
+    @query = sum_account_dailies.ransack(asset_account_id_condition)
+    @data = @query.result.pluck(:base_date, :balance)
   end
 
   # GET /simulation_summary_by_accounts/new
@@ -70,6 +75,6 @@ class SimulationSummaryByAccountsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def simulation_summary_by_account_params
-      params.require(:simulation_summary_by_account).permit(:is_active, :memo)
+      params.require(:simulation_summary_by_account).permit(:is_active, :memo, :asset_account_id_eq)
     end
 end

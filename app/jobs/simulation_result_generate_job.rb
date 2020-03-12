@@ -54,7 +54,7 @@ class SimulationResultGenerateJob < ApplicationJob
       if simulation_summary_by_account.is_active
         asset_activity_daily_sums = fetch_asset_activity_daily_sums(simulation)
         simulations_activity_daily_sums = fetch_simulation_activity_daily_sums(simulation)
-        daily_sum_results = fetch_daily_sum_results(asset_activity_daily_sums, simulations_activity_daily_sums)
+        daily_sum_results = merge_daily_sum_results(asset_activity_daily_sums, simulations_activity_daily_sums)
 
         simulation_summary_by_account.sum_account_dailies.each { |s| s.destroy! }
         daily_sum_results.each do |account_id, daily_sums|
@@ -81,7 +81,7 @@ class SimulationResultGenerateJob < ApplicationJob
 
   private
 
-  def fetch_daily_sum_results(asset_activity_daily_sums, simulations_activity_daily_sums)
+  def merge_daily_sum_results(asset_activity_daily_sums, simulations_activity_daily_sums)
     asset_account_ids = (asset_activity_daily_sums.keys + simulations_activity_daily_sums.keys).uniq
 
     asset_account_ids.each_with_object({}) do |account_id, h|
@@ -97,41 +97,102 @@ class SimulationResultGenerateJob < ApplicationJob
   end
 
   def fetch_simulation_activity_daily_sums(simulation)
-    simulation_result_activity_daily_sums = SimulationResultActivity
-      .where(simulation_entry_detail_id: SimulationEntryDetail.where(simulation_entry_id: simulation.simulation_entries.pluck(:id)))
-      .group(:asset_account_id, :transaction_date).sum(:amount)
-    billing_activity_daily_sums = BillingActivity
-      .where(billing_account_id: simulation.billing_accounts.pluck(:id))
-      .group(:asset_account_id, :transaction_date).sum(:amount)
-    billing_complement_activity_daily_sums = BillingComplementActivity
-      .where(billing_account_id: simulation.billing_accounts.pluck(:id))
-      .group(:asset_account_id, :transaction_date).sum(:amount)
+    sql = <<-SQL
+      select
+        asset_account_id,
+        transaction_date,
+        sum(daily_balance_in_class) as daily_balance
+      from
+        (
+          select
+            sra.asset_account_id,
+            sra.transaction_date,
+            sum(sra.amount) as daily_balance_in_class
+          from
+            simulations s
+            inner join simulation_entries se on s.id = se.simulation_id
+            inner join simulation_entry_details sed on se.id = sed.simulation_entry_id
+            inner join simulation_result_activities sra on sed.id = sra.simulation_entry_detail_id
+          where
+            s.id = ?
+          group by
+            sra.asset_account_id, sra.transaction_date
+          union all
+          select
+            bact.asset_account_id,
+            bact.transaction_date,
+            sum(bact.amount) as daily_balance_in_class
+          from
+            simulations s
+            inner join billing_accounts bacc on s.id = bacc.simulation_id
+            inner join billing_activities bact on bacc.id = bact.billing_account_id
+          where
+            s.id = ?
+          group by
+            bact.asset_account_id, bact.transaction_date
+        ) daily_simulation_results_and_daily_billing_activities
+      group by
+        asset_account_id, transaction_date
+    SQL
+    sanitize_sql = ActiveRecord::Base.send(:sanitize_sql_array, [sql, simulation.id, simulation.id])
+    activity_daily_sums = ActiveRecord::Base.connection.select_all(sanitize_sql).to_hash
 
-    simulations_daily_sum_keys = (simulation_result_activity_daily_sums.keys + billing_activity_daily_sums.keys + billing_complement_activity_daily_sums.keys).uniq
-    simulations_activity_daily_sums = simulations_daily_sum_keys.map do |key|
-      simulations_daily_sum_amount = simulation_result_activity_daily_sums[key].to_i + billing_activity_daily_sums[key].to_i + billing_complement_activity_daily_sums[key].to_i
-      [key, simulations_daily_sum_amount]
-    end.to_h
-
-    activity_daily_sums_to_h(simulations_activity_daily_sums)
+    activity_daily_sums_to_h(activity_daily_sums)
   end
 
   def fetch_asset_activity_daily_sums(simulation)
-    asset_activity_daily_sums = AssetActivity.joins(:asset_account)
-      .where(asset_account_id: simulation.asset.asset_accounts.pluck(:id))
-      .where('asset_activities.transaction_date >= ifnull(asset_accounts.initial_balance_base_date, "0")')
-      .group(:asset_account_id, :transaction_date).sum(:amount)
+    sql = <<-SQL
+      select
+        asset_account_id,
+        transaction_date,
+        sum(daily_balance_in_class) as daily_balance
+      from
+        (
+          select
+            aact.asset_account_id,
+            aact.transaction_date,
+            sum(aact.amount) as daily_balance_in_class
+          from
+            assets a
+            inner join asset_accounts aacc on a.id = aacc.asset_id
+            inner join asset_activities aact on aacc.id = aact.asset_account_id
+          where 1 = 1
+            and a.id = ?
+            and aact.transaction_date >= ifnull(aacc.initial_balance_base_date, 0)
+          group by
+            aact.asset_account_id, aact.transaction_date
+          union all
+          select
+            bcact.asset_account_id,
+            bcact.transaction_date,
+            sum(bcact.amount) as daily_balance_in_class
+          from
+            simulations s
+            inner join billing_accounts bacc on s.id = bacc.simulation_id
+            inner join billing_complement_activities bcact on bacc.id = bcact.billing_account_id
+            inner join asset_accounts aacc on aacc.id = bcact.asset_account_id
+          where 1 = 1
+            and s.id = ?
+            and bcact.transaction_date >= ifnull(aacc.initial_balance_base_date, 0)
+          group by
+            bcact.asset_account_id, bcact.transaction_date
+        ) daily_asset_and_billing_complement_activities
+      group by
+        asset_account_id, transaction_date
+    SQL
+    sanitize_sql = ActiveRecord::Base.send(:sanitize_sql_array, [sql, simulation.id, simulation.id])
+    activity_daily_sums = ActiveRecord::Base.connection.select_all(sanitize_sql).to_hash
 
-    activity_daily_sums_to_h(asset_activity_daily_sums)
+    activity_daily_sums_to_h(activity_daily_sums)
   end
 
   def activity_daily_sums_to_h(activity_daily_sums)
-    activity_daily_sums.keys.each_with_object({}) do |k, h|
-      account_id = k[0]
-      transaction_date = k[1]
-      daily_sum_amount = activity_daily_sums[k]
-      h[account_id] ||= {}
-      h[account_id][transaction_date] = daily_sum_amount
+    activity_daily_sums.each_with_object({}) do |a, h|
+      asset_account_id = a.symbolize_keys[:asset_account_id]
+      transaction_date = a.symbolize_keys[:transaction_date]
+      daily_balance = a.symbolize_keys[:daily_balance]
+      h[asset_account_id] ||= {}
+      h[asset_account_id][transaction_date] = daily_balance
     end
   end
 

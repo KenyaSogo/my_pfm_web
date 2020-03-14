@@ -5,12 +5,19 @@ class SimulationSummaryByAccount < ApplicationRecord
   before_validation :set_is_active_true, on: :create
 
   validates :memo, length: { maximum: 400 }
+  validate :validate_active_dependency, on: :update
   validate :validate_unity_within_simulation_summary, on: :create
 
   private
 
   def set_is_active_true
     self.is_active = true
+  end
+
+  def validate_active_dependency
+    if simulation_summary.summary_by_asset_type.is_active
+      errors.add(:is_active, 'must be true when ByAssetType is active') unless is_active
+    end
   end
 
   def validate_unity_within_simulation_summary

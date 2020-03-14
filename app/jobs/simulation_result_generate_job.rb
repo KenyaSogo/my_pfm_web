@@ -51,6 +51,8 @@ class SimulationResultGenerateJob < ApplicationJob
 
       simulation_summary = SimulationSummary.find_or_create_by!(simulation_id: simulation.id)
       simulation_summary_by_account = SimulationSummaryByAccount.find_or_create_by!(simulation_summary_id: simulation_summary.id)
+      summary_by_asset_type = SummaryByAssetType.find_or_create_by!(simulation_summary_id: simulation_summary.id)
+
       if simulation_summary_by_account.is_active
         asset_activity_daily_sums = fetch_asset_activity_daily_sums(simulation)
         simulations_activity_daily_sums = fetch_simulation_activity_daily_sums(simulation)
@@ -72,18 +74,58 @@ class SimulationResultGenerateJob < ApplicationJob
         end
 
         simulation_summary_by_account.update!(summarized_at: Time.now)
-        simulation_summary.update!(summarized_at: Time.now)
       else
         simulation_summary_by_account.sum_account_dailies.each { |s| s.destroy! }
         simulation_summary_by_account.update!(summarized_at: nil)
-        simulation_summary.update!(summarized_at: nil)
       end
+
+      if summary_by_asset_type.is_active
+        daily_sum_results = fetch_daily_sums_by_asset_type(simulation_summary_by_account)
+
+        summary_by_asset_type.sum_asset_type_dailies.each { |s| s.destroy! }
+        daily_sum_results.each do |asset_type_id, daily_sums|
+          daily_sums.sort.each do |base_date, balance|
+            SumAssetTypeDaily.create!(
+              summary_by_asset_type_id: summary_by_asset_type.id,
+              base_date: base_date,
+              asset_type_id: asset_type_id,
+              balance: balance,
+            )
+          end
+        end
+
+        summary_by_asset_type.update!(summarized_at: Time.now)
+      else
+        summary_by_asset_type.sum_asset_type_dailies.each { |s| s.destroy! }
+        summary_by_asset_type.update!(summarized_at: nil)
+      end
+
+      summary_executed = simulation_summary_by_account.is_active || summary_by_asset_type.is_active
+      simulation_summary.update!(summarized_at: summary_executed ? Time.now : nil)
 
       simulation.update!(last_generated_at: Time.now)
     end
   end
 
   private
+
+  def fetch_daily_sums_by_asset_type(simulation_summary_by_account)
+    daily_sum_aggregates = simulation_summary_by_account.sum_account_dailies
+      .includes(:asset_account)
+      .group(:asset_type_id, :base_date)
+      .sum(:balance)
+    daily_sum_aggregates_to_h(daily_sum_aggregates)
+  end
+
+  def daily_sum_aggregates_to_h(daily_sum_aggregates)
+    daily_sum_aggregates.keys.each_with_object({}) do |k, h|
+      asset_type_id = k[0]
+      base_date = k[1]
+      balance = daily_sum_aggregates[k]
+      h[asset_type_id] ||= {}
+      h[asset_type_id][base_date] = balance
+    end
+  end
 
   def merge_daily_sum_results(asset_activity_daily_sums, simulations_activity_daily_sums)
     asset_account_ids = (asset_activity_daily_sums.keys + simulations_activity_daily_sums.keys).uniq

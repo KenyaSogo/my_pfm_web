@@ -59,7 +59,7 @@ class SimulationResultGenerateJob < ApplicationJob
         simulation_summary_by_account.sum_account_dailies.each { |s| s.destroy! }
         daily_sum_results.each do |account_id, daily_sums|
           prev_balance = AssetAccount.find(account_id).initial_balance.presence || 0
-          daily_sums.sort.to_h.each do |date, amount|
+          daily_sums.sort.each do |date, amount|
             current_balance = prev_balance + amount
             SumAccountDaily.create!(
               simulation_summary_by_account_id: simulation_summary_by_account.id,

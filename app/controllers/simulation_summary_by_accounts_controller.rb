@@ -13,7 +13,7 @@ class SimulationSummaryByAccountsController < ApplicationController
   def show
     sum_account_dailies = @simulation_summary_by_account.sum_account_dailies
     asset_account_id_condition = params[:q]&.dig(:asset_account_id_eq).present? ? params[:q]
-      : { asset_account_id_eq: sum_account_dailies.select(:asset_account_id).distinct.min.asset_account_id }
+      : { asset_account_id_eq: sum_account_dailies.select(:asset_account_id).distinct.min&.asset_account_id }
     @query = sum_account_dailies.ransack(asset_account_id_condition)
     @data = @query.result.pluck(:base_date, :balance)
   end

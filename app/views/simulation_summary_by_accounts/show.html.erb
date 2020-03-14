@@ -1,5 +1,7 @@
 <h1>SimulationSummaryByAccount Detail</h1>
 
+<% has_sum_account_dailies = @simulation_summary_by_account.sum_account_dailies.present? %>
+
 <p>
   <%= search_form_for(@query, url: @simulation_summary_by_account) do |f| %>
     <table>
@@ -9,17 +11,21 @@
       <tr>
         <td><strong>SummarizedAt:</strong>
         <td><%= display_datetime_string(@simulation_summary_by_account.summarized_at) %>
-      <tr>
-        <td><strong>AssetAccountName:</strong>
-        <td><%= f.select :asset_account_id_eq, asset_account_options(@simulation_summary_by_account) %>
-        <td width="300" align="right"><span class="actions"><%= f.submit "Search" %></span>
+      <% if has_sum_account_dailies %>
+        <tr>
+          <td><strong>AssetAccountName:</strong>
+          <td><%= f.select :asset_account_id_eq, asset_account_options(@simulation_summary_by_account) %>
+          <td width="300" align="right"><span class="actions"><%= f.submit "Search" %></span>
+      <% end %>
     </table>
   <% end %>
 </p>
 
-<p>
-  <%= area_chart @data, points: false, thousands: ',' %>
-</p>
+<% if has_sum_account_dailies %>
+  <p>
+    <%= area_chart @data, points: false, thousands: ',' %>
+  </p>
+<% end %>
 
 <br />
 

@@ -73,6 +73,10 @@ class SimulationResultGenerateJob < ApplicationJob
 
         simulation_summary_by_account.update!(summarized_at: Time.now)
         simulation_summary.update!(summarized_at: Time.now)
+      else
+        simulation_summary_by_account.sum_account_dailies.each { |s| s.destroy! }
+        simulation_summary_by_account.update!(summarized_at: nil)
+        simulation_summary.update!(summarized_at: nil)
       end
 
       simulation.update!(last_generated_at: Time.now)

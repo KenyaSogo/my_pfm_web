@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200307151057) do
+ActiveRecord::Schema.define(version: 20200314024544) do
 
   create_table "asset_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "asset_id"
@@ -226,6 +226,16 @@ ActiveRecord::Schema.define(version: 20200307151057) do
     t.index ["simulation_summary_by_account_id"], name: "index_sum_account_dailies_on_simulation_summary_by_account_id", using: :btree
   end
 
+  create_table "summary_by_asset_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "simulation_summary_id"
+    t.boolean  "is_active"
+    t.text     "memo",                  limit: 65535
+    t.datetime "summarized_at"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.index ["simulation_summary_id"], name: "index_summary_by_asset_types_on_simulation_summary_id", using: :btree
+  end
+
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "email",                             default: "", null: false
     t.string   "encrypted_password",                default: "", null: false
@@ -280,4 +290,5 @@ ActiveRecord::Schema.define(version: 20200307151057) do
   add_foreign_key "sub_items", "items"
   add_foreign_key "sum_account_dailies", "asset_accounts"
   add_foreign_key "sum_account_dailies", "simulation_summary_by_accounts"
+  add_foreign_key "summary_by_asset_types", "simulation_summaries"
 end

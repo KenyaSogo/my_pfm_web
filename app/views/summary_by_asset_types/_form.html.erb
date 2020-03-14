@@ -1,0 +1,37 @@
+<%= form_for(summary_by_asset_type) do |f| %>
+  <% if summary_by_asset_type.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(summary_by_asset_type.errors.count, "error") %> prohibited this summary_by_asset_type from being saved:</h2>
+
+      <ul>
+      <% summary_by_asset_type.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :simulation_summary_id %>
+    <%= f.text_field :simulation_summary_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :is_active %>
+    <%= f.check_box :is_active %>
+  </div>
+
+  <div class="field">
+    <%= f.label :memo %>
+    <%= f.text_area :memo %>
+  </div>
+
+  <div class="field">
+    <%= f.label :summarized_at %>
+    <%= f.datetime_select :summarized_at %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :summary_by_asset_types
   resources :simulation_summary_by_accounts
   resources :simulation_summaries
   resources :billing_activities

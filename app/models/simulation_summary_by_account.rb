@@ -15,7 +15,7 @@ class SimulationSummaryByAccount < ApplicationRecord
   end
 
   def validate_active_dependency
-    if simulation_summary.summary_by_asset_type.is_active
+    if simulation_summary.summary_by_asset_type&.is_active
       errors.add(:is_active, 'must be true when ByAssetType is active') unless is_active
     end
   end

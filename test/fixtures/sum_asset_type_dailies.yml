@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  summary_by_asset_type: one
+  base_date: 2020-03-14
+  asset_type: one
+  balance: 
+
+two:
+  summary_by_asset_type: two
+  base_date: 2020-03-14
+  asset_type: two
+  balance: 

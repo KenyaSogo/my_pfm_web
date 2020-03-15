@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Sum By Account Classes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Simulation summary</th>
+      <th>Name</th>
+      <th>Is active</th>
+      <th>Memo</th>
+      <th>Summarized at</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sum_by_account_classes.each do |sum_by_account_class| %>
+      <tr>
+        <td><%= sum_by_account_class.simulation_summary %></td>
+        <td><%= sum_by_account_class.name %></td>
+        <td><%= sum_by_account_class.is_active %></td>
+        <td><%= sum_by_account_class.memo %></td>
+        <td><%= sum_by_account_class.summarized_at %></td>
+        <td><%= link_to 'Show', sum_by_account_class %></td>
+        <td><%= link_to 'Edit', edit_sum_by_account_class_path(sum_by_account_class) %></td>
+        <td><%= link_to 'Destroy', sum_by_account_class, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Sum By Account Class', new_sum_by_account_class_path %>

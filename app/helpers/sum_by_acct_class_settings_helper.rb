@@ -1,0 +1,2 @@
+module SumByAcctClassSettingsHelper
+end

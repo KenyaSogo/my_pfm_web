@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sum_by_account_class: one
+  base_date: 2020-03-15
+  simulation_acct_class: one
+  balance: 
+
+two:
+  sum_by_account_class: two
+  base_date: 2020-03-15
+  simulation_acct_class: two
+  balance: 

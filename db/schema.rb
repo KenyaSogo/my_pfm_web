@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200314024818) do
+ActiveRecord::Schema.define(version: 20200315065738) do
+
+  create_table "acct_to_class_maps", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "sum_by_acct_class_setting_id"
+    t.integer  "asset_account_id"
+    t.integer  "simulation_acct_class_id"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.index ["asset_account_id"], name: "index_acct_to_class_maps_on_asset_account_id", using: :btree
+    t.index ["simulation_acct_class_id"], name: "index_acct_to_class_maps_on_simulation_acct_class_id", using: :btree
+    t.index ["sum_by_acct_class_setting_id"], name: "index_acct_to_class_maps_on_sum_by_acct_class_setting_id", using: :btree
+  end
 
   create_table "asset_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "asset_id"
@@ -123,6 +134,14 @@ ActiveRecord::Schema.define(version: 20200314024818) do
     t.index ["asset_id"], name: "index_items_on_asset_id", using: :btree
   end
 
+  create_table "simulation_acct_classes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "sum_by_acct_class_setting_id"
+    t.string   "name"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.index ["sum_by_acct_class_setting_id"], name: "index_simulation_acct_classes_on_sum_by_acct_class_setting_id", using: :btree
+  end
+
   create_table "simulation_entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "simulation_id"
     t.string   "name"
@@ -226,6 +245,17 @@ ActiveRecord::Schema.define(version: 20200314024818) do
     t.index ["simulation_summary_by_account_id"], name: "index_sum_account_dailies_on_simulation_summary_by_account_id", using: :btree
   end
 
+  create_table "sum_acct_class_dailies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "sum_by_account_class_id"
+    t.date     "base_date"
+    t.integer  "simulation_acct_class_id"
+    t.bigint   "balance"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.index ["simulation_acct_class_id"], name: "index_sum_acct_class_dailies_on_simulation_acct_class_id", using: :btree
+    t.index ["sum_by_account_class_id"], name: "index_sum_acct_class_dailies_on_sum_by_account_class_id", using: :btree
+  end
+
   create_table "sum_asset_type_dailies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "summary_by_asset_type_id"
     t.date     "base_date"
@@ -235,6 +265,24 @@ ActiveRecord::Schema.define(version: 20200314024818) do
     t.datetime "updated_at",               null: false
     t.index ["asset_type_id"], name: "index_sum_asset_type_dailies_on_asset_type_id", using: :btree
     t.index ["summary_by_asset_type_id"], name: "index_sum_asset_type_dailies_on_summary_by_asset_type_id", using: :btree
+  end
+
+  create_table "sum_by_account_classes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "simulation_summary_id"
+    t.string   "name"
+    t.boolean  "is_active"
+    t.text     "memo",                  limit: 65535
+    t.datetime "summarized_at"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.index ["simulation_summary_id"], name: "index_sum_by_account_classes_on_simulation_summary_id", using: :btree
+  end
+
+  create_table "sum_by_acct_class_settings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "sum_by_account_class_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.index ["sum_by_account_class_id"], name: "index_sum_by_acct_class_settings_on_sum_by_account_class_id", using: :btree
   end
 
   create_table "summary_by_asset_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -263,6 +311,9 @@ ActiveRecord::Schema.define(version: 20200314024818) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
+  add_foreign_key "acct_to_class_maps", "asset_accounts"
+  add_foreign_key "acct_to_class_maps", "simulation_acct_classes"
+  add_foreign_key "acct_to_class_maps", "sum_by_acct_class_settings"
   add_foreign_key "asset_accounts", "asset_types"
   add_foreign_key "asset_accounts", "assets"
   add_foreign_key "asset_activities", "asset_accounts"
@@ -285,6 +336,7 @@ ActiveRecord::Schema.define(version: 20200314024818) do
   add_foreign_key "billing_complement_activities", "items"
   add_foreign_key "billing_complement_activities", "sub_items"
   add_foreign_key "items", "assets"
+  add_foreign_key "simulation_acct_classes", "sum_by_acct_class_settings"
   add_foreign_key "simulation_entries", "simulation_entry_types"
   add_foreign_key "simulation_entries", "simulations"
   add_foreign_key "simulation_entry_details", "asset_accounts"
@@ -301,7 +353,11 @@ ActiveRecord::Schema.define(version: 20200314024818) do
   add_foreign_key "sub_items", "items"
   add_foreign_key "sum_account_dailies", "asset_accounts"
   add_foreign_key "sum_account_dailies", "simulation_summary_by_accounts"
+  add_foreign_key "sum_acct_class_dailies", "simulation_acct_classes"
+  add_foreign_key "sum_acct_class_dailies", "sum_by_account_classes"
   add_foreign_key "sum_asset_type_dailies", "asset_types"
   add_foreign_key "sum_asset_type_dailies", "summary_by_asset_types"
+  add_foreign_key "sum_by_account_classes", "simulation_summaries"
+  add_foreign_key "sum_by_acct_class_settings", "sum_by_account_classes"
   add_foreign_key "summary_by_asset_types", "simulation_summaries"
 end

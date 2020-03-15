@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Sum By Acct Class Settings</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Sum by account class</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sum_by_acct_class_settings.each do |sum_by_acct_class_setting| %>
+      <tr>
+        <td><%= sum_by_acct_class_setting.sum_by_account_class %></td>
+        <td><%= link_to 'Show', sum_by_acct_class_setting %></td>
+        <td><%= link_to 'Edit', edit_sum_by_acct_class_setting_path(sum_by_acct_class_setting) %></td>
+        <td><%= link_to 'Destroy', sum_by_acct_class_setting, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Sum By Acct Class Setting', new_sum_by_acct_class_setting_path %>

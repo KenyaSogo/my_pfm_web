@@ -1,0 +1,2 @@
+module SumByAccountClassesHelper
+end

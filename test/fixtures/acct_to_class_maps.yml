@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sum_by_acct_class_setting: one
+  asset_account: one
+  simulation_acct_class: one
+
+two:
+  sum_by_acct_class_setting: two
+  asset_account: two
+  simulation_acct_class: two

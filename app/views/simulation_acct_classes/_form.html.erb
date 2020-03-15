@@ -1,0 +1,27 @@
+<%= form_for(simulation_acct_class) do |f| %>
+  <% if simulation_acct_class.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(simulation_acct_class.errors.count, "error") %> prohibited this simulation_acct_class from being saved:</h2>
+
+      <ul>
+      <% simulation_acct_class.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :sum_by_acct_class_setting_id %>
+    <%= f.text_field :sum_by_acct_class_setting_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

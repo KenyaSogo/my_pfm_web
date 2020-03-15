@@ -14,7 +14,7 @@
       <% if has_sum_account_dailies %>
         <tr>
           <td><strong>AssetAccountName:</strong>
-          <td><%= f.select :asset_account_id_eq, asset_account_options(@simulation_summary_by_account) %>
+          <td><%= f.select :asset_account_id_eq, summary_by_asset_account_options(@simulation_summary_by_account) %>
           <td width="300" align="right"><span class="actions"><%= f.submit "Search" %></span>
       <% end %>
     </table>

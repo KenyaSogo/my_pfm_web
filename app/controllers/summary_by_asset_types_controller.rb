@@ -48,7 +48,7 @@ class SummaryByAssetTypesController < ApplicationController
   def update
     respond_to do |format|
       if @summary_by_asset_type.update(summary_by_asset_type_params)
-        format.html { redirect_to @summary_by_asset_type, notice: 'Summary by asset type was successfully updated.' }
+        format.html { redirect_to @summary_by_asset_type, notice: 'Simulation summary by asset type was successfully updated.' }
         format.json { render :show, status: :ok, location: @summary_by_asset_type }
       else
         format.html { render :edit }

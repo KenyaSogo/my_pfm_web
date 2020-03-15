@@ -1,6 +1,13 @@
-<h1>Editing Summary By Asset Type</h1>
+<h1>Editing Simulation Summary By Asset Type</h1>
 
-<%= render 'form', summary_by_asset_type: @summary_by_asset_type %>
+<%= form_for @summary_by_asset_type do |f| %>
+  <%= render "devise/shared/error_messages", resource: f.object %>
+  <%= f.label :is_active %><%= f.check_box :is_active %><br />
+  <%= f.label :memo %><%= f.text_area :memo %><br /><br />
+  <%= f.submit %>
+<% end %>
+
+<br />
 
 <%= link_to 'Show', @summary_by_asset_type %> |
-<%= link_to 'Back', summary_by_asset_types_path %>
+<%= link_to 'Back', @summary_by_asset_type.simulation_summary %>

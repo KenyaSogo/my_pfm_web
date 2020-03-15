@@ -27,6 +27,14 @@
         <td><%= link_to 'Show', simulation_summary_by_account %></td>
         <td><%= link_to 'Edit', edit_simulation_summary_by_account_path(simulation_summary_by_account) %></td>
       </tr>
+      <% summary_by_asset_type = @simulation_summary.summary_by_asset_type %>
+      <tr>
+        <td><%= simulation_summary_breakdown_type_name(summary_by_asset_type) %></td>
+        <td><%= summary_by_asset_type.is_active.presence || '-' %></td>
+        <td><%= display_datetime_string(summary_by_asset_type.summarized_at) %></td>
+        <td><%= link_to 'Show', summary_by_asset_type %></td>
+        <td><%= link_to 'Edit', edit_summary_by_asset_type_path(summary_by_asset_type) %></td>
+      </tr>
     </tbody>
   </table>
   <br />

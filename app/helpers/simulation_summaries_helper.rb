@@ -3,6 +3,8 @@ module SimulationSummariesHelper
     case
     when breakdown.is_a?(SimulationSummaryByAccount)
       'ByAccount'
+    when breakdown.is_a?(SummaryByAssetType)
+      'ByAssetType'
     else
       '-'
     end

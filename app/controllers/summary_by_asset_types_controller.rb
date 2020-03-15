@@ -1,5 +1,6 @@
 class SummaryByAssetTypesController < ApplicationController
   before_action :set_summary_by_asset_type, only: [:show, :edit, :update, :destroy]
+  before_action -> { current_users_resource_filter(@summary_by_asset_type.simulation_summary.simulation.asset) }, only: [:show, :edit, :update, :destroy, :generate]
 
   # GET /summary_by_asset_types
   # GET /summary_by_asset_types.json
@@ -10,6 +11,11 @@ class SummaryByAssetTypesController < ApplicationController
   # GET /summary_by_asset_types/1
   # GET /summary_by_asset_types/1.json
   def show
+    sum_asset_type_dailies = @summary_by_asset_type.sum_asset_type_dailies
+    asset_type_id_condition = params[:q]&.dig(:asset_type_id_eq).present? ? params[:q]
+      : { asset_type_id_eq: sum_asset_type_dailies.select(:asset_type_id).distinct.min&.asset_type_id }
+    @query = sum_asset_type_dailies.ransack(asset_type_id_condition)
+    @data = @query.result.pluck(:base_date, :balance)
   end
 
   # GET /summary_by_asset_types/new
@@ -69,6 +75,6 @@ class SummaryByAssetTypesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def summary_by_asset_type_params
-      params.require(:summary_by_asset_type).permit(:simulation_summary_id, :is_active, :memo, :summarized_at)
+      params.require(:summary_by_asset_type).permit(:is_active, :memo, :asset_type_id_eq)
     end
 end

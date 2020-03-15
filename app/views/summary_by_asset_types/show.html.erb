@@ -1,24 +1,33 @@
-<p id="notice"><%= notice %></p>
+<h1>SimulationSummaryByAssetType Detail</h1>
+
+<% has_sum_asset_type_dailies = @summary_by_asset_type.sum_asset_type_dailies.present? %>
 
 <p>
-  <strong>Simulation summary:</strong>
-  <%= @summary_by_asset_type.simulation_summary %>
+  <%= search_form_for(@query, url: @summary_by_asset_type) do |f| %>
+    <table>
+      <tr>
+        <td><strong>IsActive:</strong>
+        <td><%= @summary_by_asset_type.is_active.presence || '-' %>
+      <tr>
+        <td><strong>SummarizedAt:</strong>
+        <td><%= display_datetime_string(@summary_by_asset_type.summarized_at) %>
+      <% if has_sum_asset_type_dailies %>
+        <tr>
+          <td><strong>AssetTypeName:</strong>
+          <td><%= f.select :asset_type_id_eq, summary_by_asset_type_options(@summary_by_asset_type) %>
+          <td width="300" align="right"><span class="actions"><%= f.submit "Search" %></span>
+      <% end %>
+    </table>
+  <% end %>
 </p>
 
-<p>
-  <strong>Is active:</strong>
-  <%= @summary_by_asset_type.is_active %>
-</p>
+<% if has_sum_asset_type_dailies %>
+  <p>
+    <%= area_chart @data, points: false, thousands: ',' %>
+  </p>
+<% end %>
 
-<p>
-  <strong>Memo:</strong>
-  <%= @summary_by_asset_type.memo %>
-</p>
-
-<p>
-  <strong>Summarized at:</strong>
-  <%= @summary_by_asset_type.summarized_at %>
-</p>
+<br />
 
 <%= link_to 'Edit', edit_summary_by_asset_type_path(@summary_by_asset_type) %> |
-<%= link_to 'Back', summary_by_asset_types_path %>
+<%= link_to 'Back', @summary_by_asset_type.simulation_summary %>

@@ -1,0 +1,12 @@
+<h1>Editing Asset Account Classification</h1>
+
+<%= form_for @acct_to_class_map do |f| %>
+  <%= render "devise/shared/error_messages", resource: f.object %>
+  <%= f.label :simulation_acct_class_id %><%= f.select :simulation_acct_class_id, simulation_acct_class_options(@acct_to_class_map), include_blank: true %><br />
+  <br />
+  <%= f.submit 'Update Asset account classification' %>
+<% end %>
+
+<br />
+
+<%= link_to 'Back', @acct_to_class_map.sum_by_acct_class_setting %>

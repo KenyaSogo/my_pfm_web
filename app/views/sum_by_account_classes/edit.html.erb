@@ -1,6 +1,15 @@
-<h1>Editing Sum By Account Class</h1>
+<h1>Editing Summary By Account Class</h1>
 
-<%= render 'form', sum_by_account_class: @sum_by_account_class %>
+<%= form_for @sum_by_account_class do |f| %>
+  <%= render "devise/shared/error_messages", resource: f.object %>
+  <%= f.label :name %><%= f.text_field :name %><br />
+  <%= f.label :is_active %><%= f.check_box :is_active %><br />
+  <%= f.label :memo %><%= f.text_area :memo %><br />
+  <br />
+  <%= f.submit %>
+<% end %>
+
+<br />
 
 <%= link_to 'Show', @sum_by_account_class %> |
-<%= link_to 'Back', sum_by_account_classes_path %>
+<%= link_to 'Back', @sum_by_account_class.simulation_summary %>

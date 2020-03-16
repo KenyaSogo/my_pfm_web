@@ -2,6 +2,7 @@ class SumByAccountClassesController < ApplicationController
   before_action :set_simulation_summary, only: [:index, :new, :create]
   before_action -> { current_users_resource_filter(@simulation_summary.simulation.asset) }, only: [:index, :new, :create]
   before_action :set_sum_by_account_class, only: [:show, :edit, :update, :destroy]
+  before_action -> { current_users_resource_filter(@sum_by_account_class.simulation_summary.simulation.asset) }, only: [:show, :edit, :update, :destroy]
 
   # GET /sum_by_account_classes
   # GET /sum_by_account_classes.json
@@ -45,7 +46,7 @@ class SumByAccountClassesController < ApplicationController
   def update
     respond_to do |format|
       if @sum_by_account_class.update(sum_by_account_class_params)
-        format.html { redirect_to @sum_by_account_class, notice: 'Sum by account class was successfully updated.' }
+        format.html { redirect_to @sum_by_account_class, notice: 'Summary by account class was successfully updated.' }
         format.json { render :show, status: :ok, location: @sum_by_account_class }
       else
         format.html { render :edit }

@@ -5,6 +5,8 @@ module SimulationSummariesHelper
       'ByAccount'
     when breakdown.is_a?(SummaryByAssetType)
       'ByAssetType'
+    when breakdown.is_a?(SumByAccountClass)
+      'ByAccountClass'
     else
       '-'
     end

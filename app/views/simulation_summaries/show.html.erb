@@ -15,7 +15,7 @@
         <th>Type</th>
         <th>IsActive</th>
         <th>SummarizedAt</th>
-        <th colspan="2">Actions</th>
+        <th colspan="3">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -35,9 +35,20 @@
         <td><%= link_to 'Show', summary_by_asset_type %></td>
         <td><%= link_to 'Edit', edit_summary_by_asset_type_path(summary_by_asset_type) %></td>
       </tr>
+      <% @simulation_summary.sum_by_account_classes.each do |sum_by_account_class| %>
+        <tr>
+          <td><%= simulation_summary_breakdown_type_name(sum_by_account_class) %></td>
+          <td><%= sum_by_account_class.is_active.presence || '-' %></td>
+          <td><%= display_datetime_string(sum_by_account_class.summarized_at) %></td>
+          <td><%= link_to 'Show', sum_by_account_class %></td>
+          <td><%= link_to 'Edit', edit_sum_by_account_class_path(sum_by_account_class) %></td>
+          <td><%= link_to 'Destroy', sum_by_account_class, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
     </tbody>
   </table>
   <br />
+  <%= link_to 'New ByAccountClass', new_sum_by_account_class_path(simulation_summary_id: @simulation_summary.id) %>
 </p>
 
 <%= link_to 'Back', @simulation_summary.simulation %>

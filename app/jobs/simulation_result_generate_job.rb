@@ -100,7 +100,30 @@ class SimulationResultGenerateJob < ApplicationJob
         summary_by_asset_type.update!(summarized_at: nil)
       end
 
-      summary_executed = simulation_summary_by_account.is_active || summary_by_asset_type.is_active
+      simulation_summary.sum_by_account_classes.each do |sum_by_account_class|
+        if sum_by_account_class.is_active
+          daily_sum_results = fetch_daily_sums_by_account_class(simulation_summary_by_account, sum_by_account_class)
+
+          sum_by_account_class.sum_acct_class_dailies.each { |s| s.destroy! }
+          daily_sum_results.each do |account_class_id, daily_sums|
+            daily_sums.sort.each do |base_date, balance|
+              SumAcctClassDaily.create!(
+                sum_by_account_class_id: sum_by_account_class.id,
+                base_date: base_date,
+                simulation_acct_class_id: account_class_id,
+                balance: balance,
+              )
+            end
+          end
+
+          sum_by_account_class.update!(summarized_at: Time.now)
+        else
+          sum_by_account_class.sum_acct_class_dailies.each { |s| s.destroy! }
+          sum_by_account_class.update!(summarized_at: nil)
+        end
+      end
+
+      summary_executed = simulation_summary_by_account.is_active || summary_by_asset_type.is_active || simulation_summary.sum_by_account_classes.any?(&:is_active)
       simulation_summary.update!(summarized_at: summary_executed ? Time.now : nil)
 
       simulation.update!(last_generated_at: Time.now)
@@ -108,6 +131,17 @@ class SimulationResultGenerateJob < ApplicationJob
   end
 
   private
+
+  def fetch_daily_sums_by_account_class(simulation_summary_by_account, sum_by_account_class)
+    daily_sum_aggregates = simulation_summary_by_account.sum_account_dailies
+      .joins('inner join asset_accounts accts on sum_account_dailies.asset_account_id = accts.id')
+      .joins('left join acct_to_class_maps maps on accts.id = maps.asset_account_id')
+      .select('sum_account_dailies.*, maps.*')
+      .where(maps: { sum_by_acct_class_setting_id: sum_by_account_class.sum_by_acct_class_setting.id })
+      .group(:simulation_acct_class_id, :base_date)
+      .sum(:balance)
+    daily_sum_aggregates_to_h(daily_sum_aggregates)
+  end
 
   def fetch_daily_sums_by_asset_type(simulation_summary_by_account)
     daily_sum_aggregates = simulation_summary_by_account.sum_account_dailies

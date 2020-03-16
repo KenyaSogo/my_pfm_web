@@ -1,7 +1,7 @@
 class SumByAccountClass < ApplicationRecord
   belongs_to :simulation_summary
-  has_one :sum_by_acct_class_setting, dependent: :destroy
   has_many :sum_acct_class_dailies, dependent: :destroy
+  has_one :sum_by_acct_class_setting, dependent: :destroy
 
   validates :name, presence: true, uniqueness: { scope: :simulation_summary }
   validates :memo, length: { maximum: 400 }

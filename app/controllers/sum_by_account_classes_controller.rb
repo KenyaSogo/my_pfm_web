@@ -1,4 +1,6 @@
 class SumByAccountClassesController < ApplicationController
+  before_action :set_simulation_summary, only: [:index, :new, :create]
+  before_action -> { current_users_resource_filter(@simulation_summary.simulation.asset) }, only: [:index, :new, :create]
   before_action :set_sum_by_account_class, only: [:show, :edit, :update, :destroy]
 
   # GET /sum_by_account_classes
@@ -14,7 +16,7 @@ class SumByAccountClassesController < ApplicationController
 
   # GET /sum_by_account_classes/new
   def new
-    @sum_by_account_class = SumByAccountClass.new
+    @sum_by_account_class = SumByAccountClass.new(is_active: true)
   end
 
   # GET /sum_by_account_classes/1/edit
@@ -25,10 +27,11 @@ class SumByAccountClassesController < ApplicationController
   # POST /sum_by_account_classes.json
   def create
     @sum_by_account_class = SumByAccountClass.new(sum_by_account_class_params)
+    @sum_by_account_class.simulation_summary = @simulation_summary
 
     respond_to do |format|
       if @sum_by_account_class.save
-        format.html { redirect_to @sum_by_account_class, notice: 'Sum by account class was successfully created.' }
+        format.html { redirect_to @sum_by_account_class, notice: 'Summary by account class was successfully created.' }
         format.json { render :show, status: :created, location: @sum_by_account_class }
       else
         format.html { render :new }
@@ -62,6 +65,11 @@ class SumByAccountClassesController < ApplicationController
   end
 
   private
+    def set_simulation_summary
+      simulation_summary_id = params[:simulation_summary_id] || params[:sum_by_account_class][:simulation_summary_id]
+      @simulation_summary = SimulationSummary.find(simulation_summary_id)
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_sum_by_account_class
       @sum_by_account_class = SumByAccountClass.find(params[:id])
@@ -69,6 +77,6 @@ class SumByAccountClassesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def sum_by_account_class_params
-      params.require(:sum_by_account_class).permit(:simulation_summary_id, :name, :is_active, :memo, :summarized_at)
+      params.require(:sum_by_account_class).permit(:name, :is_active, :memo)
     end
 end

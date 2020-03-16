@@ -7,9 +7,15 @@ class SumByAccountClass < ApplicationRecord
   validates :name, presence: true, uniqueness: { scope: :simulation_summary }
   validates :memo, length: { maximum: 400 }
 
+  after_create :create_sum_by_acct_class_setting
+
   private
 
   def set_is_active_true
     self.is_active = true
+  end
+
+  def create_sum_by_acct_class_setting
+    SumByAcctClassSetting.create!(sum_by_account_class_id: id)
   end
 end

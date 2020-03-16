@@ -1,29 +1,30 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Simulation Acct Classes</h1>
+<h1>Account Classes</h1>
 
 <table>
   <thead>
     <tr>
-      <th>Sum by acct class setting</th>
       <th>Name</th>
-      <th colspan="3"></th>
+      <th colspan="2">Actions</th>
     </tr>
   </thead>
-
   <tbody>
-    <% @simulation_acct_classes.each do |simulation_acct_class| %>
+    <% if @simulation_acct_classes.blank? %>
       <tr>
-        <td><%= simulation_acct_class.sum_by_acct_class_setting %></td>
-        <td><%= simulation_acct_class.name %></td>
-        <td><%= link_to 'Show', simulation_acct_class %></td>
-        <td><%= link_to 'Edit', edit_simulation_acct_class_path(simulation_acct_class) %></td>
-        <td><%= link_to 'Destroy', simulation_acct_class, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>-</td>
+        <td>-</td>
       </tr>
+    <% else %>
+      <% @simulation_acct_classes.each do |simulation_acct_class| %>
+        <tr>
+          <td><%= simulation_acct_class.name %></td>
+          <td><%= link_to 'Edit', edit_simulation_acct_class_path(simulation_acct_class) %></td>
+          <td><%= link_to 'Destroy', simulation_acct_class, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>
 
-<br>
+<br />
 
-<%= link_to 'New Simulation Acct Class', new_simulation_acct_class_path %>
+<%= link_to 'New Account Class', new_simulation_acct_class_path %>

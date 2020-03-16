@@ -1,9 +1,44 @@
-<p id="notice"><%= notice %></p>
+<h1>SimulationSummaryByAccountClass Setting</h1>
 
 <p>
-  <strong>Sum by account class:</strong>
-  <%= @sum_by_acct_class_setting.sum_by_account_class %>
+  <strong>ByAccountClassName:</strong>
+  <%= @sum_by_acct_class_setting.sum_by_account_class.name.presence || '-' %>
+</p>
+
+<p>
+  <h2>AssetAccountClassifications</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>AssetAccountName</th>
+        <th>AccountClassName</th>
+        <th colspan="1">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% asset_accounts = @sum_by_acct_class_setting.sum_by_account_class.simulation_summary.simulation.asset.asset_accounts %>
+      <% if asset_accounts.blank? %>
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td colspan="1">-</td>
+        </tr>
+      <% else %>
+        <% acct_to_class_maps = @sum_by_acct_class_setting.acct_to_class_maps %>
+        <% asset_accounts.each do |asset_account| %>
+          <tr>
+            <td><%= asset_account.name.presence || '-' %></td>
+            <% acct_to_class_map = acct_to_class_maps.find { |m| m.asset_account_id = asset_account.id } %>
+            <td><%= acct_to_class_map.simulation_acct_class&.name.presence || '-' %></td>
+            <td><%= link_to 'Edit', edit_acct_to_class_map_path(acct_to_class_map) %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <br />
+  <%= link_to 'AccountClasses', simulation_acct_classes_path(sum_by_acct_class_setting_id: @sum_by_acct_class_setting.id) %>
 </p>
 
 <%= link_to 'Edit', edit_sum_by_acct_class_setting_path(@sum_by_acct_class_setting) %> |
-<%= link_to 'Back', sum_by_acct_class_settings_path %>
+<%= link_to 'Back', @sum_by_acct_class_setting.sum_by_account_class %>

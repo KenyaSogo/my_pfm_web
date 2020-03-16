@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :acct_to_class_maps
   resources :simulation_acct_classes
   resources :sum_by_acct_class_settings
   resources :sum_by_account_classes

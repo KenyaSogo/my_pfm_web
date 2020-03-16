@@ -1,6 +1,12 @@
-<h1>Editing Simulation Acct Class</h1>
+<h1>Editing Account Class</h1>
 
-<%= render 'form', simulation_acct_class: @simulation_acct_class %>
+<%= form_for @simulation_acct_class do |f| %>
+  <%= render "devise/shared/error_messages", resource: f.object %>
+  <%= f.label :name %><%= f.text_field :name %><br />
+  <br />
+  <%= f.submit 'Update Account class' %>
+<% end %>
 
-<%= link_to 'Show', @simulation_acct_class %> |
-<%= link_to 'Back', simulation_acct_classes_path %>
+<br />
+
+<%= link_to 'Back', simulation_acct_classes_path(sum_by_acct_class_setting_id: @simulation_acct_class.sum_by_acct_class_setting.id) %>

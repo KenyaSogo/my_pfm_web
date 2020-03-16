@@ -28,11 +28,12 @@ class SimulationAcctClassesController < ApplicationController
   # POST /simulation_acct_classes.json
   def create
     @simulation_acct_class = SimulationAcctClass.new(simulation_acct_class_params)
+    @simulation_acct_class.sum_by_acct_class_setting = @sum_by_acct_class_setting
 
     respond_to do |format|
       if @simulation_acct_class.save
-        format.html { redirect_to @simulation_acct_class, notice: 'Simulation acct class was successfully created.' }
-        format.json { render :show, status: :created, location: @simulation_acct_class }
+        format.html { redirect_to simulation_acct_classes_path(sum_by_acct_class_setting_id: @sum_by_acct_class_setting.id), notice: 'Account class was successfully created.' }
+        format.json { render :index, status: :created, location: @sum_by_acct_class_setting.simulation_acct_classes }
       else
         format.html { render :new }
         format.json { render json: @simulation_acct_class.errors, status: :unprocessable_entity }
@@ -45,8 +46,8 @@ class SimulationAcctClassesController < ApplicationController
   def update
     respond_to do |format|
       if @simulation_acct_class.update(simulation_acct_class_params)
-        format.html { redirect_to @simulation_acct_class, notice: 'Simulation acct class was successfully updated.' }
-        format.json { render :show, status: :ok, location: @simulation_acct_class }
+        format.html { redirect_to simulation_acct_classes_path(sum_by_acct_class_setting_id: @simulation_acct_class.sum_by_acct_class_setting.id), notice: 'Account class was successfully updated.' }
+        format.json { render :index, status: :ok, location: @simulation_acct_class.sum_by_acct_class_setting.simulation_acct_classes }
       else
         format.html { render :edit }
         format.json { render json: @simulation_acct_class.errors, status: :unprocessable_entity }
@@ -57,9 +58,10 @@ class SimulationAcctClassesController < ApplicationController
   # DELETE /simulation_acct_classes/1
   # DELETE /simulation_acct_classes/1.json
   def destroy
+    sum_by_acct_class_setting = @simulation_acct_class.sum_by_acct_class_setting
     @simulation_acct_class.destroy
     respond_to do |format|
-      format.html { redirect_to simulation_acct_classes_url, notice: 'Simulation acct class was successfully destroyed.' }
+      format.html { redirect_to simulation_acct_classes_path(sum_by_acct_class_setting_id: sum_by_acct_class_setting.id), notice: 'Account class was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -77,6 +79,6 @@ class SimulationAcctClassesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def simulation_acct_class_params
-      params.require(:simulation_acct_class).permit(:sum_by_acct_class_setting_id, :name)
+      params.require(:simulation_acct_class).permit(:name)
     end
 end

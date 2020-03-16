@@ -18,6 +18,10 @@ class SimulationSummaryByAccount < ApplicationRecord
     if simulation_summary.summary_by_asset_type&.is_active
       errors.add(:is_active, 'must be true when ByAssetType is active') unless is_active
     end
+
+    if simulation_summary.sum_by_account_classes.where(is_active: true).exists?
+      errors.add(:is_active, 'must be true when ByAccountClass is active') unless is_active
+    end
   end
 
   def validate_unity_within_simulation_summary

@@ -1,30 +1,32 @@
 <h1>Account Classes</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th colspan="2">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% if @simulation_acct_classes.blank? %>
+<p>
+  <table>
+    <thead>
       <tr>
-        <td>-</td>
-        <td>-</td>
+        <th>Name</th>
+        <th colspan="2">Actions</th>
       </tr>
-    <% else %>
-      <% @simulation_acct_classes.each do |simulation_acct_class| %>
+    </thead>
+    <tbody>
+      <% if @simulation_acct_classes.blank? %>
         <tr>
-          <td><%= simulation_acct_class.name %></td>
-          <td><%= link_to 'Edit', edit_simulation_acct_class_path(simulation_acct_class) %></td>
-          <td><%= link_to 'Destroy', simulation_acct_class, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td>-</td>
+          <td>-</td>
         </tr>
+      <% else %>
+        <% @simulation_acct_classes.each do |simulation_acct_class| %>
+          <tr>
+            <td><%= simulation_acct_class.name %></td>
+            <td><%= link_to 'Edit', edit_simulation_acct_class_path(simulation_acct_class) %></td>
+            <td><%= link_to 'Destroy', simulation_acct_class, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
       <% end %>
-    <% end %>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+  <br />
+  <%= link_to 'New Account Class', new_simulation_acct_class_path(sum_by_acct_class_setting_id: @sum_by_acct_class_setting.id) %>
+</p>
 
-<br />
-
-<%= link_to 'New Account Class', new_simulation_acct_class_path(sum_by_acct_class_setting_id: @sum_by_acct_class_setting.id) %>
+<%= link_to 'Back', @sum_by_acct_class_setting %>

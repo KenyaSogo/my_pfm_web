@@ -1,6 +1,9 @@
 <h1>Account Classes</h1>
 
 <p>
+  <% if @simulation_acct_class&.errors.present? %>
+    <%= render "devise/shared/error_messages", resource: @simulation_acct_class %>
+  <% end %>
   <table>
     <thead>
       <tr>

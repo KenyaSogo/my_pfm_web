@@ -59,10 +59,16 @@ class SimulationAcctClassesController < ApplicationController
   # DELETE /simulation_acct_classes/1.json
   def destroy
     sum_by_acct_class_setting = @simulation_acct_class.sum_by_acct_class_setting
-    @simulation_acct_class.destroy
     respond_to do |format|
-      format.html { redirect_to simulation_acct_classes_path(sum_by_acct_class_setting_id: sum_by_acct_class_setting.id), notice: 'Account class was successfully destroyed.' }
-      format.json { head :no_content }
+      if @simulation_acct_class.destroy
+        format.html { redirect_to simulation_acct_classes_path(sum_by_acct_class_setting_id: sum_by_acct_class_setting.id), notice: 'Account class was successfully destroyed.' }
+        format.json { head :no_content }
+      else
+        @sum_by_acct_class_setting = @simulation_acct_class.sum_by_acct_class_setting
+        @simulation_acct_classes = @sum_by_acct_class_setting.simulation_acct_classes
+        format.html { render :index }
+        format.json { render json: @simulation_acct_class.errors, status: :unprocessable_entity }
+      end
     end
   end
 

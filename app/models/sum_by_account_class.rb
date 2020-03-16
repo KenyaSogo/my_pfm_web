@@ -1,6 +1,7 @@
 class SumByAccountClass < ApplicationRecord
   belongs_to :simulation_summary
   has_one :sum_by_acct_class_setting, dependent: :destroy
+  has_many :sum_acct_class_dailies, dependent: :destroy
 
   before_validation :set_is_active_true, on: :create
 

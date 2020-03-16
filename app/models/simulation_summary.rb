@@ -2,6 +2,7 @@ class SimulationSummary < ApplicationRecord
   belongs_to :simulation
   has_one :simulation_summary_by_account, dependent: :destroy
   has_one :summary_by_asset_type, dependent: :destroy
+  has_many :sum_by_account_classes, dependent: :destroy
 
   validate :validate_unity_within_simulation, on: :create
 

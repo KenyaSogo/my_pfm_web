@@ -28,7 +28,7 @@
         <% asset_accounts.each do |asset_account| %>
           <tr>
             <td><%= asset_account.name.presence || '-' %></td>
-            <% acct_to_class_map = acct_to_class_maps.find { |m| m.asset_account_id = asset_account.id } %>
+            <% acct_to_class_map = acct_to_class_maps.find { |m| m.asset_account_id == asset_account.id } %>
             <td><%= acct_to_class_map.simulation_acct_class&.name.presence || '-' %></td>
             <td><%= link_to 'Edit', edit_acct_to_class_map_path(acct_to_class_map) %></td>
           </tr>

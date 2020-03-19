@@ -11,10 +11,7 @@ class SummaryByAssetTypesController < ApplicationController
   # GET /summary_by_asset_types/1
   # GET /summary_by_asset_types/1.json
   def show
-    sum_asset_type_dailies = @summary_by_asset_type.sum_asset_type_dailies
-    asset_type_id_condition = params[:q]&.dig(:asset_type_id_eq).present? ? params[:q]
-      : { asset_type_id_eq: sum_asset_type_dailies.select(:asset_type_id).distinct.min&.asset_type_id }
-    @query = sum_asset_type_dailies.ransack(asset_type_id_condition)
+    @query = @summary_by_asset_type.sum_asset_type_dailies.ransack(asset_type_id_condition)
     @data = @query.result.pluck(:base_date, :balance)
   end
 
@@ -68,6 +65,18 @@ class SummaryByAssetTypesController < ApplicationController
   end
 
   private
+    def asset_type_id_condition
+      if params[:q]&.has_key?(:asset_type_id_eq)
+        if params[:q][:asset_type_id_eq].present?
+          params[:q]
+        else
+          { asset_type_id_null: true }
+        end
+      else
+        { asset_type_id_eq: @summary_by_asset_type.sum_asset_type_dailies.select(:asset_type_id).distinct.map(&:asset_type_id).compact.min }
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_summary_by_asset_type
       @summary_by_asset_type = SummaryByAssetType.find(params[:id])

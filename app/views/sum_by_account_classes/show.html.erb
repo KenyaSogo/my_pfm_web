@@ -1,15 +1,33 @@
 <h1>SimulationSummaryByAccountClass Detail</h1>
 
+<% has_sum_acct_class_dailies = @sum_by_account_class.sum_acct_class_dailies.present? %>
+
 <p>
-  <strong>Name:</strong>
-  <%= @sum_by_account_class.name %><br />
-  <strong>IsActive:</strong>
-  <%= @sum_by_account_class.is_active.presence || '-' %><br />
-  <strong>SummarizedAt:</strong>
-  <%= display_datetime_string(@sum_by_account_class.summarized_at) %>
+  <%= search_form_for(@query, url: @sum_by_account_class) do |f| %>
+    <table>
+      <tr>
+        <td><strong>Name:</strong>
+        <td><%= @sum_by_account_class.name.presence || '-' %>
+      <tr>
+        <td><strong>IsActive:</strong>
+        <td><%= @sum_by_account_class.is_active.presence || '-' %>
+      <tr>
+        <td><strong>SummarizedAt:</strong>
+        <td><%= display_datetime_string(@sum_by_account_class.summarized_at) %>
+      <% if has_sum_acct_class_dailies %>
+        <tr>
+          <td><strong>AccountClassName:</strong>
+          <td><%= f.select :simulation_acct_class_id_eq, simulation_acct_class_search_options(@sum_by_account_class) %>
+          <td width="300" align="right"><span class="actions"><%= f.submit "Search" %></span>
+      <% end %>
+    </table>
+  <% end %>
 </p>
 
 <p>
+  <% if has_sum_acct_class_dailies %>
+    <%= area_chart @data, points: false, thousands: ',' %>
+  <% end %>
   <br />
   <%= link_to 'Settings', @sum_by_account_class.sum_by_acct_class_setting %>
 </p>

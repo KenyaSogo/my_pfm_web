@@ -13,6 +13,8 @@ class SumByAccountClassesController < ApplicationController
   # GET /sum_by_account_classes/1
   # GET /sum_by_account_classes/1.json
   def show
+    @query = @sum_by_account_class.sum_acct_class_dailies.ransack(simulation_acct_class_id_condition)
+    @data = @query.result.pluck(:base_date, :balance)
   end
 
   # GET /sum_by_account_classes/new
@@ -66,6 +68,18 @@ class SumByAccountClassesController < ApplicationController
   end
 
   private
+    def simulation_acct_class_id_condition
+      if params[:q]&.has_key?(:simulation_acct_class_id_eq)
+        if params[:q][:simulation_acct_class_id_eq].present?
+          params[:q]
+        else
+          { simulation_acct_class_id_null: true }
+        end
+      else
+        { simulation_acct_class_id_eq: @sum_by_account_class.sum_acct_class_dailies.select(:simulation_acct_class_id).distinct.map(&:simulation_acct_class_id).compact.min }
+      end
+    end
+
     def set_simulation_summary
       simulation_summary_id = params[:simulation_summary_id] || params[:sum_by_account_class][:simulation_summary_id]
       @simulation_summary = SimulationSummary.find(simulation_summary_id)

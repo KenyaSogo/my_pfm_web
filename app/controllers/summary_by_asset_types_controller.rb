@@ -75,6 +75,6 @@ class SummaryByAssetTypesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def summary_by_asset_type_params
-      params.require(:summary_by_asset_type).permit(:is_active, :memo, :asset_type_id_eq)
+      params.require(:summary_by_asset_type).permit(:is_active, :memo)
     end
 end

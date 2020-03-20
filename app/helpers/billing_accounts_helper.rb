@@ -6,10 +6,9 @@ module BillingAccountsHelper
 
   def withdrawal_month_offset_options
     {
-      '当月': 0,
-      '翌月': 1,
-      '翌々月': 2,
-    }.merge((3..12).map { |i| ["#{i}ヶ月後", i] }.to_h)
+      'this_month': 0,
+      'next_month': 1,
+    }.merge((2..12).map { |i| ["#{i}_months_after", i] }.to_h)
   end
 
   def withdrawal_month_offset_value(offset)

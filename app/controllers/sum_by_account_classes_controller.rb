@@ -13,7 +13,7 @@ class SumByAccountClassesController < ApplicationController
   # GET /sum_by_account_classes/1
   # GET /sum_by_account_classes/1.json
   def show
-    @query = @sum_by_account_class.sum_acct_class_dailies.ransack(simulation_acct_class_id_condition)
+    @query = @sum_by_account_class.sum_acct_class_dailies.ransack(sum_acct_class_dailies_condition)
     @data = @query.result.pluck(:base_date, :balance)
   end
 
@@ -68,15 +68,26 @@ class SumByAccountClassesController < ApplicationController
   end
 
   private
-    def simulation_acct_class_id_condition
-      if params[:q]&.has_key?(:simulation_acct_class_id_eq)
-        if params[:q][:simulation_acct_class_id_eq].present?
-          params[:q]
-        else
-          { simulation_acct_class_id_null: true }
-        end
+    def sum_acct_class_dailies_condition
+      if params[:q].present?
+        condition = params[:q][:simulation_acct_class_id_eq].blank? ? { simulation_acct_class_id_null: true } : { simulation_acct_class_id_eq: params[:q][:simulation_acct_class_id_eq] }
+        condition.merge!(
+          {
+            'base_date_gteq(1i)': params[:q]['base_date_gteq(1i)'],
+            'base_date_gteq(2i)': params[:q]['base_date_gteq(2i)'],
+            'base_date_gteq(3i)': params[:q]['base_date_gteq(3i)'],
+            'base_date_lteq(1i)': params[:q]['base_date_lteq(1i)'],
+            'base_date_lteq(2i)': params[:q]['base_date_lteq(2i)'],
+            'base_date_lteq(3i)': params[:q]['base_date_lteq(3i)'],
+          }
+        )
       else
-        { simulation_acct_class_id_eq: @sum_by_account_class.sum_acct_class_dailies.select(:simulation_acct_class_id).distinct.map(&:simulation_acct_class_id).compact.min }
+        today = Date.today
+        {
+          simulation_acct_class_id_eq: @sum_by_account_class.sum_acct_class_dailies.select(:simulation_acct_class_id).distinct.map(&:simulation_acct_class_id).compact.min,
+          base_date_gteq: today.ago(3.month),
+          base_date_lteq: today.since(3.month),
+        }
       end
     end
 

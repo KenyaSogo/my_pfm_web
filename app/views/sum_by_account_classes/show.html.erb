@@ -17,7 +17,11 @@
       <% if has_sum_acct_class_dailies %>
         <tr>
           <td><strong>AccountClassName:</strong>
-          <td><%= f.select :simulation_acct_class_id_eq, simulation_acct_class_search_options(@sum_by_account_class) %>
+          <td colspan="3"><%= f.select :simulation_acct_class_id_eq, simulation_acct_class_search_options(@sum_by_account_class) %>
+        <tr>
+          <td><strong><%= f.label :base_date, "BaseDate:" %></strong>
+          <td><%= f.date_select :base_date_gteq, {include_blank: true, use_month_numbers: true, date_separator: ' / '}, class: "form-control" %> ~
+          <td><%= f.date_select :base_date_lteq, {include_blank: true, use_month_numbers: true, date_separator: ' / '}, class: "form-control" %>
           <td width="300" align="right"><span class="actions"><%= f.submit "Search" %></span>
       <% end %>
     </table>

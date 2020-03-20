@@ -69,7 +69,7 @@
             <td><%= simulation_entry_detail.is_calculation_target %></td>
             <td><%= display_datetime_string(simulation_entry_detail.created_at) %></td>
             <td><%= display_datetime_string(simulation_entry_detail.updated_at) %></td>
-            <td><%= simulation_entry_detail.simulation_result_activities.size %></td>
+            <td><%= @result_activity_counts_by_entry_detail[simulation_entry_detail.id].presence || 0 %></td>
             <td><%= link_to 'Show', simulation_entry_detail %></td>
             <td><%= link_to 'Edit', edit_simulation_entry_detail_path(simulation_entry_detail) %></td>
             <td><%= link_to 'Destroy', simulation_entry_detail, method: :delete, data: { confirm: 'Are you sure?' } %></td>

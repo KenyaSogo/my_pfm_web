@@ -18,6 +18,8 @@ class SimulationEntriesController < ApplicationController
       .order(transaction_date_month: :desc)
       .order(transaction_date_day: :desc)
       .order(transaction_date_weekday: :desc)
+    @result_activity_counts_by_entry_detail = SimulationEntry.where(id: @simulation_entry.id)
+      .joins(simulation_entry_details: :simulation_result_activities).group('simulation_entry_details.id').size
   end
 
   # GET /simulation_entries/new

@@ -4,7 +4,7 @@
   <%= render "devise/shared/error_messages", resource: f.object %>
   <%= f.label :name %><%= f.text_field :name %><br />
   <%= f.label :is_active %><%= f.check_box :is_active %><br />
-  <%= f.label :memo %><%= f.text_area :memo %><br />
+  <%= f.label :memo %><%= f.text_area :memo, size: '80x5' %><br />
   <br />
   <%= f.submit %>
 <% end %>

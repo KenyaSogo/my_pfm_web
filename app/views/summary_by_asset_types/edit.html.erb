@@ -3,7 +3,7 @@
 <%= form_for @summary_by_asset_type do |f| %>
   <%= render "devise/shared/error_messages", resource: f.object %>
   <%= f.label :is_active %><%= f.check_box :is_active %><br />
-  <%= f.label :memo %><%= f.text_area :memo %><br /><br />
+  <%= f.label :memo %><%= f.text_area :memo, size: '80x5' %><br /><br />
   <%= f.submit %>
 <% end %>
 

@@ -55,7 +55,20 @@
 
 <p>
   <h2>AssetActivities</h2>
-  <%= link_to 'BulkInquiry', asset_activities_path(asset_id: @asset.id) %>
+  <table>
+    <thead>
+      <tr>
+        <th>Counts</th>
+        <th colspan="1">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= @asset_activity_count.presence || 0 %></td>
+        <td><%= link_to 'BulkInquiry', asset_activities_path(asset_id: @asset.id) %></td>
+      </tr>
+    </tbody>
+  </table>
 </p>
 
 <p>

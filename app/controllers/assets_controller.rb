@@ -7,9 +7,7 @@ class AssetsController < ApplicationController
   # GET /assets.json
   def index
     @assets = Asset.where(user_id: current_user.id)
-    @asset_activity_counts = @assets.each_with_object({}) do |asset, h|
-      h[asset.id] = asset.asset_accounts.joins(:asset_activities).size
-    end
+    @asset_activity_counts = @assets.joins(asset_accounts: :asset_activities).group(:id).size
   end
 
   # GET /assets/1

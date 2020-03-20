@@ -57,19 +57,17 @@ class SimulationResultGenerateJob < ApplicationJob
         asset_activity_daily_sums = fetch_asset_activity_daily_sums(simulation)
         simulations_activity_daily_sums = fetch_simulation_activity_daily_sums(simulation)
         daily_sum_results = merge_daily_sum_results(asset_activity_daily_sums, simulations_activity_daily_sums)
+        daily_balance_results = aggregate_daily_balance(daily_sum_results)
 
         simulation_summary_by_account.sum_account_dailies.each { |s| s.destroy! }
-        daily_sum_results.each do |account_id, daily_sums|
-          prev_balance = AssetAccount.find(account_id).initial_balance.presence || 0
-          daily_sums.sort.each do |date, amount|
-            current_balance = prev_balance + amount
+        daily_balance_results.each do |account_id, daily_balances|
+          daily_balances.each do |base_date, balance|
             SumAccountDaily.create!(
               simulation_summary_by_account_id: simulation_summary_by_account.id,
-              base_date: date,
+              base_date: base_date,
               asset_account_id: account_id,
-              balance: current_balance,
+              balance: balance,
             )
-            prev_balance = current_balance
           end
         end
 
@@ -131,6 +129,25 @@ class SimulationResultGenerateJob < ApplicationJob
   end
 
   private
+
+  def aggregate_daily_balance(daily_sum_results)
+    sum_end_date = daily_sum_results.map { |account_id, daily_sums| daily_sums.keys.max }.max
+    daily_sum_results.keys.each_with_object({}) do |account_id, results_h|
+      daily_sums = daily_sum_results[account_id]
+
+      prev_balance = AssetAccount.find(account_id).initial_balance.presence || 0
+      daily_balances = (daily_sums.keys.min..sum_end_date).each_with_object({}) do |date, daily_h|
+        amount = daily_sums[date] || 0
+        current_balance = prev_balance + amount
+        daily_h[date] = current_balance
+
+        prev_balance = current_balance
+        daily_h
+      end
+
+      results_h[account_id] = daily_balances
+    end
+  end
 
   def fetch_daily_sums_by_account_class(simulation_summary_by_account, sum_by_account_class)
     daily_sum_aggregates = simulation_summary_by_account.sum_account_dailies

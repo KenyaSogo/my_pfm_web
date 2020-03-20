@@ -14,7 +14,11 @@
       <% if has_sum_account_dailies %>
         <tr>
           <td><strong>AssetAccountName:</strong>
-          <td><%= f.select :asset_account_id_eq, summary_by_asset_account_options(@simulation_summary_by_account) %>
+          <td colspan="3"><%= f.select :asset_account_id_eq, summary_by_asset_account_options(@simulation_summary_by_account) %>
+        <tr>
+          <td><strong><%= f.label :base_date, "BaseDate:" %></strong>
+          <td><%= f.date_select :base_date_gteq, {include_blank: true, use_month_numbers: true, date_separator: ' / '}, class: "form-control" %> ~
+          <td><%= f.date_select :base_date_lteq, {include_blank: true, use_month_numbers: true, date_separator: ' / '}, class: "form-control" %>
           <td width="300" align="right"><span class="actions"><%= f.submit "Search" %></span>
       <% end %>
     </table>

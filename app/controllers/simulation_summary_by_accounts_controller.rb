@@ -11,10 +11,7 @@ class SimulationSummaryByAccountsController < ApplicationController
   # GET /simulation_summary_by_accounts/1
   # GET /simulation_summary_by_accounts/1.json
   def show
-    sum_account_dailies = @simulation_summary_by_account.sum_account_dailies
-    asset_account_id_condition = params[:q]&.dig(:asset_account_id_eq).present? ? params[:q]
-      : { asset_account_id_eq: sum_account_dailies.select(:asset_account_id).distinct.min&.asset_account_id }
-    @query = sum_account_dailies.ransack(asset_account_id_condition)
+    @query = @simulation_summary_by_account.sum_account_dailies.ransack(sum_account_dailies_condition)
     @data = @query.result.pluck(:base_date, :balance)
   end
 
@@ -68,6 +65,29 @@ class SimulationSummaryByAccountsController < ApplicationController
   end
 
   private
+    def sum_account_dailies_condition
+      if params[:q].present?
+        condition = params[:q][:asset_account_id_eq].blank? ? { asset_account_id_null: true } : { asset_account_id_eq: params[:q][:asset_account_id_eq] }
+        condition.merge!(
+          {
+            'base_date_gteq(1i)': params[:q]['base_date_gteq(1i)'],
+            'base_date_gteq(2i)': params[:q]['base_date_gteq(2i)'],
+            'base_date_gteq(3i)': params[:q]['base_date_gteq(3i)'],
+            'base_date_lteq(1i)': params[:q]['base_date_lteq(1i)'],
+            'base_date_lteq(2i)': params[:q]['base_date_lteq(2i)'],
+            'base_date_lteq(3i)': params[:q]['base_date_lteq(3i)'],
+          }
+        )
+      else
+        today = Date.today
+        {
+          asset_account_id_eq: @simulation_summary_by_account.sum_account_dailies.select(:asset_account_id).distinct.map(&:asset_account_id).compact.min,
+          base_date_gteq: today.ago(3.month),
+          base_date_lteq: today.since(3.month),
+        }
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_simulation_summary_by_account
       @simulation_summary_by_account = SimulationSummaryByAccount.find(params[:id])

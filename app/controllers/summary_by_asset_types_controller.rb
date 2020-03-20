@@ -11,7 +11,7 @@ class SummaryByAssetTypesController < ApplicationController
   # GET /summary_by_asset_types/1
   # GET /summary_by_asset_types/1.json
   def show
-    @query = @summary_by_asset_type.sum_asset_type_dailies.ransack(asset_type_id_condition)
+    @query = @summary_by_asset_type.sum_asset_type_dailies.ransack(sum_asset_type_dailies_condition)
     @data = @query.result.pluck(:base_date, :balance)
   end
 
@@ -65,15 +65,26 @@ class SummaryByAssetTypesController < ApplicationController
   end
 
   private
-    def asset_type_id_condition
-      if params[:q]&.has_key?(:asset_type_id_eq)
-        if params[:q][:asset_type_id_eq].present?
-          params[:q]
-        else
-          { asset_type_id_null: true }
-        end
+    def sum_asset_type_dailies_condition
+      if params[:q].present?
+        condition = params[:q][:asset_type_id_eq].blank? ? { asset_type_id_null: true } : { asset_type_id_eq: params[:q][:asset_type_id_eq] }
+        condition.merge!(
+          {
+            'base_date_gteq(1i)': params[:q]['base_date_gteq(1i)'],
+            'base_date_gteq(2i)': params[:q]['base_date_gteq(2i)'],
+            'base_date_gteq(3i)': params[:q]['base_date_gteq(3i)'],
+            'base_date_lteq(1i)': params[:q]['base_date_lteq(1i)'],
+            'base_date_lteq(2i)': params[:q]['base_date_lteq(2i)'],
+            'base_date_lteq(3i)': params[:q]['base_date_lteq(3i)'],
+          }
+        )
       else
-        { asset_type_id_eq: @summary_by_asset_type.sum_asset_type_dailies.select(:asset_type_id).distinct.map(&:asset_type_id).compact.min }
+        today = Date.today
+        {
+          asset_type_id_eq: @summary_by_asset_type.sum_asset_type_dailies.select(:asset_type_id).distinct.map(&:asset_type_id).compact.min,
+          base_date_gteq: today.ago(3.month),
+          base_date_lteq: today.since(3.month),
+        }
       end
     end
 

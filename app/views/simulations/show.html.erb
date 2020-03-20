@@ -68,8 +68,8 @@
             <td><%= simulation_entry.simulation_entry_type&.name.presence || '-' %></td>
             <td><%= display_date_string(simulation_entry.apply_from) %></td>
             <td><%= display_date_string(simulation_entry.apply_to) %></td>
-            <td><%= simulation_entry.simulation_entry_details.size %></td>
-            <td><%= simulation_entry.simulation_entry_details.joins(:simulation_result_activities).size %></td>
+            <td><%= @entry_detail_counts_by_simulation_entry[simulation_entry.id].presence || 0 %></td>
+            <td><%= @result_activity_counts_by_simulation_entry[simulation_entry.id].presence || 0 %></td>
             <td><%= link_to 'Show', simulation_entry %></td>
             <td><%= link_to 'Edit', edit_simulation_entry_path(simulation_entry) %></td>
             <td><%= link_to 'Destroy', simulation_entry, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -124,7 +124,7 @@
             <td><%= billing_account.debit_account.name %></td>
             <td><%= billing_account.debit_item.name %></td>
             <td><%= billing_account.debit_sub_item.name %></td>
-            <td><%= billing_account.billing_activities.size + billing_account.billing_complement_activities.size %></td>
+            <td><%= @billing_activity_counts_by_billing_account[billing_account.id].presence || 0 %></td>
             <td><%= link_to 'Show', billing_account %></td>
             <td><%= link_to 'Edit', edit_billing_account_path(billing_account) %></td>
             <td><%= link_to 'Destroy', billing_account, method: :delete, data: { confirm: 'Are you sure?' } %></td>

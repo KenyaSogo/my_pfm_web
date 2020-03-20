@@ -13,6 +13,17 @@ class SimulationsController < ApplicationController
   # GET /simulations/1
   # GET /simulations/1.json
   def show
+    @entry_detail_counts_by_simulation_entry = Simulation.where(id: @simulation.id)
+      .joins(simulation_entries: :simulation_entry_details).group('simulation_entries.id').size
+    @result_activity_counts_by_simulation_entry = Simulation.where(id: @simulation.id)
+      .joins(simulation_entries: { simulation_entry_details: :simulation_result_activities }).group('simulation_entries.id').size
+    billing_activity_counts_by_billing_account = Simulation.where(id: @simulation.id)
+      .joins(billing_accounts: :billing_activities).group('billing_accounts.id').size
+    billing_complement_activity_counts_by_billing_account = Simulation.where(id: @simulation.id)
+      .joins(billing_accounts: :billing_complement_activities).group('billing_accounts.id').size
+    @billing_activity_counts_by_billing_account = (billing_activity_counts_by_billing_account.keys | billing_complement_activity_counts_by_billing_account.keys).each_with_object({}) do |billing_account_id, h|
+      h[billing_account_id] = (billing_activity_counts_by_billing_account[billing_account_id].presence || 0) + (billing_complement_activity_counts_by_billing_account[billing_account_id].presence || 0)
+    end
   end
 
   # GET /simulations/new

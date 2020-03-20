@@ -13,7 +13,16 @@ class AssetsController < ApplicationController
   # GET /assets/1
   # GET /assets/1.json
   def show
-    @asset_activity_count = @asset.asset_accounts.map { |r| r.asset_activities.size }.sum
+    @asset_activity_count = Asset.where(id: @asset.id).joins(asset_accounts: :asset_activities).size
+    @asset_activity_counts_by_account = Asset.where(id: @asset.id).joins(asset_accounts: :asset_activities).group('asset_accounts.id').size
+    @entry_detail_counts_by_simulation = Asset.where(id: @asset.id).joins(simulations: { simulation_entries: :simulation_entry_details }).group('simulations.id').size
+    @result_activity_counts_by_simulation = Asset.where(id: @asset.id).joins(simulations: { simulation_entries: { simulation_entry_details: :simulation_result_activities } }).group('simulations.id').size
+    @billing_account_counts_by_simulation = Asset.where(id: @asset.id).joins(simulations: :billing_accounts).group('simulations.id').size
+    billing_activity_counts_by_simulation = Asset.where(id: @asset.id).joins(simulations: { billing_accounts: :billing_activities }).group('simulations.id').size
+    billing_complement_activity_counts_by_simulation = Asset.where(id: @asset.id).joins(simulations: { billing_accounts: :billing_complement_activities }).group('simulations.id').size
+    @billing_activity_counts_by_simulation = (billing_activity_counts_by_simulation.keys | billing_complement_activity_counts_by_simulation.keys).each_with_object({}) do |simulation_id, h|
+      h[simulation_id] = (billing_activity_counts_by_simulation[simulation_id].presence || 0) + (billing_complement_activity_counts_by_simulation[simulation_id].presence || 0)
+    end
   end
 
   # GET /assets/new

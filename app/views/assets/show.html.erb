@@ -43,7 +43,7 @@
             <td><%= asset_account.asset_type&.name.presence || '-' %></td>
             <td><%= asset_account.initial_balance.presence || '-' %></td>
             <td><%= display_date_string(asset_account.initial_balance_base_date) %></td>
-            <td><%= asset_account.asset_activities.size %></td>
+            <td><%= @asset_activity_counts_by_account[asset_account.id].presence || 0 %></td>
             <td><%= link_to 'Show', asset_account %></td>
             <td><%= link_to 'Edit', edit_asset_account_path(asset_account) %></td>
           </tr>
@@ -88,10 +88,10 @@
           <tr>
             <td><%= simulation.name.presence || '-' %></td>
             <td><%= display_datetime_string(simulation.last_generated_at) %></td>
-            <td><%= simulation.simulation_entries.joins(:simulation_entry_details).size %></td>
-            <td><%= result_activity_counts(simulation) %></td>
-            <td><%= simulation.billing_accounts.size %></td>
-            <td><%= billing_activity_counts(simulation) %></td>
+            <td><%= @entry_detail_counts_by_simulation[simulation.id].presence || 0 %></td>
+            <td><%= @result_activity_counts_by_simulation[simulation.id].presence || 0 %></td>
+            <td><%= @billing_account_counts_by_simulation[simulation.id].presence || 0 %></td>
+            <td><%= @billing_activity_counts_by_simulation[simulation.id].presence || 0 %></td>
             <td><%= link_to 'Generate', generate_simulation_path(simulation) %></td>
             <td><%= link_to 'Show', simulation %></td>
             <td><%= link_to 'Edit', edit_simulation_path(simulation) %></td>

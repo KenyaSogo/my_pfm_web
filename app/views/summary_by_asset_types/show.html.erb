@@ -31,6 +31,12 @@
   </p>
 <% end %>
 
+<table>
+  <tr>
+    <td><strong>Memo:</strong>
+    <td><%= @summary_by_asset_type.memo.presence || '-' %>
+</table>
+
 <br />
 
 <%= link_to 'Edit', edit_summary_by_asset_type_path(@summary_by_asset_type) %> |

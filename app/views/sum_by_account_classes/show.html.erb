@@ -32,8 +32,15 @@
   <% if has_sum_acct_class_dailies %>
     <%= area_chart @data, points: false, thousands: ',' %>
   <% end %>
-  <br />
 </p>
+
+<table>
+  <tr>
+    <td><strong>Memo:</strong>
+    <td><%= @sum_by_account_class.memo.presence || '-' %>
+</table>
+
+<br />
 
 <%= link_to 'Edit', edit_sum_by_account_class_path(@sum_by_account_class) %> |
 <%= link_to 'Settings', @sum_by_account_class.sum_by_acct_class_setting %> |

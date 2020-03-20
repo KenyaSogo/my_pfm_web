@@ -31,6 +31,12 @@
   </p>
 <% end %>
 
+<table>
+  <tr>
+    <td><strong>Memo:</strong>
+    <td><%= @simulation_summary_by_account.memo.presence || '-' %>
+</table>
+
 <br />
 
 <%= link_to 'Edit', edit_simulation_summary_by_account_path(@simulation_summary_by_account) %> |

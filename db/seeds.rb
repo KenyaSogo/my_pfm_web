@@ -54,3 +54,31 @@ end
 ].each do |r|
   SimulationEntryType.find_or_create_by!(r)
 end
+
+[
+  {
+    name: 'by_account',
+  },
+  {
+    name: 'by_asset_type',
+  },
+  {
+    name: 'by_account_class',
+  },
+].each do |r|
+  SimulationBreakdownType.find_or_create_by!(r)
+end
+
+[
+  {
+    name: 'asset_account',
+  },
+  {
+    name: 'asset_type',
+  },
+  {
+    name: 'asset_account_class',
+  },
+].each do |r|
+  SimulationSectionType.find_or_create_by!(r)
+end

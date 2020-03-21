@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200315065738) do
+ActiveRecord::Schema.define(version: 20200321020344) do
 
   create_table "acct_to_class_maps", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "sum_by_acct_class_setting_id"
@@ -142,6 +142,12 @@ ActiveRecord::Schema.define(version: 20200315065738) do
     t.index ["sum_by_acct_class_setting_id"], name: "index_simulation_acct_classes_on_sum_by_acct_class_setting_id", using: :btree
   end
 
+  create_table "simulation_breakdown_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "simulation_entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "simulation_id"
     t.string   "name"
@@ -197,6 +203,12 @@ ActiveRecord::Schema.define(version: 20200315065738) do
     t.index ["item_id"], name: "index_simulation_result_activities_on_item_id", using: :btree
     t.index ["simulation_entry_detail_id"], name: "index_simulation_result_activities_on_simulation_entry_detail_id", using: :btree
     t.index ["sub_item_id"], name: "index_simulation_result_activities_on_sub_item_id", using: :btree
+  end
+
+  create_table "simulation_section_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "simulation_summaries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

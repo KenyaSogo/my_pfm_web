@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200321020344) do
+ActiveRecord::Schema.define(version: 20200321022540) do
 
   create_table "acct_to_class_maps", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "sum_by_acct_class_setting_id"
@@ -214,8 +214,16 @@ ActiveRecord::Schema.define(version: 20200321020344) do
   create_table "simulation_summaries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "simulation_id"
     t.datetime "summarized_at"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.integer  "main_breakdown_type_id"
+    t.integer  "main_breakdown_id"
+    t.integer  "main_section_type_id"
+    t.integer  "main_section_id"
+    t.integer  "search_from"
+    t.integer  "search_to"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.index ["main_breakdown_type_id"], name: "index_simulation_summaries_on_main_breakdown_type_id", using: :btree
+    t.index ["main_section_type_id"], name: "index_simulation_summaries_on_main_section_type_id", using: :btree
     t.index ["simulation_id"], name: "index_simulation_summaries_on_simulation_id", using: :btree
   end
 
@@ -359,6 +367,8 @@ ActiveRecord::Schema.define(version: 20200321020344) do
   add_foreign_key "simulation_result_activities", "items"
   add_foreign_key "simulation_result_activities", "simulation_entry_details"
   add_foreign_key "simulation_result_activities", "sub_items"
+  add_foreign_key "simulation_summaries", "simulation_breakdown_types", column: "main_breakdown_type_id"
+  add_foreign_key "simulation_summaries", "simulation_section_types", column: "main_section_type_id"
   add_foreign_key "simulation_summaries", "simulations"
   add_foreign_key "simulation_summary_by_accounts", "simulation_summaries"
   add_foreign_key "simulations", "assets"

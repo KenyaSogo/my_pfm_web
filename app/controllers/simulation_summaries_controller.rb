@@ -70,6 +70,25 @@ class SimulationSummariesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def simulation_summary_params
-      params.require(:simulation_summary).permit(:simulation_id, :summarized_at)
+      permitted_params = params.require(:simulation_summary).permit(:main_breakdown, :main_section, :search_from, :search_to).to_h
+
+      resolved_params = {}
+      if permitted_params.has_key?(:main_breakdown)
+        if permitted_params[:main_breakdown].present?
+          main_breakdown_params = permitted_params[:main_breakdown].split('_')
+          resolved_params.merge!(main_breakdown_type_id: main_breakdown_params[0], main_breakdown_id: main_breakdown_params[1])
+        else
+          resolved_params.merge!(main_breakdown_type_id: '', main_breakdown_id: '')
+        end
+      end
+      if permitted_params.has_key?(:main_section)
+        if permitted_params[:main_section].present?
+          main_section_params = permitted_params[:main_section].split('_')
+          resolved_params.merge!(main_section_type_id: main_section_params[0], main_section_id: main_section_params[1])
+        else
+          resolved_params.merge!(main_section_type_id: '', main_section_id: '')
+        end
+      end
+      resolved_params.merge!(permitted_params.slice(:search_from, :search_to))
     end
 end

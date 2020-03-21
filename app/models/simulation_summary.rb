@@ -7,8 +7,62 @@ class SimulationSummary < ApplicationRecord
   has_many :sum_by_account_classes, dependent: :destroy
 
   validate :validate_unity_within_simulation, on: :create
+  validates :main_breakdown_type_id, :main_breakdown_id, :main_section_type_id, :main_section_id, :search_from, :search_to,
+              presence: { message: 'main_breakdown, main_section, search_from, search_to must be all filled or all blank' }, on: :update, if: :main_view_setting?
+  validates :main_breakdown_type_id, inclusion: { in: :existing_breakdown_type_ids }, allow_nil: true
+  validates :main_breakdown_id, inclusion: { in: :related_breakdown_ids }, allow_nil: true
+  validates :main_section_type_id, inclusion: { in: :breakdown_related_section_type_ids }, allow_nil: true
+  validates :main_section_id, inclusion: { in: :related_section_ids }, allow_nil: true
+  validates :search_from, inclusion: { in: -12..0 }, allow_nil: true
+  validates :search_to, inclusion: { in: 1..12 }, allow_nil: true
 
   private
+
+  def related_section_ids
+    case main_section_type_id
+    when 1 # asset_account
+      simulation_summary_by_account.sum_account_dailies.pluck(:asset_account_id).uniq
+    when 2 # asset_type
+      summary_by_asset_type.sum_asset_type_dailies.pluck(:asset_type_id).uniq
+    when 3 # asset_account_class
+      SumByAccountClass.where(id: main_breakdown_id).joins(:sum_acct_class_dailies)
+        .select(sum_acct_class_dailies: :simulation_acct_class_id).distinct.pluck(:simulation_acct_class_id).compact
+    end
+  end
+
+  def breakdown_related_section_type_ids
+    case main_breakdown_type_id
+    when 1 # by_account
+      [1] # asset_account
+    when 2 # by_asset_type
+      [2] # asset_type
+    when 3 # by_account_class
+      [3] # asset_account_class
+    end
+  end
+
+  def related_breakdown_ids
+    case main_breakdown_type_id
+    when 1 # by_account
+      [simulation_summary_by_account.id]
+    when 2 # by_asset_type
+      [summary_by_asset_type.id]
+    when 3 # by_account_class
+      sum_by_account_classes.pluck(:id)
+    end
+  end
+
+  def existing_breakdown_type_ids
+    existing_type_ids = [1, 2]
+    existing_type_ids << 3 if sum_by_account_classes.present?
+
+    existing_type_ids
+  end
+
+  def main_view_setting?
+    main_breakdown_type_id.present? || main_breakdown_id.present? || main_section_type_id.present? || main_section_id.present? ||
+      search_from.present? || search_to.present?
+  end
 
   def validate_unity_within_simulation
     return if SimulationSummary.where(simulation_id: simulation.id).size == 0

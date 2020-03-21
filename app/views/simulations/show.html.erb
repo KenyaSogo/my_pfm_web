@@ -15,20 +15,21 @@
     <thead>
       <tr>
         <th>SummarizedAt</th>
-        <th colspan="1">Actions</th>
+        <th colspan="2">Actions</th>
       </tr>
     </thead>
     <tbody>
       <% if @simulation.simulation_summary.blank? %>
         <tr>
           <td>-</td>
-          <td colspan="1">-</td>
+          <td colspan="2">-</td>
         </tr>
       <% else %>
         <% simulation_summary = @simulation.simulation_summary %>
         <tr>
           <td><%= display_datetime_string(simulation_summary.summarized_at) %></td>
           <td><%= link_to 'Show', simulation_summary %></td>
+          <td><%= link_to 'Edit', edit_simulation_summary_path(simulation_summary) %></td>
         </tr>
       <% end %>
     </tbody>

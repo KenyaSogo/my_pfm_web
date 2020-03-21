@@ -1,6 +1,15 @@
 <h1>Editing Simulation Summary</h1>
 
-<%= render 'form', simulation_summary: @simulation_summary %>
+<%= form_for @simulation_summary do |f| %>
+  <%= render "devise/shared/error_messages", resource: f.object %>
+  <%= f.label :main_breakdown %><%= f.select :main_breakdown, main_breakdown_options(@simulation_summary), include_blank: true, selected: selected_main_breakdown(@simulation_summary) %><br />
+  <%= f.label :main_section %><%= f.select :main_section, main_section_options(@simulation_summary), include_blank: true, selected: selected_main_section(@simulation_summary) %><br />
+  <%= f.label :search_from %><%= f.select :search_from, simulation_summary_search_from_options, include_blank: true %><br />
+  <%= f.label :search_to %><%= f.select :search_to, simulation_summary_search_to_options, include_blank: true %><br />
+  <br />
+  <%= f.submit %>
+<% end %>
 
-<%= link_to 'Show', @simulation_summary %> |
-<%= link_to 'Back', simulation_summaries_path %>
+<br />
+
+<%= link_to 'Back', @simulation_summary.simulation %>

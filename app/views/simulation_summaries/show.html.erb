@@ -16,7 +16,7 @@
         <th>Name</th>
         <th>IsActive</th>
         <th>SummarizedAt</th>
-        <th colspan="3">Actions</th>
+        <th colspan="4">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -46,6 +46,7 @@
           <td><%= display_datetime_string(sum_by_account_class.summarized_at) %></td>
           <td><%= link_to 'Show', sum_by_account_class %></td>
           <td><%= link_to 'Edit', edit_sum_by_account_class_path(sum_by_account_class) %></td>
+          <td><%= link_to 'Settings', sum_by_account_class.sum_by_acct_class_setting %></td>
           <td><%= link_to 'Destroy', sum_by_account_class, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>

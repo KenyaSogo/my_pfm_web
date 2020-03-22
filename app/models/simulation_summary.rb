@@ -40,6 +40,30 @@ class SimulationSummary < ApplicationRecord
     current_balance.presence || 0
   end
 
+  def average_balance
+    return 0 if main_breakdown_id.blank? || main_section_id.blank?
+
+    case main_breakdown_type_id
+    when 1 # by_account
+      average_balance = simulation_summary_by_account.sum_account_dailies
+                          .where(asset_account_id: main_section_id)
+                          .where('base_date >= ?', Date.today.since(search_from.month)).where('base_date <= ?', Date.today.since(search_to.month))
+                          .average(:balance).round
+    when 2 # by_asset_type
+      average_balance = summary_by_asset_type.sum_asset_type_dailies
+                          .where(asset_type_id: main_section_id)
+                          .where('base_date >= ?', Date.today.since(search_from.month)).where('base_date <= ?', Date.today.since(search_to.month))
+                          .average(:balance).round
+    when 3 # by_account_class
+      average_balance = sum_by_account_classes.find(main_breakdown_id).sum_acct_class_dailies
+                          .where(simulation_acct_class_id: main_section_id)
+                          .where('base_date >= ?', Date.today.since(search_from.month)).where('base_date <= ?', Date.today.since(search_to.month))
+                          .average(:balance).round
+    end
+
+    average_balance.presence || 0
+  end
+
   private
 
   def related_section_ids

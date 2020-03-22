@@ -81,10 +81,9 @@ class SimulationsController < ApplicationController
   end
 
   def generate
-    asset = @simulation.asset
     SimulationResultGenerateJob.perform_later(@simulation.id)
     respond_to do |format|
-      format.html { redirect_to asset, notice: 'Simulation generate was successfully kicked.' }
+      format.html { redirect_to @simulation, notice: 'Simulation generate was successfully kicked.' }
       format.json { head :no_content }
     end
   end

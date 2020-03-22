@@ -52,7 +52,7 @@
     <tr>
       <td><strong>Actions:</strong></td>
       <% if simulation_summary.present? %>
-        <td><%= link_to 'Show', simulation_summary %><%= '&nbsp;&nbsp;'.html_safe %><%= link_to 'Edit', edit_simulation_summary_path(simulation_summary) %></td>
+        <td><%= link_to 'Generate', generate_simulation_path(simulation_summary.simulation) %><%= '&nbsp;&nbsp;'.html_safe %><%= link_to 'Show', simulation_summary %><%= '&nbsp;&nbsp;'.html_safe %><%= link_to 'Edit', edit_simulation_summary_path(simulation_summary) %></td>
       <% else %>
         <td>-</td>
       <% end %>

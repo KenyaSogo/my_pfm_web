@@ -81,7 +81,7 @@ class AssetsController < ApplicationController
   def aggregate
     ScrapeMyPfmJob.perform_later(@asset.user.id, @asset.id)
     respond_to do |format|
-      format.html { redirect_to assets_url, notice: 'Asset Aggregation was successfully kicked.' }
+      format.html { redirect_to @asset, notice: 'Asset Aggregation was successfully kicked.' }
       format.json { head :no_content }
     end
   end

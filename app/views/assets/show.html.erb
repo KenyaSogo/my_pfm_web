@@ -99,7 +99,7 @@
     </tbody>
   </table>
   <br />
-  <td><%= link_to 'AssetActivities_BulkInquiry', asset_activities_path(asset_id: @asset.id) %></td>
+  <td><%= link_to 'Aggregate', aggregate_asset_path(@asset) %> | <%= link_to 'AssetActivities_BulkInquiry', asset_activities_path(asset_id: @asset.id) %></td>
 </p>
 
 <%= link_to 'Edit', edit_asset_path(@asset) %> |

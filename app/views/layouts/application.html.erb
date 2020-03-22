@@ -13,8 +13,21 @@
       <nav>
         <% if user_signed_in? %>
           <strong><%= link_to 'home', homes_show_path %></strong>
+          <% if current_user.assets.present? %>
+            /
+            <%= link_to 'asset', asset_path(current_user.current_asset || current_user.assets.first, from_menu: true) %>
+            <% if current_user.current_asset.present? && current_user.current_asset.simulations.present? %>
+              /
+              <%= link_to 'simulation', simulation_path(current_user.current_simulation || current_user.current_asset.simulations.first ,from_menu: true) %>
+            <% else %>
+              /
+              simulation
+            <% end %>
+          <% else %>
+            <%= link_to assets_url %>
+          <% end %>
           /
-          <%= link_to "edit profile(#{user_display_name(current_user)})", edit_user_registration_path %>
+          <%= link_to user_display_name(current_user), edit_user_registration_path %>
           /
           <%= link_to 'logout', destroy_user_session_path, method: :delete %>
         <% else %>

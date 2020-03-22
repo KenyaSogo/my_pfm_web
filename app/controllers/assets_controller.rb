@@ -13,6 +13,9 @@ class AssetsController < ApplicationController
   # GET /assets/1
   # GET /assets/1.json
   def show
+    current_user.current_asset = @asset
+    current_user.save!
+
     @asset_activity_count = Asset.where(id: @asset.id).joins(asset_accounts: :asset_activities).size
     @asset_activity_counts_by_account = Asset.where(id: @asset.id).joins(asset_accounts: :asset_activities).group('asset_accounts.id').size
     @entry_detail_counts_by_simulation = Asset.where(id: @asset.id).joins(simulations: { simulation_entries: :simulation_entry_details }).group('simulations.id').size
@@ -86,7 +89,14 @@ class AssetsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_asset
-      @asset = Asset.find(params[:id])
+      if params[:from_menu]
+        @asset = Asset.where(id: params[:id]).first || current_user.assets.first
+        if @asset.blank?
+          redirect_to assets_url, notice: 'There is no assets.'
+        end
+      else
+        @asset = Asset.find(params[:id])
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

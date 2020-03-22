@@ -13,6 +13,9 @@ class SimulationsController < ApplicationController
   # GET /simulations/1
   # GET /simulations/1.json
   def show
+    current_user.current_simulation = @simulation
+    current_user.save!
+
     @entry_detail_counts_by_simulation_entry = Simulation.where(id: @simulation.id)
       .joins(simulation_entries: :simulation_entry_details).group('simulation_entries.id').size
     @result_activity_counts_by_simulation_entry = Simulation.where(id: @simulation.id)
@@ -94,7 +97,14 @@ class SimulationsController < ApplicationController
 
     # Use callbacks to share common setup or constraints between actions.
     def set_simulation
-      @simulation = Simulation.find(params[:id])
+      if params[:from_menu]
+        @simulation = Simulation.where(id: params[:id]).first || current_user.current_asset&.simulations&.first
+        if @simulation.blank?
+          redirect_to homes_show_path, notice: 'Simulation is not exists.'
+        end
+      else
+        @simulation = Simulation.find(params[:id])
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

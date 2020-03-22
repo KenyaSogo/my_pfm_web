@@ -60,10 +60,15 @@ class SumByAccountClassesController < ApplicationController
   # DELETE /sum_by_account_classes/1
   # DELETE /sum_by_account_classes/1.json
   def destroy
-    @sum_by_account_class.destroy
+    simulation_summary = @sum_by_account_class.simulation_summary
     respond_to do |format|
-      format.html { redirect_to sum_by_account_classes_url, notice: 'Sum by account class was successfully destroyed.' }
-      format.json { head :no_content }
+      if @sum_by_account_class.destroy
+        format.html { redirect_to simulation_summary, notice: 'by account class was successfully destroyed.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to simulation_summary, alert: @sum_by_account_class.errors.full_messages.join('. ') }
+        format.json { render json: @sum_by_account_class.errors, status: :unprocessable_entity }
+      end
     end
   end
 

@@ -64,9 +64,7 @@ class SimulationAcctClassesController < ApplicationController
         format.html { redirect_to simulation_acct_classes_path(sum_by_acct_class_setting_id: sum_by_acct_class_setting.id), notice: 'Account class was successfully destroyed.' }
         format.json { head :no_content }
       else
-        @sum_by_acct_class_setting = @simulation_acct_class.sum_by_acct_class_setting
-        @simulation_acct_classes = @sum_by_acct_class_setting.simulation_acct_classes
-        format.html { render :index }
+        format.html { redirect_to simulation_acct_classes_path(sum_by_acct_class_setting_id: sum_by_acct_class_setting.id), alert: @simulation_acct_class.errors.full_messages.join('. ') }
         format.json { render json: @simulation_acct_class.errors, status: :unprocessable_entity }
       end
     end

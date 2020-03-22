@@ -14,6 +14,7 @@ class AssetsController < ApplicationController
   # GET /assets/1.json
   def show
     current_user.current_asset = @asset
+    current_user.current_simulation = nil if current_user.current_asset_id_changed?
     current_user.save!
 
     @asset_activity_count = Asset.where(id: @asset.id).joins(asset_accounts: :asset_activities).size

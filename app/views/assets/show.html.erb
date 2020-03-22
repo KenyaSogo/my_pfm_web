@@ -19,6 +19,7 @@
     <thead>
       <tr>
         <th>Name</th>
+        <th>MainSection</th>
         <th>AverageBalance</th>
         <th>Entry_Counts</th>
         <th>ResultActivity_Counts</th>
@@ -34,12 +35,14 @@
           <td>-</td>
           <td>-</td>
           <td>-</td>
+          <td>-</td>
           <td colspan="4">-</td>
         </tr>
       <% else %>
         <% @asset.simulations.each do |simulation| %>
           <tr>
             <td><%= simulation.name.presence || '-' %></td>
+            <td><%= simulation.simulation_summary.present? ? main_section_name(simulation.simulation_summary) : '-' %></td>
             <td><%= simulation.simulation_summary&.average_balance.presence || '-' %></td>
             <td><%= (@entry_detail_counts_by_simulation[simulation.id].presence || 0) + (@billing_account_counts_by_simulation[simulation.id].presence || 0) %></td>
             <td><%= (@result_activity_counts_by_simulation[simulation.id].presence || 0) + (@billing_activity_counts_by_simulation[simulation.id].presence || 0) %></td>

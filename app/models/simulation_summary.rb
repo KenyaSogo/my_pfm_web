@@ -16,6 +16,30 @@ class SimulationSummary < ApplicationRecord
   validates :search_from, inclusion: { in: -12..0 }, allow_nil: true
   validates :search_to, inclusion: { in: 1..12 }, allow_nil: true
 
+  def current_balance
+    return 0 if main_breakdown_id.blank? || main_section_id.blank?
+
+    case main_breakdown_type_id
+    when 1 # by_account
+      current_balance = simulation_summary_by_account.sum_account_dailies
+                          .where(asset_account_id: main_section_id)
+                          .where(base_date: Date.today)
+                          .pluck(:balance).first
+    when 2 # by_asset_type
+      current_balance = summary_by_asset_type.sum_asset_type_dailies
+                          .where(asset_type_id: main_section_id)
+                          .where(base_date: Date.today)
+                          .pluck(:balance).first
+    when 3 # by_account_class
+      current_balance = sum_by_account_classes.find(main_breakdown_id).sum_acct_class_dailies
+                          .where(simulation_acct_class_id: main_section_id)
+                          .where(base_date: Date.today)
+                          .pluck(:balance).first
+    end
+
+    current_balance.presence || 0
+  end
+
   private
 
   def related_section_ids

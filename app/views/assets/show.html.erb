@@ -61,11 +61,9 @@
     <thead>
       <tr>
         <th>Name</th>
-        <th>LastGeneratedAt</th>
-        <th>EntryDetail_Counts</th>
+        <th>Entry_Counts</th>
         <th>ResultActivity_Counts</th>
-        <th>BillingAccount_Counts</th>
-        <th>BillingActivity_Counts</th>
+        <th>LastGeneratedAt</th>
         <th colspan="4">Actions</th>
       </tr>
     </thead>
@@ -84,11 +82,9 @@
         <% @asset.simulations.each do |simulation| %>
           <tr>
             <td><%= simulation.name.presence || '-' %></td>
+            <td><%= (@entry_detail_counts_by_simulation[simulation.id].presence || 0) + (@billing_account_counts_by_simulation[simulation.id].presence || 0) %></td>
+            <td><%= (@result_activity_counts_by_simulation[simulation.id].presence || 0) + (@billing_activity_counts_by_simulation[simulation.id].presence || 0) %></td>
             <td><%= display_datetime_string(simulation.last_generated_at) %></td>
-            <td><%= @entry_detail_counts_by_simulation[simulation.id].presence || 0 %></td>
-            <td><%= @result_activity_counts_by_simulation[simulation.id].presence || 0 %></td>
-            <td><%= @billing_account_counts_by_simulation[simulation.id].presence || 0 %></td>
-            <td><%= @billing_activity_counts_by_simulation[simulation.id].presence || 0 %></td>
             <td><%= link_to 'Generate', generate_simulation_path(simulation) %></td>
             <td><%= link_to 'Show', simulation %></td>
             <td><%= link_to 'Edit', edit_simulation_path(simulation) %></td>

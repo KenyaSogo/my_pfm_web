@@ -39,19 +39,27 @@
       <tr>
         <td><%= simulation_summary_breakdown_type_name(simulation_summary_by_account) %></td>
         <td>-</td>
-        <td><%= simulation_summary_by_account.is_active.presence || '-' %></td>
-        <td><%= display_datetime_string(simulation_summary_by_account.summarized_at) %></td>
-        <td><%= link_to 'Show', simulation_summary_by_account %></td>
-        <td><%= link_to 'Edit', edit_simulation_summary_by_account_path(simulation_summary_by_account) %></td>
+        <td><%= simulation_summary_by_account&.is_active.presence || '-' %></td>
+        <td><%= display_datetime_string(simulation_summary_by_account&.summarized_at) %></td>
+        <% if simulation_summary_by_account.present? %>
+          <td><%= link_to 'Show', simulation_summary_by_account %></td>
+          <td><%= link_to 'Edit', edit_simulation_summary_by_account_path(simulation_summary_by_account) %></td>
+        <% else %>
+          <td>-</td>
+        <% end %>
       </tr>
       <% summary_by_asset_type = @simulation_summary.summary_by_asset_type %>
       <tr>
         <td><%= simulation_summary_breakdown_type_name(summary_by_asset_type) %></td>
         <td>-</td>
-        <td><%= summary_by_asset_type.is_active.presence || '-' %></td>
-        <td><%= display_datetime_string(summary_by_asset_type.summarized_at) %></td>
-        <td><%= link_to 'Show', summary_by_asset_type %></td>
-        <td><%= link_to 'Edit', edit_summary_by_asset_type_path(summary_by_asset_type) %></td>
+        <td><%= summary_by_asset_type&.is_active.presence || '-' %></td>
+        <td><%= display_datetime_string(summary_by_asset_type&.summarized_at) %></td>
+        <% if summary_by_asset_type.present? %>
+          <td><%= link_to 'Show', summary_by_asset_type %></td>
+          <td><%= link_to 'Edit', edit_summary_by_asset_type_path(summary_by_asset_type) %></td>
+        <% else %>
+          <td>-</td>
+        <% end %>
       </tr>
       <% @simulation_summary.sum_by_account_classes.each do |sum_by_account_class| %>
         <tr>

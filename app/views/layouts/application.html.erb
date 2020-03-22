@@ -36,7 +36,7 @@
             <%= link_to assets_url %>
           <% end %>
           /
-          <%= link_to user_display_name(current_user), edit_user_registration_path %>
+          <%= link_to 'edit profile', edit_user_registration_path %>
           /
           <%= link_to 'logout', destroy_user_session_path, method: :delete %>
         <% else %>

@@ -14,48 +14,6 @@
 </p>
 
 <p>
-  <h2>AssetAccounts</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>InitialBalance</th>
-        <th>InitialBalanceBaseDate</th>
-        <th>AssetActivity_Counts</th>
-        <th colspan="2">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% if @asset.asset_accounts.blank? %>
-        <tr>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td colspan="2">-</td>
-        </tr>
-      <% else %>
-        <% @asset.asset_accounts.each do |asset_account| %>
-          <tr>
-            <td><%= asset_account.name %></td>
-            <td><%= asset_account.asset_type&.name.presence || '-' %></td>
-            <td><%= asset_account.initial_balance.presence || '-' %></td>
-            <td><%= display_date_string(asset_account.initial_balance_base_date) %></td>
-            <td><%= @asset_activity_counts_by_account[asset_account.id].presence || 0 %></td>
-            <td><%= link_to 'Show', asset_account %></td>
-            <td><%= link_to 'Edit', edit_asset_account_path(asset_account) %></td>
-          </tr>
-        <% end %>
-      <% end %>
-    </tbody>
-  </table>
-  <br />
-  <td><%= link_to 'AssetActivities_BulkInquiry', asset_activities_path(asset_id: @asset.id) %></td>
-</p>
-
-<p>
   <h2>Simulations</h2>
   <table>
     <thead>
@@ -97,6 +55,48 @@
   </table>
   <br />
   <%= link_to 'New Simulation', new_simulation_path(asset_id: @asset.id) %>
+</p>
+
+<p>
+  <h2>AssetAccounts</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>InitialBalance</th>
+        <th>InitialBalanceBaseDate</th>
+        <th>AssetActivity_Counts</th>
+        <th colspan="2">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @asset.asset_accounts.blank? %>
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td colspan="2">-</td>
+        </tr>
+      <% else %>
+        <% @asset.asset_accounts.each do |asset_account| %>
+          <tr>
+            <td><%= asset_account.name %></td>
+            <td><%= asset_account.asset_type&.name.presence || '-' %></td>
+            <td><%= asset_account.initial_balance.presence || '-' %></td>
+            <td><%= display_date_string(asset_account.initial_balance_base_date) %></td>
+            <td><%= @asset_activity_counts_by_account[asset_account.id].presence || 0 %></td>
+            <td><%= link_to 'Show', asset_account %></td>
+            <td><%= link_to 'Edit', edit_asset_account_path(asset_account) %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <br />
+  <td><%= link_to 'AssetActivities_BulkInquiry', asset_activities_path(asset_id: @asset.id) %></td>
 </p>
 
 <%= link_to 'Edit', edit_asset_path(@asset) %> |

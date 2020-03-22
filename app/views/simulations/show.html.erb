@@ -18,6 +18,8 @@
         <th>MainSection</th>
         <th>CurrentBalance</th>
         <th>AverageBalance</th>
+        <th>MaxBalance</th>
+        <th>MinBalance</th>
         <th>SearchFrom</th>
         <th>SearchTo</th>
         <th>SummarizedAt</th>
@@ -34,6 +36,8 @@
           <td>-</td>
           <td>-</td>
           <td>-</td>
+          <td>-</td>
+          <td>-</td>
           <td colspan="2">-</td>
         </tr>
       <% else %>
@@ -43,6 +47,8 @@
           <td><%= main_section_name(simulation_summary) %></td>
           <td><%= simulation_summary.current_balance %></td>
           <td><%= simulation_summary.average_balance %></td>
+          <td><%= simulation_summary.max_balance %></td>
+          <td><%= simulation_summary.min_balance %></td>
           <td><%= simulation_summary_search_from_name(simulation_summary.search_from) %></td>
           <td><%= simulation_summary_search_to_name(simulation_summary.search_to) %></td>
           <td><%= display_datetime_string(simulation_summary.summarized_at) %></td>

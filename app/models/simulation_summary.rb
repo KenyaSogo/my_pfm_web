@@ -64,6 +64,54 @@ class SimulationSummary < ApplicationRecord
     average_balance.presence || 0
   end
 
+  def max_balance
+    return 0 if main_breakdown_id.blank? || main_section_id.blank?
+
+    case main_breakdown_type_id
+    when 1 # by_account
+      max_balance = simulation_summary_by_account.sum_account_dailies
+                      .where(asset_account_id: main_section_id)
+                      .where('base_date >= ?', Date.today.since(search_from.month)).where('base_date <= ?', Date.today.since(search_to.month))
+                      .maximum(:balance)
+    when 2 # by_asset_type
+      max_balance = summary_by_asset_type.sum_asset_type_dailies
+                      .where(asset_type_id: main_section_id)
+                      .where('base_date >= ?', Date.today.since(search_from.month)).where('base_date <= ?', Date.today.since(search_to.month))
+                      .maximum(:balance)
+    when 3 # by_account_class
+      max_balance = sum_by_account_classes.find(main_breakdown_id).sum_acct_class_dailies
+                      .where(simulation_acct_class_id: main_section_id)
+                      .where('base_date >= ?', Date.today.since(search_from.month)).where('base_date <= ?', Date.today.since(search_to.month))
+                      .maximum(:balance)
+    end
+
+    max_balance.presence || 0
+  end
+
+  def min_balance
+    return 0 if main_breakdown_id.blank? || main_section_id.blank?
+
+    case main_breakdown_type_id
+    when 1 # by_account
+      min_balance = simulation_summary_by_account.sum_account_dailies
+                      .where(asset_account_id: main_section_id)
+                      .where('base_date >= ?', Date.today.since(search_from.month)).where('base_date <= ?', Date.today.since(search_to.month))
+                      .minimum(:balance)
+    when 2 # by_asset_type
+      min_balance = summary_by_asset_type.sum_asset_type_dailies
+                      .where(asset_type_id: main_section_id)
+                      .where('base_date >= ?', Date.today.since(search_from.month)).where('base_date <= ?', Date.today.since(search_to.month))
+                      .minimum(:balance)
+    when 3 # by_account_class
+      min_balance = sum_by_account_classes.find(main_breakdown_id).sum_acct_class_dailies
+                      .where(simulation_acct_class_id: main_section_id)
+                      .where('base_date >= ?', Date.today.since(search_from.month)).where('base_date <= ?', Date.today.since(search_to.month))
+                      .minimum(:balance)
+    end
+
+    min_balance.presence || 0
+  end
+
   private
 
   def related_section_ids

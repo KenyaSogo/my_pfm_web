@@ -11,6 +11,22 @@ class SimulationSummariesController < ApplicationController
   # GET /simulation_summaries/1
   # GET /simulation_summaries/1.json
   def show
+    if @simulation_summary.main_breakdown_type_id.present? && @simulation_summary.main_section_type_id.present?
+      case @simulation_summary.main_breakdown_type_id
+      when 1
+        query = @simulation_summary.simulation_summary_by_account.sum_account_dailies
+                  .where(asset_account_id: @simulation_summary.main_section_id)
+      when 2
+        query = @simulation_summary.summary_by_asset_type.sum_asset_type_dailies
+                  .where(asset_type_id: @simulation_summary.main_section_id)
+      when 3
+        query = @simulation_summary.sum_by_account_classes.find(@simulation_summary.main_breakdown_id).sum_acct_class_dailies
+                  .where(simulation_acct_class_id: @simulation_summary.main_section_id)
+      end
+      @data = query.where('base_date >= ?', Date.today.since(@simulation_summary.search_from.month))
+                .where('base_date <= ?', Date.today.since(@simulation_summary.search_to.month))
+                .pluck(:base_date, :balance)
+    end
   end
 
   # GET /simulation_summaries/new

@@ -3,9 +3,24 @@
 <p>
   <strong>SimulationName:</strong>
   <%= @simulation_summary.simulation.name %><br />
+  <strong>MainBreakdown:</strong>
+  <%= main_breakdown_name(@simulation_summary) %><br />
+  <strong>MainSection:</strong>
+  <%= main_section_name(@simulation_summary) %><br />
+  <strong>SearchFrom:</strong>
+  <%= simulation_summary_search_from_name(@simulation_summary.search_from) %><br />
+  <strong>SearchTo:</strong>
+  <%= simulation_summary_search_to_name(@simulation_summary.search_to) %><br />
   <strong>SummarizedAt:</strong>
   <%= display_datetime_string(@simulation_summary.summarized_at) %>
 </p>
+
+<% if @data.present? %>
+  <p>
+    <h2>MainSummaryBreakdownChart</h2>
+    <%= area_chart @data, points: false, thousands: ',' %>
+  </p>
+<% end %>
 
 <p>
   <h2>SimulationSummaryBreakdowns</h2>

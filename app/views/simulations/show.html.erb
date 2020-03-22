@@ -12,51 +12,51 @@
 <p>
   <h2>SimulationSummary</h2>
   <table>
-    <thead>
-      <tr>
-        <th>MainBreakdown</th>
-        <th>MainSection</th>
-        <th>CurrentBalance</th>
-        <th>AverageBalance</th>
-        <th>MaxBalance</th>
-        <th>MinBalance</th>
-        <th>SearchFrom</th>
-        <th>SearchTo</th>
-        <th>SummarizedAt</th>
-        <th colspan="2">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% if @simulation.simulation_summary.blank? %>
-        <tr>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td colspan="2">-</td>
-        </tr>
+    <% simulation_summary = @simulation.simulation_summary %>
+    <tr>
+      <td><strong>MainBreakdown:</strong></td>
+      <td><%= simulation_summary.present? ? main_breakdown_name(simulation_summary) : '-' %></td>
+    </tr>
+    <tr>
+      <td><strong>MainSection:</strong></td>
+      <td><%= simulation_summary.present? ? main_section_name(simulation_summary) : '-' %></td>
+    </tr>
+    <tr>
+      <td><strong>CurrentBalance:</strong></td>
+      <td><%= simulation_summary.present? ? simulation_summary.current_balance : '-' %></td>
+    </tr>
+    <tr>
+      <td><strong>AverageBalance:</strong></td>
+      <td><%= simulation_summary.present? ? simulation_summary.average_balance : '-' %></td>
+    </tr>
+    <tr>
+      <td><strong>MaxBalance:</strong></td>
+      <td><%= simulation_summary.present? ? simulation_summary.max_balance : '-' %></td>
+    </tr>
+    <tr>
+      <td><strong>MinBalance:</strong></td>
+      <td><%= simulation_summary.present? ? simulation_summary.min_balance : '-' %></td>
+    </tr>
+    <tr>
+      <td><strong>SearchFrom:</strong></td>
+      <td><%= simulation_summary.present? ? simulation_summary_search_from_name(simulation_summary.search_from) : '-' %></td>
+    </tr>
+    <tr>
+      <td><strong>SearchTo:</strong></td>
+      <td><%= simulation_summary.present? ? simulation_summary_search_to_name(simulation_summary.search_to) : '-' %></td>
+    </tr>
+    <tr>
+      <td><strong>SummarizedAt:</strong></td>
+      <td><%= simulation_summary.present? ? display_datetime_string(simulation_summary.summarized_at) : '-' %></td>
+    </tr>
+    <tr>
+      <td><strong>Actions:</strong></td>
+      <% if simulation_summary.present? %>
+        <td><%= link_to 'Show', simulation_summary %><%= '&nbsp;&nbsp;'.html_safe %><%= link_to 'Edit', edit_simulation_summary_path(simulation_summary) %></td>
       <% else %>
-        <% simulation_summary = @simulation.simulation_summary %>
-        <tr>
-          <td><%= main_breakdown_name(simulation_summary) %></td>
-          <td><%= main_section_name(simulation_summary) %></td>
-          <td><%= simulation_summary.current_balance %></td>
-          <td><%= simulation_summary.average_balance %></td>
-          <td><%= simulation_summary.max_balance %></td>
-          <td><%= simulation_summary.min_balance %></td>
-          <td><%= simulation_summary_search_from_name(simulation_summary.search_from) %></td>
-          <td><%= simulation_summary_search_to_name(simulation_summary.search_to) %></td>
-          <td><%= display_datetime_string(simulation_summary.summarized_at) %></td>
-          <td><%= link_to 'Show', simulation_summary %></td>
-          <td><%= link_to 'Edit', edit_simulation_summary_path(simulation_summary) %></td>
-        </tr>
+        <td>-</td>
       <% end %>
-    </tbody>
+    </tr>
   </table>
   <br />
 </p>

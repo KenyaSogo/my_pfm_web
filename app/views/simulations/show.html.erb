@@ -14,6 +14,10 @@
   <table>
     <thead>
       <tr>
+        <th>MainBreakdown</th>
+        <th>MainSection</th>
+        <th>SearchFrom</th>
+        <th>SearchTo</th>
         <th>SummarizedAt</th>
         <th colspan="2">Actions</th>
       </tr>
@@ -22,11 +26,19 @@
       <% if @simulation.simulation_summary.blank? %>
         <tr>
           <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
           <td colspan="2">-</td>
         </tr>
       <% else %>
         <% simulation_summary = @simulation.simulation_summary %>
         <tr>
+          <td><%= main_breakdown_name(simulation_summary) %></td>
+          <td><%= main_section_name(simulation_summary) %></td>
+          <td><%= simulation_summary_search_from_name(simulation_summary.search_from) %></td>
+          <td><%= simulation_summary_search_to_name(simulation_summary.search_to) %></td>
           <td><%= display_datetime_string(simulation_summary.summarized_at) %></td>
           <td><%= link_to 'Show', simulation_summary %></td>
           <td><%= link_to 'Edit', edit_simulation_summary_path(simulation_summary) %></td>

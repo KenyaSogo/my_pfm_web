@@ -73,4 +73,38 @@ module SimulationSummariesHelper
   def simulation_summary_search_to_options
     (1..12).map { |i| ["#{i}_months_ahead", i] }
   end
+
+  def main_breakdown_name(simulation_summary)
+    case simulation_summary.main_breakdown_type_id
+    when 1, 2 # by_account, by_asset_type
+      simulation_summary.main_breakdown_type.name
+    when 3 # by_account_class
+      "#{simulation_summary.main_breakdown_type.name}: #{SumByAccountClass.find(simulation_summary.main_breakdown_id).name}"
+    else
+      '-'
+    end
+  end
+
+  def main_section_name(simulation_summary)
+    case simulation_summary.main_section_type_id
+    when 1 # asset_account
+      AssetAccount.find(simulation_summary.main_section_id).name
+    when 2 # asset_type
+      AssetType.find(simulation_summary.main_section_id).name
+    when 3 # asset_account_class
+      SimulationAcctClass.find(simulation_summary.main_section_id).name
+    else
+      '-'
+    end
+  end
+
+  def simulation_summary_search_from_name(id)
+    return '-' if id.blank?
+    simulation_summary_search_from_options.to_h.key(id)
+  end
+
+  def simulation_summary_search_to_name(id)
+    return '-' if id.blank?
+    simulation_summary_search_to_options.to_h.key(id)
+  end
 end

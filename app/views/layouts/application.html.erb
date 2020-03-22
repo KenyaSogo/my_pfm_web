@@ -17,11 +17,20 @@
             /
             <%= link_to 'asset', asset_path(current_user.current_asset || current_user.assets.first, from_menu: true) %>
             <% if current_user.current_asset.present? && current_user.current_asset.simulations.present? %>
+              <% simulation = current_user.current_simulation || current_user.current_asset.simulations.first %>
               /
-              <%= link_to 'simulation', simulation_path(current_user.current_simulation || current_user.current_asset.simulations.first ,from_menu: true) %>
+              <%= link_to 'simulation', simulation_path(simulation, from_menu: true) %>
+              /
+              <% if simulation.simulation_summary.present? %>
+                <%= link_to 'summary', simulation_summary_path(simulation.simulation_summary, from_menu: true) %>
+              <% else %>
+                summary
+              <% end %>
             <% else %>
               /
               simulation
+              /
+              summary
             <% end %>
           <% else %>
             <%= link_to assets_url %>

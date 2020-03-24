@@ -136,6 +136,7 @@ class SimulationResultGenerateJob < ApplicationJob
       daily_sums = daily_sum_results[account_id]
 
       prev_balance = AssetAccount.find(account_id).initial_balance.presence || 0
+      logger.info "account_id: #{account_id}, min_date: #{daily_sums.keys.min.to_date}, max_date: #{sum_end_date.to_date}, daily_sums: #{daily_sums}"
       daily_balances = (daily_sums.keys.min.to_date..sum_end_date.to_date).each_with_object({}) do |date, daily_h|
         amount = daily_sums[date] || 0
         current_balance = prev_balance + amount

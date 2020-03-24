@@ -72,3 +72,5 @@ gem 'ransack'
 gem 'chartkick'
 
 gem 'activerecord-import'
+
+gem 'bootstrap'

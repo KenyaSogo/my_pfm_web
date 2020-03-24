@@ -23,7 +23,7 @@ Rails.application.routes.draw do
       get 'aggregate'
     end
   end
-  root 'homes#index'
+  root 'homes#show'
 
   get 'homes/index'
   get 'homes/show'

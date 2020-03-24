@@ -74,3 +74,4 @@ gem 'chartkick'
 gem 'activerecord-import'
 
 gem 'bootstrap'
+gem 'bootswatch'

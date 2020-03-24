@@ -1,4 +1,5 @@
 class SumByAccountClassesController < ApplicationController
+  before_action :sign_in_required
   before_action :set_simulation_summary, only: [:index, :new, :create]
   before_action -> { current_users_resource_filter(@simulation_summary.simulation.asset) }, only: [:index, :new, :create]
   before_action :set_sum_by_account_class, only: [:show, :edit, :update, :destroy]

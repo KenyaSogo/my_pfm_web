@@ -1,4 +1,5 @@
 class SimulationSummariesController < ApplicationController
+  before_action :sign_in_required
   before_action :set_simulation_summary, only: [:show, :edit, :update, :destroy]
   before_action -> { current_users_resource_filter(@simulation_summary.simulation.asset) }, only: [:show, :edit, :update, :destroy, :generate]
 

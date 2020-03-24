@@ -1,4 +1,5 @@
 class SimulationResultActivitiesController < ApplicationController
+  before_action :sign_in_required
   before_action :set_simulation_result_activity, only: [:show, :edit, :update, :destroy]
 
   # GET /simulation_result_activities

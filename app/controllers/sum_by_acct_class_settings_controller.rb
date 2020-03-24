@@ -1,4 +1,5 @@
 class SumByAcctClassSettingsController < ApplicationController
+  before_action :sign_in_required
   before_action :set_sum_by_acct_class_setting, only: [:show, :edit, :update, :destroy]
 
   # GET /sum_by_acct_class_settings

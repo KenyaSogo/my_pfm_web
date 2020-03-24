@@ -1,4 +1,5 @@
 class AcctToClassMapsController < ApplicationController
+  before_action :sign_in_required
   before_action :set_acct_to_class_map, only: [:edit, :update]
   before_action -> { current_users_resource_filter(@acct_to_class_map.sum_by_acct_class_setting.sum_by_account_class.simulation_summary.simulation.asset) }, only: [:edit, :update]
 

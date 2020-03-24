@@ -1,4 +1,5 @@
 class BillingActivitiesController < ApplicationController
+  before_action :sign_in_required
   before_action :set_billing_activity, only: [:show, :edit, :update, :destroy]
 
   # GET /billing_activities

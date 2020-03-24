@@ -1,4 +1,5 @@
 class SummaryByAssetTypesController < ApplicationController
+  before_action :sign_in_required
   before_action :set_summary_by_asset_type, only: [:show, :edit, :update, :destroy]
   before_action -> { current_users_resource_filter(@summary_by_asset_type.simulation_summary.simulation.asset) }, only: [:show, :edit, :update, :destroy, :generate]
 

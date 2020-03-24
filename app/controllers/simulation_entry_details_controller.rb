@@ -1,4 +1,5 @@
 class SimulationEntryDetailsController < ApplicationController
+  before_action :sign_in_required
   before_action :set_simulation_entry, only: [:index, :new, :create]
   before_action -> { current_users_resource_filter(@simulation_entry.simulation.asset) }, only: [:index, :new, :create]
   before_action :set_simulation_entry_detail, only: [:show, :edit, :update, :destroy]

@@ -10,16 +10,18 @@ class SimulationResultGenerateJob < ApplicationJob
     last_generated_at = simulation.last_generated_at.presence || Time.new(1900, 1, 1, 0, 0, 0)
 
     ApplicationRecord.transaction do
-      simulation.simulation_entries.each do |simulation_entry|
+      result_activities = []
+      simulation.simulation_entries.each_with_object([]) do |simulation_entry|
         updated_simulation_entry_details(simulation_entry, last_generated_at).each do |entry_detail|
           entry_detail.simulation_result_activities.delete_all
           apply_dates = simulation_entry.entry_type_any_time? ? [Date.new(entry_detail.transaction_date_year, entry_detail.transaction_date_month, entry_detail.transaction_date_day)]
             : simulation_entry.apply_from..simulation_entry.apply_to
           apply_dates.each do |apply_date|
-            create_result_activity!(entry_detail, apply_date) if transaction_date?(apply_date, entry_detail)
+            result_activities << initialize_result_activity(entry_detail, apply_date) if transaction_date?(apply_date, entry_detail)
           end
         end
       end
+      SimulationResultActivity.import! result_activities
 
       simulation.billing_accounts.each do |billing_account|
         if billing_account.updated_at >= last_generated_at
@@ -61,9 +63,10 @@ class SimulationResultGenerateJob < ApplicationJob
         daily_balance_results = aggregate_daily_balance(daily_sum_results)
 
         simulation_summary_by_account.sum_account_dailies.delete_all
+        sum_account_dailies = []
         daily_balance_results.each do |account_id, daily_balances|
           daily_balances.each do |base_date, balance|
-            SumAccountDaily.create!(
+            sum_account_dailies << SumAccountDaily.new(
               simulation_summary_by_account_id: simulation_summary_by_account.id,
               base_date: base_date,
               asset_account_id: account_id,
@@ -71,6 +74,7 @@ class SimulationResultGenerateJob < ApplicationJob
             )
           end
         end
+        SumAccountDaily.import! sum_account_dailies
 
         simulation_summary_by_account.update!(summarized_at: Time.now)
       else
@@ -82,9 +86,10 @@ class SimulationResultGenerateJob < ApplicationJob
         daily_sum_results = fetch_daily_sums_by_asset_type(simulation_summary_by_account)
 
         summary_by_asset_type.sum_asset_type_dailies.delete_all
+        sum_asset_type_dailies = []
         daily_sum_results.each do |asset_type_id, daily_sums|
           daily_sums.sort.each do |base_date, balance|
-            SumAssetTypeDaily.create!(
+            sum_asset_type_dailies << SumAssetTypeDaily.new(
               summary_by_asset_type_id: summary_by_asset_type.id,
               base_date: base_date,
               asset_type_id: asset_type_id,
@@ -92,6 +97,7 @@ class SimulationResultGenerateJob < ApplicationJob
             )
           end
         end
+        SumAssetTypeDaily.import! sum_asset_type_dailies
 
         summary_by_asset_type.update!(summarized_at: Time.now)
       else
@@ -104,9 +110,10 @@ class SimulationResultGenerateJob < ApplicationJob
           daily_sum_results = fetch_daily_sums_by_account_class(simulation_summary_by_account, sum_by_account_class)
 
           sum_by_account_class.sum_acct_class_dailies.delete_all
+          sum_acct_class_dailies = []
           daily_sum_results.each do |account_class_id, daily_sums|
             daily_sums.sort.each do |base_date, balance|
-              SumAcctClassDaily.create!(
+              sum_acct_class_dailies << SumAcctClassDaily.new(
                 sum_by_account_class_id: sum_by_account_class.id,
                 base_date: base_date,
                 simulation_acct_class_id: account_class_id,
@@ -114,6 +121,7 @@ class SimulationResultGenerateJob < ApplicationJob
               )
             end
           end
+          SumAcctClassDaily.import! sum_acct_class_dailies
 
           sum_by_account_class.update!(summarized_at: Time.now)
         else
@@ -424,9 +432,8 @@ class SimulationResultGenerateJob < ApplicationJob
     end
   end
 
-  def create_result_activity!(simulation_entry_detail, transaction_date)
-    result_activity = SimulationResultActivity.new
-    result_activity.attributes = {
+  def initialize_result_activity(simulation_entry_detail, transaction_date)
+    SimulationResultActivity.new(
       simulation_entry_detail_id: simulation_entry_detail.id,
       asset_account_id: simulation_entry_detail.asset_account.id,
       transaction_date: transaction_date,
@@ -436,7 +443,6 @@ class SimulationResultGenerateJob < ApplicationJob
       sub_item_id: simulation_entry_detail.sub_item_id,
       is_transfer: simulation_entry_detail.is_transfer,
       is_calculation_target: simulation_entry_detail.is_calculation_target,
-    }
-    result_activity.save!
+    )
   end
 end

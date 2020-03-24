@@ -70,3 +70,5 @@ gem 'kaminari'
 gem 'ransack'
 
 gem 'chartkick'
+
+gem 'activerecord-import'

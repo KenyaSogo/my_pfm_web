@@ -12,7 +12,7 @@ class SimulationResultGenerateJob < ApplicationJob
     ApplicationRecord.transaction do
       simulation.simulation_entries.each do |simulation_entry|
         updated_simulation_entry_details(simulation_entry, last_generated_at).each do |entry_detail|
-          entry_detail.simulation_result_activities.each { |a| a.destroy! }
+          entry_detail.simulation_result_activities.delete_all
           apply_dates = simulation_entry.entry_type_any_time? ? [Date.new(entry_detail.transaction_date_year, entry_detail.transaction_date_month, entry_detail.transaction_date_day)]
             : simulation_entry.apply_from..simulation_entry.apply_to
           apply_dates.each do |apply_date|
@@ -23,7 +23,8 @@ class SimulationResultGenerateJob < ApplicationJob
 
       simulation.billing_accounts.each do |billing_account|
         if billing_account.updated_at >= last_generated_at
-          (billing_account.billing_activities + billing_account.billing_complement_activities).each { |a| a.destroy! }
+          billing_account.billing_activities.delete_all
+          billing_account.billing_complement_activities.delete_all
         end
 
         current_month_closing_date = Date.new(today.year, today.month, billing_account.billing_closing_day)
@@ -59,7 +60,7 @@ class SimulationResultGenerateJob < ApplicationJob
         daily_sum_results = merge_daily_sum_results(asset_activity_daily_sums, simulations_activity_daily_sums)
         daily_balance_results = aggregate_daily_balance(daily_sum_results)
 
-        simulation_summary_by_account.sum_account_dailies.each { |s| s.destroy! }
+        simulation_summary_by_account.sum_account_dailies.delete_all
         daily_balance_results.each do |account_id, daily_balances|
           daily_balances.each do |base_date, balance|
             SumAccountDaily.create!(
@@ -73,14 +74,14 @@ class SimulationResultGenerateJob < ApplicationJob
 
         simulation_summary_by_account.update!(summarized_at: Time.now)
       else
-        simulation_summary_by_account.sum_account_dailies.each { |s| s.destroy! }
+        simulation_summary_by_account.sum_account_dailies.delete_all
         simulation_summary_by_account.update!(summarized_at: nil)
       end
 
       if summary_by_asset_type.is_active
         daily_sum_results = fetch_daily_sums_by_asset_type(simulation_summary_by_account)
 
-        summary_by_asset_type.sum_asset_type_dailies.each { |s| s.destroy! }
+        summary_by_asset_type.sum_asset_type_dailies.delete_all
         daily_sum_results.each do |asset_type_id, daily_sums|
           daily_sums.sort.each do |base_date, balance|
             SumAssetTypeDaily.create!(
@@ -94,7 +95,7 @@ class SimulationResultGenerateJob < ApplicationJob
 
         summary_by_asset_type.update!(summarized_at: Time.now)
       else
-        summary_by_asset_type.sum_asset_type_dailies.each { |s| s.destroy! }
+        summary_by_asset_type.sum_asset_type_dailies.delete_all
         summary_by_asset_type.update!(summarized_at: nil)
       end
 
@@ -102,7 +103,7 @@ class SimulationResultGenerateJob < ApplicationJob
         if sum_by_account_class.is_active
           daily_sum_results = fetch_daily_sums_by_account_class(simulation_summary_by_account, sum_by_account_class)
 
-          sum_by_account_class.sum_acct_class_dailies.each { |s| s.destroy! }
+          sum_by_account_class.sum_acct_class_dailies.delete_all
           daily_sum_results.each do |account_class_id, daily_sums|
             daily_sums.sort.each do |base_date, balance|
               SumAcctClassDaily.create!(
@@ -116,7 +117,7 @@ class SimulationResultGenerateJob < ApplicationJob
 
           sum_by_account_class.update!(summarized_at: Time.now)
         else
-          sum_by_account_class.sum_acct_class_dailies.each { |s| s.destroy! }
+          sum_by_account_class.sum_acct_class_dailies.delete_all
           sum_by_account_class.update!(summarized_at: nil)
         end
       end

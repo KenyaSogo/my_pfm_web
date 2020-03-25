@@ -2,12 +2,12 @@
 
 <table class='table table-striped table-sm'>
   <thead>
-    <tr>
+    <tr class='table-primary'>
       <th>User</th>
       <th>AssetName</th>
       <th>AssetActivity_Counts</th>
       <th>LastAggregatedAt</th>
-      <th colspan="4">Actions</th>
+      <th>Actions</th>
     </tr>
   </thead>
 
@@ -18,7 +18,7 @@
         <td>-</td>
         <td>-</td>
         <td>-</td>
-        <td colspan="4">-</td>
+        <td>-</td>
       </tr>
     <% else %>
       <% @assets.each do |asset| %>
@@ -27,10 +27,14 @@
           <td><%= asset.name %></td>
           <td><%= @asset_activity_counts[asset.id] %></td>
           <td><%= display_datetime_string(asset.last_aggregate_succeeded_at) %></td>
-          <td><%= link_to 'Aggregate', aggregate_asset_path(asset) %></td>
-          <td><%= link_to 'Show', asset %></td>
-          <td><%= link_to 'Edit', edit_asset_path(asset) %></td>
-          <td><%= link_to 'Destroy', asset, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td>
+            <%= link_to 'Aggregate', aggregate_asset_path(asset), class: 'btn btn-primary btn-sm' %>
+            <div class='btn-group' role='group' aria-label='action_menu'>
+              <%= link_to 'Show', asset, class: 'btn btn-secondary btn-sm' %>
+              <%= link_to 'Edit', edit_asset_path(asset), class: 'btn btn-secondary btn-sm' %>
+              <%= link_to 'Destroy', asset, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-secondary btn-sm' %>
+            </div>
+          </td>
         </tr>
       <% end %>
     <% end %>

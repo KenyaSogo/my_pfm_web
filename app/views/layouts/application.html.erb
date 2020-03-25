@@ -56,8 +56,24 @@
     </nav>
 
     <div class='container'>
-      <p class="notice" id="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
+      <p class='notice' id='notice'>
+        <% if notice %>
+          </br>
+          <div class="alert alert-dismissible alert-info">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong><%= notice %></strong>
+          </div>
+        <% end %>
+      </p>
+      <p class='alert'>
+        <% if alert %>
+          </br>
+          <div class="alert alert-dismissible alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong><%= alert %></strong>
+          </div>
+        <% end %>
+      </p>
       <%= yield %>
     </div>
   </body>

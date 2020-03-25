@@ -1,59 +1,98 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<h1>Edit <%= resource_name.to_s.humanize %></h1>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+</br>
 
-  <div class="field">
-    <%= f.label :user_name %>
-    <%= f.text_field :user_name %>
+<div class='row'>
+  <div class='col-md-12'>
+    <%= render 'devise/shared/error_messages', resource: resource %>
   </div>
+</div>
 
-  <div class="field">
-    <%= f.label :pfm_account_id %>
-    <%= f.text_field :pfm_account_id %>
-  </div>
-
-  <div class="field">
-    <%= f.label :pfm_account_password %>
-    <%= f.password_field :pfm_account_password, value: @user.pfm_account_password.blank? ? '' : @user.pfm_account_password %>
-  </div>
-
-  <div class="field">
-    <%= f.label :email %>
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
+<p>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :user_name, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.text_field :user_name, placeholder: 'user name', class: 'form-control' %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :pfm_account_id, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.text_field :pfm_account_id, placeholder: 'pfm email', class: 'form-control' %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :pfm_account_password, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.password_field :pfm_account_password, value: @user.pfm_account_password.blank? ? '' : @user.pfm_account_password, placeholder: 'pfm password', class: 'form-control' %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :email, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.text_field :email, autofocus: true, autocomplete: 'email', placeholder: 'email', class: 'form-control' %>
+      </div>
+    </div>
+    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
     <% end %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %>
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :password, class: 'col-form-label' %><br />
+        <small class='form-text text-muted'>(leave blank if you don't want to change it)</small>
+      </div>
+      <div class='col-md-5'>
+        <%= f.password_field :password, autocomplete: 'new-password', placeholder: 'password', class: 'form-control' %>
+        <% if @minimum_password_length %>
+          <small class='form-text text-muted'>(<%= @minimum_password_length %> characters minimum)</small>
+        <% end %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :password_confirmation, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.password_field :password_confirmation, autocomplete: 'new-password', placeholder: 're-enter password', class: 'form-control' %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :current_password, class: 'col-form-label' %><br />
+        <small class='form-text text-muted'>(we need your current password to confirm your changes)</small>
+      </div>
+      <div class='col-md-5'>
+        <%= f.password_field :current_password, autocomplete: 'current-password', placeholder: 'current password', class: 'form-control' %>
+        <% if @minimum_password_length %>
+          <small class='form-text text-muted'>(<%= @minimum_password_length %> characters minimum)</small>
+        <% end %>
+      </div>
+    </div>
+    <br />
+    <div class='actions'>
+      <%= f.submit 'Update', class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</p>
 
 <br />
+
 <h3>Cancel my account</h3>
 
-<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
+<p>Unhappy? <%= button_to 'Cancel my account', registration_path(resource_name), data: { confirm: 'Are you sure?' }, method: :delete, class: 'btn btn-primary' %></p>
 
-<%= link_to "Back", :back %>
+<br />
+<br />
+
+<div class='btn-group' role='group' aria-label='fotter_menu'>
+  <button type='button' class='btn btn-secondary'><%= link_to 'Back', :back %></button>
+</div>

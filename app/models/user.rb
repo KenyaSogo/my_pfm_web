@@ -11,4 +11,12 @@ class User < ApplicationRecord
   belongs_to :current_simulation, class_name: 'Simulation'
 
   validates :user_name, presence: true, uniqueness: true
+
+  def current_or_first_asset
+    current_asset || assets&.first
+  end
+
+  def current_or_first_simulation
+    current_simulation || current_or_first_asset&.simulations&.first
+  end
 end

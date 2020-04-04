@@ -20,23 +20,30 @@
           <ul class='navbar-nav mr-auto'>
             <% if user_signed_in? %>
               <li class='nav-item'><%= link_to 'home', homes_show_path, class: 'nav-link' %></li>
-              <% if current_user.assets.present? %>
-                <li class='nav-item'><%= link_to 'asset', asset_path(current_user.current_asset || current_user.assets.first, from_menu: true), class: 'nav-link' %></li>
-                <% if current_user.current_asset.present? && current_user.current_asset.simulations.present? %>
-                  <% simulation = current_user.current_simulation || current_user.current_asset.simulations.first %>
-                  <li class='nav-item'><%= link_to 'simulation', simulation_path(simulation, from_menu: true), class: 'nav-link' %></li>
-                  <% if simulation.simulation_summary.present? %>
-                    <li class='nav-item'><%= link_to 'summary', simulation_summary_path(simulation.simulation_summary, from_menu: true), class: 'nav-link' %></li>
-                  <% else %>
-                    <li class='nav-item'><a class='nav-link text-secondary'>summary</a></li>
-                  <% end %>
+              <% current_or_first_asset = current_user.current_or_first_asset %>
+              <% current_or_first_simulation = current_user.current_or_first_simulation %>
+              <% summary_at_current_or_first_simulation = current_user.current_or_first_simulation&.simulation_summary %>
+              <li class='nav-item'>
+                <% if current_or_first_asset.present? %>
+                  <%= link_to 'asset', asset_path(current_or_first_asset, from_menu: true), class: 'nav-link' %>
                 <% else %>
-                  <li class='nav-item'><a class='nav-link text-secondary'>simulation</a></li>
-                  <li class='nav-item'><a class='nav-link text-secondary'>summary</a></li>
+                  <a class='nav-link text-secondary'>asset</a>
                 <% end %>
-              <% else %>
-                <li class='nav-item'><%= link_to 'assets', assets_path, class: 'nav-link' %></li>
-              <% end %>
+              </li>
+              <li class='nav-item'>
+                <% if current_or_first_simulation.present? %>
+                  <%= link_to 'simulation', simulation_path(current_or_first_simulation, from_menu: true), class: 'nav-link' %>
+                <% else %>
+                  <a class='nav-link text-secondary'>simulation</a>
+                <% end %>
+              </li>
+              <li class='nav-item'>
+                <% if summary_at_current_or_first_simulation.present? %>
+                  <%= link_to 'summary', simulation_summary_path(summary_at_current_or_first_simulation, from_menu: true), class: 'nav-link' %>
+                <% else %>
+                  <a class='nav-link text-secondary'>summary</a>
+                <% end %>
+              </li>
             <% else %>
               <li class='nav-item'><%= link_to 'top', homes_index_path, class: 'nav-link' %></li>
             <% end %>

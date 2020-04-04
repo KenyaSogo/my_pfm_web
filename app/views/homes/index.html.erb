@@ -1,5 +1,16 @@
-<h1>Welcome to MyPfmWeb!!</h2>
+<div class='jumbotron'>
+  <h1 class='display-3'>Welcome to MyPfmWeb!!</h2>
 
-<br />
+  <br />
 
-<p>This is the application for your forward-looking financial management.</p>
+  <p class='lead'>This is the application for your forward-looking financial management.</p>
+
+  <br />
+
+  <hr class='my-4'>
+
+  <p>First, you can make your account and get started from the following page.</p>
+  <p class='lead'>
+    <%= link_to 'Sign up now!', new_registration_path('user'), class: 'btn btn-primary btn-lg' %>
+  </p>
+</div>

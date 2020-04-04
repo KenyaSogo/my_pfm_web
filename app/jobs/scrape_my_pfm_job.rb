@@ -1,5 +1,3 @@
-require 'open-uri'
-require 'nokogiri'
 require 'csv'
 
 class ScrapeMyPfmJob < ApplicationJob
@@ -14,26 +12,9 @@ class ScrapeMyPfmJob < ApplicationJob
 
     asset.update!(last_aggregate_started_at: DateTime.now)
 
-    agent = Mechanize.new
-    agent.user_agent = 'Windows Chrome'
-
-    url = 'https://moneyforward.com/cf'
-    cf_strings_array = []
-    agent.get(url) do |page|
-      cf_page = page.form_with(id: 'new_sign_in_session_service') do |form|
-        form.field_with(id: 'sign_in_session_service_email').value = user.pfm_account_id
-        form.field_with(id: 'sign_in_session_service_password').value = user.pfm_account_password
-      end.submit
-
-      csv_link = cf_page.links.find { |l| l.text == 'CSVファイル' }
-      fail ScrapingError, 'csv_link cant detected' if csv_link.blank?
-      cf_csv_file = csv_link.click
-      cf_strings_array << cf_csv_file_to_strings(cf_csv_file)
-
-      prev_month_cf_csv_file = agent.get(prev_month_csv_request_url(csv_link))
-      cf_strings_array << cf_csv_file_to_strings(prev_month_cf_csv_file)
+    cf_strings_array = [-1, 0, 1].each_with_object([]) do |month_offset, a|
+      a << scrape_pfm_cf_data!(user, month_offset)
     end
-
     cf_strings_array.each { |cf_strings| parse_and_save_cf_strings!(asset, cf_strings) }
 
     asset.update!(last_aggregate_succeeded_at: DateTime.now)
@@ -41,25 +22,94 @@ class ScrapeMyPfmJob < ApplicationJob
 
   private
 
-  def prev_month_csv_request_url(csv_link)
-    prev_month_from = Date.new(csv_link.href.match(/.*year=([0-9]{4})/)[1].to_i, csv_link.href.match(/.*month=([0-9]{1,2}).*/)[1].to_i, 25).last_month
-    csv_link.resolved_uri.to_s.match(/(http.*csv\?).*/)[1] + [
-      "from=#{[prev_month_from.year, prev_month_from.strftime('%m'), prev_month_from.strftime('%d')].join('%2F')}",
-      "month=#{prev_month_from.month}",
-      "year=#{prev_month_from.year}",
+  def scrape_pfm_cf_data!(user, month_offset)
+    content = execute_phantom_js_scraping_script('https://moneyforward.com/cf', phantom_js_scraping_script(user, month_offset))
+    fail ScrapingError, 'content cant detected' if content.blank?
+
+    csv_string = content.match(/.*<body id="page-transaction">(.*)<div id="footer-me">.*/m)&.captures&.first
+    fail ScrapingError, 'csv_string cant detected' if csv_string.blank?
+
+    cf_strings = csv_string.split("\n").map { |r| CSV.parse(r).flatten }
+
+    cf_strings
+  end
+
+  def phantom_js_scraping_script(user, month_offset)
+    <<-SCRIPT
+      let pfmId = '#{user.pfm_account_id}';
+      let pfmPass = '#{user.pfm_account_password}';
+
+      await page.waitForSelector('a._2YH0UDm8.ssoLink');
+      page.click('a._2YH0UDm8.ssoLink');
+
+      await page.waitForSelector('input._2mGdHllU.inputItem');
+      await page.type('input._2mGdHllU.inputItem', pfmId, {delay:100});
+      page.click('input.zNNfb322.submitBtn.homeDomain');
+
+      await page.waitForSelector('input._1vBc2gjI.inputItem');
+      await page.type('input._1vBc2gjI.inputItem', pfmPass, {delay:100});
+      page.click('input.zNNfb322.submitBtn.homeDomain');
+
+      await page.waitForSelector('#page-transaction');
+      await page.evaluate(
+        () => {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', '#{csv_request_url(month_offset)}');
+          xhr.overrideMimeType('text/plain; charset=Shift_JIS');
+          xhr.send();
+          xhr.onload = function(e) {
+            $('#page-transaction').text(xhr.responseText);
+          };
+        }
+      );
+
+      page.done();
+    SCRIPT
+  end
+
+  def csv_request_url(month_offset)
+    from_date = Date.new(today.year, today.month, 25).last_month.since(month_offset.month)
+    'https://moneyforward.com/cf/csv?' + [
+      "from=#{[from_date.year, from_date.strftime('%m'), from_date.strftime('%d')].join('%2F')}",
+      "month=#{from_date.month}",
+      "year=#{from_date.year}",
     ].join('&')
   end
 
-  def cf_csv_file_to_strings(cf_csv_file)
-    cf_csv_file&.body&.toutf8&.split("\n")&.map { |r| CSV.parse(r).flatten }
+  def today
+    @today ||= Date.today
+  end
+
+  def execute_phantom_js_scraping_script(target_url, script)
+    uri = URI.parse('https://PhantomJsCloud.com/api/browser/v2/ak-6e6c5-01g1v-23fbz-3nmhm-bb2cf/')
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    phantom_js_request = Net::HTTP::Post.new(uri.request_uri)
+
+    post_data = {
+      url: target_url,
+      renderType: 'automation',
+      outputAsJson: true,
+      overseerScript: script
+    }.to_json
+    phantom_js_request.body = post_data
+
+    phantom_js_response_raw = http.request(phantom_js_request)
+
+    phantom_js_response = JSON.parse(phantom_js_response_raw.body.toutf8, symbolize_names: true)
+    content = phantom_js_response[:pageResponses]&.first&.dig(:frameData, :content)
+
+    content
   end
 
   def parse_and_save_cf_strings!(asset, cf_strings)
     return if cf_strings.blank?
     fail ScrapingError, 'invalid size row' unless cf_strings.all? { |r| r.size == 10 }
-    fail ScrapingError, 'invalid header' unless cf_strings.first.include?('計算対象')
+    cf_strings.first.each { |header| header.replace('計算対象') if header == '荐対象' }
+    fail ScrapingError, "invalid csv header: #{cf_strings.first}" unless cf_strings.first.include?('計算対象')
 
-    cf_hashes = convert_cf_strings_to_hashes(cf_strings)
+    cf_hashes = convert_cf_strings_to_hashes!(cf_strings)
 
     ApplicationRecord.transaction do
       cf_hashes.map { |r| r[:asset_account_name] }.uniq.each do |asset_account_name|
@@ -86,7 +136,7 @@ class ScrapeMyPfmJob < ApplicationJob
     end
   end
 
-  def convert_cf_strings_to_hashes(cf_strings)
+  def convert_cf_strings_to_hashes!(cf_strings)
     cf_header_string = cf_strings.first
     cf_column_index = {
       is_calculation_target: cf_header_string.index('計算対象'),
@@ -100,6 +150,7 @@ class ScrapeMyPfmJob < ApplicationJob
       is_transfer: cf_header_string.index('振替'),
       unique_key: cf_header_string.index('ID'),
     }
+    fail ScrapingError, "invalid csv header: #{cf_header_string}" if cf_column_index.values.include?(nil)
     required_column_names = [
       :is_calculation_target,
       :transaction_date,

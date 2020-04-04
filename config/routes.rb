@@ -17,7 +17,7 @@ Rails.application.routes.draw do
     end
   end
   resources :asset_activities
-  resources :asset_accounts
+  resources :asset_accounts, :only => [:show, :edit, :update]
   resources :assets do
     member do
       get 'aggregate'

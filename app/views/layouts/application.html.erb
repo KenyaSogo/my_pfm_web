@@ -28,11 +28,11 @@
                   <% if simulation.simulation_summary.present? %>
                     <li class='nav-item'><%= link_to 'summary', simulation_summary_path(simulation.simulation_summary, from_menu: true), class: 'nav-link' %></li>
                   <% else %>
-                    <li class='nav-item'>summary</li>
+                    <li class='nav-item'><a class='nav-link text-secondary'>summary</a></li>
                   <% end %>
                 <% else %>
-                  <li class='nav-item'>simulation</li>
-                  <li class='nav-item'>summary</li>
+                  <li class='nav-item'><a class='nav-link text-secondary'>simulation</a></li>
+                  <li class='nav-item'><a class='nav-link text-secondary'>summary</a></li>
                 <% end %>
               <% else %>
                 <li class='nav-item'><%= link_to 'assets', assets_path, class: 'nav-link' %></li>

@@ -1,25 +1,40 @@
 <h1>AssetActivities</h1>
 
+<br />
+
 <p>
   <%= search_form_for @query do |f| %>
     <%= f.hidden_field :asset_id, value: @asset.id %>
-    <table>
-      <tr>
-        <td><strong>AssetName:</strong>
-        <td><%= @asset.name %>
-      <tr>
-        <td><strong><%= f.label :transaction_date, "TransactionDate:" %></strong>
-        <td><%= f.date_select :transaction_date_gteq, {include_blank: true, use_month_numbers: true, date_separator: ' / '}, class: "form-control" %> ~
-        <td><%= f.date_select :transaction_date_lteq, {include_blank: true, use_month_numbers: true, date_separator: ' / '}, class: "form-control" %>
-        <td width="300" align="right"><span class="actions"><%= f.submit "Search" %></span>
-    </table>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <strong>AssetName:</strong>
+      </div>
+      <div class='col-md-9'>
+        <%= @asset.name %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <strong><%= f.label :transaction_date, "TransactionDate:" %></strong>
+      </div>
+      <div class='col-md-3'>
+        <%= f.text_field :transaction_date_gteq, id: 'transaction_date_gteq', class: 'form-control datetimepicker-input', data: { toggle: 'datetimepicker', target: '#transaction_date_gteq' } %>
+      </div>
+      <span>~</span>
+      <div class='col-md-3'>
+        <%= f.text_field :transaction_date_lteq, id: 'transaction_date_lteq', class: 'form-control datetimepicker-input', data: { toggle: 'datetimepicker', target: '#transaction_date_lteq' } %>
+      </div>
+      <div class='col-md-3'>
+        <%= f.submit 'Search', class: 'btn btn-primary float-md-right' %>
+      </div>
+    </div>
   <% end %>
 </p>
 
 <p>
-  <table>
+  <table class='table table-sm table-hover'>
     <thead>
-      <tr>
+      <tr class='table-dark'>
         <th>TransactionDate</th>
         <th>Description</th>
         <th>Amount</th>
@@ -52,4 +67,9 @@
   <%= paginate @asset_activities %>
 </p>
 
-<%= link_to 'Back', @asset_activities.first&.asset_account&.asset.presence || assets_path %>
+<br />
+<br />
+
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Back', @asset_activities.first&.asset_account&.asset.presence || assets_path, class: 'btn btn-secondary' %>
+</div>

@@ -1,15 +1,9 @@
 class SimulationsController < ApplicationController
   before_action :sign_in_required
-  before_action :set_asset, only: [:index, :new, :create]
-  before_action -> { current_users_resource_filter(@asset) }, only: [:index, :new, :create]
+  before_action :set_asset, only: [:new, :create]
+  before_action -> { current_users_resource_filter(@asset) }, only: [:new, :create]
   before_action :set_simulation, only: [:show, :edit, :update, :destroy, :generate]
   before_action -> { current_users_resource_filter(@simulation.asset) }, only: [:show, :edit, :update, :destroy, :generate]
-
-  # GET /simulations
-  # GET /simulations.json
-  def index
-    @simulations = Simulation.where(asset_id: @asset.id)
-  end
 
   # GET /simulations/1
   # GET /simulations/1.json

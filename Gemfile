@@ -76,3 +76,7 @@ gem 'activerecord-import'
 
 gem 'bootstrap'
 gem 'bootswatch'
+
+gem 'bootstrap4-datetime-picker-rails'
+gem 'momentjs-rails'
+gem 'font-awesome-rails'

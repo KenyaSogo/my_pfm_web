@@ -1,19 +1,59 @@
 <h1>Editing Asset Account</h1>
 
+</br>
+
+<div class='row'>
+  <div class='col-md-12'>
+    <%= render 'devise/shared/error_messages', resource: @asset_account %>
+  </div>
+</div>
+
 <p>
-  <strong>Name:</strong>
-  <%= @asset_account.name %>
+  <div class='row'>
+    <div class='col-md-2'>
+      Name
+    </div>
+    <div class='col-md-5'>
+      <%= @asset_account.name %>
+    </div>
+  </div>
 </p>
 
-<%= form_for @asset_account do |f| %>
-  <%= render "devise/shared/error_messages", resource: f.object %>
-  <%= f.label :asset_type %><%= f.select :asset_type_id, asset_type_options, include_blank: true, selected: @asset_account.asset_type_id %><br />
-  <%= f.label :initial_balance %><%= f.text_field :initial_balance %><br />
-  <%= f.label :initial_balance_base_date %><%= f.date_select :initial_balance_base_date , {include_blank: true, use_month_numbers: true, date_separator: ' / '}%><br /><br />
-  <%= f.submit %>
-<% end %>
+<p>
+  <%= form_for @asset_account do |f| %>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :asset_type, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.select :asset_type_id, asset_type_options, { include_blank: true } , { class: 'form-control' } %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :initial_balance, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.text_field :initial_balance, placeholder: 'amount', class: 'form-control' %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :initial_balance_base_date, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.text_field :initial_balance_base_date, id: 'initial_balance_base_date', value: nil, selected_value: @asset_account.initial_balance_base_date, class: 'form-control datetimepicker-input', data: { toggle: 'datetimepicker', target: '#initial_balance_base_date' } %>
+      </div>
+    </div>
+    <br />
+    <%= f.submit class: 'btn btn-primary' %>
+  <% end %>
+</p>
 
 <br />
+<br />
 
-<%= link_to 'Show', @asset_account %> |
-<%= link_to 'Back', @asset_account.asset %>
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Show', @asset_account, class: 'btn btn-secondary' %>
+  <%= link_to 'Back', @asset_account.asset, class: 'btn btn-secondary' %>
+</div>

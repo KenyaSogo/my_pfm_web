@@ -18,3 +18,6 @@
 
 //= require chartkick
 //= require Chart.bundle
+
+//= require moment
+//= require tempusdominus-bootstrap-4.js

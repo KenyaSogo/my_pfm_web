@@ -1,12 +1,32 @@
 <h1>New Simulation</h1>
 
-<%= form_for @simulation do |f| %>
-  <%= render "devise/shared/error_messages", resource: f.object %>
-  <%= f.hidden_field :asset_id, value: @asset.id %>
-  <%= f.label :name %><%= f.text_field :name, id: :simulation_name %><br /><br />
-  <%= f.submit %>
-<% end %>
+</br>
+
+<div class='row'>
+  <div class='col-md-12'>
+    <%= render 'devise/shared/error_messages', resource: @simulation %>
+  </div>
+</div>
+
+<p>
+  <%= form_for @simulation do |f| %>
+    <%= f.hidden_field :asset_id, value: @asset.id %>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :name, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.text_field :name, placeholder: 'simulation name', class: 'form-control' %>
+      </div>
+    </div>
+    <br />
+    <%= f.submit class: 'btn btn-primary' %>
+  <% end %>
+</p>
 
 <br />
+<br />
 
-<%= link_to 'Back', @asset %>
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Back', @asset, class: 'btn btn-secondary' %>
+</div>

@@ -1,78 +1,143 @@
 <h1>Simulation Detail</h1>
 
 <p>
-  <strong>AssetName:</strong>
-  <%= @simulation.asset.name %><br />
-  <strong>SimulationName:</strong>
-  <%= @simulation.name %><br />
-  <strong>LastGeneratedAt:</strong>
-  <%= display_datetime_string(@simulation.last_generated_at) %>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>AssetName:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @simulation.asset.name %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>SimulationName:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @simulation.name %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>LastGeneratedAt:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= display_datetime_string(@simulation.last_generated_at) %>
+    </div>
+  </div>
 </p>
+
+<br />
 
 <p>
   <h2>SimulationSummary</h2>
-  <table>
-    <% simulation_summary = @simulation.simulation_summary %>
-    <tr>
-      <td><strong>MainBreakdown:</strong></td>
-      <td><%= simulation_summary.present? ? main_breakdown_name(simulation_summary) : '-' %></td>
-    </tr>
-    <tr>
-      <td><strong>MainSection:</strong></td>
-      <td><%= simulation_summary.present? ? main_section_name(simulation_summary) : '-' %></td>
-    </tr>
-    <tr>
-      <td><strong>CurrentBalance:</strong></td>
-      <td><%= simulation_summary.present? ? simulation_summary.current_balance : '-' %></td>
-    </tr>
-    <tr>
-      <td><strong>AverageBalance:</strong></td>
-      <td><%= simulation_summary.present? ? simulation_summary.average_balance : '-' %></td>
-    </tr>
-    <tr>
-      <td><strong>MaxBalance:</strong></td>
-      <td><%= simulation_summary.present? ? simulation_summary.max_balance : '-' %></td>
-    </tr>
-    <tr>
-      <td><strong>MinBalance:</strong></td>
-      <td><%= simulation_summary.present? ? simulation_summary.min_balance : '-' %></td>
-    </tr>
-    <tr>
-      <td><strong>SearchFrom:</strong></td>
-      <td><%= simulation_summary.present? ? simulation_summary_search_from_name(simulation_summary.search_from) : '-' %></td>
-    </tr>
-    <tr>
-      <td><strong>SearchTo:</strong></td>
-      <td><%= simulation_summary.present? ? simulation_summary_search_to_name(simulation_summary.search_to) : '-' %></td>
-    </tr>
-    <tr>
-      <td><strong>SummarizedAt:</strong></td>
-      <td><%= simulation_summary.present? ? display_datetime_string(simulation_summary.summarized_at) : '-' %></td>
-    </tr>
-    <tr>
-      <td><strong>Actions:</strong></td>
-      <% if simulation_summary.present? %>
-        <td><%= link_to 'Generate', generate_simulation_path(simulation_summary.simulation) %><%= '&nbsp;&nbsp;'.html_safe %><%= link_to 'Show', simulation_summary %><%= '&nbsp;&nbsp;'.html_safe %><%= link_to 'Edit', edit_simulation_summary_path(simulation_summary) %></td>
-      <% else %>
-        <td>-</td>
-      <% end %>
-    </tr>
-  </table>
-  <br />
+  <% simulation_summary = @simulation.simulation_summary %>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>MainBreakdown:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= simulation_summary.present? ? main_breakdown_name(simulation_summary) : '-' %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>MainSection:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= simulation_summary.present? ? main_section_name(simulation_summary) : '-' %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>CurrentBalance:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= simulation_summary.present? ? simulation_summary.current_balance : '-' %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>AverageBalance:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= simulation_summary.present? ? simulation_summary.average_balance : '-' %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>MaxBalance:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= simulation_summary.present? ? simulation_summary.max_balance : '-' %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>MinBalance:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= simulation_summary.present? ? simulation_summary.min_balance : '-' %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>SearchFrom:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= simulation_summary.present? ? simulation_summary_search_from_name(simulation_summary.search_from) : '-' %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>SearchTo:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= simulation_summary.present? ? simulation_summary_search_to_name(simulation_summary.search_to) : '-' %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>SummarizedAt:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= simulation_summary.present? ? display_datetime_string(simulation_summary.summarized_at) : '-' %>
+    </div>
+  </div>
+  <p>
+    <div class='row'>
+      <div class='col-md-2'>
+        <strong>Actions:</strong>
+      </div>
+      <div class='col-md-5'>
+        <% if simulation_summary.present? %>
+          <%= link_to 'Generate', generate_simulation_path(simulation_summary.simulation), class: 'btn btn-primary btn-sm' %>
+          <div class='btn-group' role='group' aria-label='action_menu'>
+            <%= link_to 'Show', simulation_summary, class: 'btn btn-secondary btn-sm' %>
+            <%= link_to 'Edit', edit_simulation_summary_path(simulation_summary), class: 'btn btn-secondary btn-sm' %>
+          </div>
+        <% else %>
+          -
+        <% end %>
+      </div>
+    </div>
+  </p>
 </p>
+
+<br />
 
 <p>
   <h2>SimulationEntries</h2>
-  <table>
+  <table class='table table-sm table-hover'>
     <thead>
-      <tr>
+      <tr class='table-dark'>
         <th>Name</th>
         <th>EntryType</th>
         <th>ApplyFrom</th>
         <th>ApplyTo</th>
         <th>EntryDetail_Counts</th>
         <th>ResultActivity_Counts</th>
-        <th colspan="3">Actions</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -84,7 +149,7 @@
           <td>-</td>
           <td>-</td>
           <td>-</td>
-          <td colspan="3">-</td>
+          <td>-</td>
         </tr>
       <% else %>
         <% @simulation.simulation_entries.each do |simulation_entry| %>
@@ -95,26 +160,31 @@
             <td><%= display_date_string(simulation_entry.apply_to) %></td>
             <td><%= @entry_detail_counts_by_simulation_entry[simulation_entry.id].presence || 0 %></td>
             <td><%= @result_activity_counts_by_simulation_entry[simulation_entry.id].presence || 0 %></td>
-            <td><%= link_to 'Show', simulation_entry %></td>
-            <td><%= link_to 'Edit', edit_simulation_entry_path(simulation_entry) %></td>
-            <td><%= link_to 'Destroy', simulation_entry, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td>
+              <div class='btn-group' role='group' aria-label='action_menu'>
+                <%= link_to 'Show', simulation_entry, class: 'btn btn-secondary btn-sm' %>
+                <%= link_to 'Edit', edit_simulation_entry_path(simulation_entry), class: 'btn btn-secondary btn-sm' %>
+                <%= link_to 'Destroy', simulation_entry, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-secondary btn-sm' %>
+              </div>
+            </td>
           </tr>
         <% end %>
       <% end %>
     </tbody>
   </table>
-  <br />
-  <%= link_to 'New SimulationEntry', new_simulation_entry_path(simulation_id: @simulation.id) %>
+  <%= link_to 'New SimulationEntry', new_simulation_entry_path(simulation_id: @simulation.id), class: 'btn btn-primary' %>
 </p>
+
+<br />
 
 <p>
   <h2>BillingAccounts</h2>
-  <table>
+  <table class='table table-sm table-hover'>
     <thead>
-      <tr>
+      <tr class='table-dark'>
         <th>CreditAccountName</th>
         <th>BillingActivity_Counts</th>
-        <th colspan="3">Actions</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -122,24 +192,32 @@
         <tr>
           <td>-</td>
           <td>-</td>
-          <td colspan="3">-</td>
+          <td>-</td>
         </tr>
       <% else %>
         <% @simulation.billing_accounts.each do |billing_account| %>
           <tr>
             <td><%= billing_account.credit_account.name %></td>
             <td><%= @billing_activity_counts_by_billing_account[billing_account.id].presence || 0 %></td>
-            <td><%= link_to 'Show', billing_account %></td>
-            <td><%= link_to 'Edit', edit_billing_account_path(billing_account) %></td>
-            <td><%= link_to 'Destroy', billing_account, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td>
+              <div class='btn-group' role='group' aria-label='action_menu'>
+                <%= link_to 'Show', billing_account, class: 'btn btn-secondary btn-sm' %>
+                <%= link_to 'Edit', edit_billing_account_path(billing_account), class: 'btn btn-secondary btn-sm' %>
+                <%= link_to 'Destroy', billing_account, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-secondary btn-sm' %>
+              </div>
+            </td>
           </tr>
         <% end %>
       <% end %>
     </tbody>
   </table>
-  <br />
-  <%= link_to 'New BillingAccount', new_billing_account_path(simulation_id: @simulation.id) %>
+  <%= link_to 'New BillingAccount', new_billing_account_path(simulation_id: @simulation.id), class: 'btn btn-primary' %>
 </p>
 
-<%= link_to 'Edit', edit_simulation_path(@simulation) %> |
-<%= link_to 'Back', @simulation.asset %>
+<br />
+<br />
+
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Edit', edit_simulation_path(@simulation), class: 'btn btn-secondary' %>
+  <%= link_to 'Back', @simulation.asset, class: 'btn btn-secondary' %>
+</div>

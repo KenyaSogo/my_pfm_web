@@ -1,21 +1,96 @@
 <h1>New Billing Account</h1>
 
-<%= form_for @billing_account do |f| %>
-  <%= render "devise/shared/error_messages", resource: f.object %>
-  <%= f.hidden_field :simulation_id, value: @simulation.id %>
-  <%= f.label :credit_account %><%= f.select :credit_account_id, credit_account_options(@simulation), include_blank: true %><br />
-  <%= f.label :billing_closing_day %><%= f.text_field :billing_closing_day %><br />
-  <%= f.label :withdrawal_month_offset %><%= f.select :withdrawal_month_offset, withdrawal_month_offset_options, include_blank: true %><br />
-  <%= f.label :withdrawal_day %><%= f.text_field :withdrawal_day %><br />
-  <%= f.label :billing_item %><%= f.select :billing_item_id, billing_item_options(@simulation), include_blank: true %><br />
-  <%= f.label :billing_sub_item %><%= f.select :billing_sub_item_id, billing_sub_item_options(@simulation), include_blank: true %><br />
-  <%= f.label :debit_account %><%= f.select :debit_account_id, debit_account_options(@simulation), include_blank: true %><br />
-  <%= f.label :debit_item %><%= f.select :debit_item_id, debit_item_options(@simulation), include_blank: true %><br />
-  <%= f.label :debit_sub_item %><%= f.select :debit_sub_item_id, debit_sub_item_options(@simulation), include_blank: true %><br />
-  <br />
-  <%= f.submit %>
-<% end %>
+</br>
+
+<div class='row'>
+  <div class='col-md-12'>
+    <%= render 'devise/shared/error_messages', resource: @billing_account %>
+  </div>
+</div>
+
+<p>
+  <%= form_for @billing_account do |f| %>
+    <%= f.hidden_field :simulation_id, value: @simulation.id %>
+    <div class='form-group row'>
+      <div class='col-md-3'>
+        <%= f.label :credit_account, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.select :credit_account_id, credit_account_options(@simulation), { include_blank: true }, { class: 'form-control' } %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-3'>
+        <%= f.label :billing_closing_day, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.text_field :billing_closing_day, placeholder: 'closing day (1-31)', class: 'form-control' %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-3'>
+        <%= f.label :withdrawal_month_offset, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.select :withdrawal_month_offset, withdrawal_month_offset_options, { include_blank: true }, { class: 'form-control' } %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-3'>
+        <%= f.label :withdrawal_day, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.text_field :withdrawal_day, placeholder: 'withdrawal day (1-31)', class: 'form-control' %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-3'>
+        <%= f.label :billing_item, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.select :billing_item_id, billing_item_options(@simulation), { include_blank: true }, { class: 'form-control' } %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-3'>
+        <%= f.label :billing_sub_item, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.select :billing_sub_item_id, billing_sub_item_options(@simulation), { include_blank: true }, { class: 'form-control' } %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-3'>
+        <%= f.label :debit_account, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.select :debit_account_id, debit_account_options(@simulation), { include_blank: true }, { class: 'form-control' } %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-3'>
+        <%= f.label :debit_item, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.select :debit_item_id, debit_item_options(@simulation), { include_blank: true }, { class: 'form-control' } %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-3'>
+        <%= f.label :debit_sub_item, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.select :debit_sub_item_id, debit_sub_item_options(@simulation), { include_blank: true }, { class: 'form-control' } %>
+      </div>
+    </div>
+    <br />
+    <%= f.submit class: 'btn btn-primary' %>
+  <% end %>
+</p>
 
 <br />
+<br />
 
-<%= link_to 'Back', @simulation %>
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Back', @simulation, class: 'btn btn-secondary' %>
+</div>

@@ -16,7 +16,7 @@ Rails.application.routes.draw do
       get 'generate'
     end
   end
-  resources :asset_activities
+  resources :asset_activities, :only => [:index]
   resources :asset_accounts, :only => [:show, :edit, :update]
   resources :assets do
     member do

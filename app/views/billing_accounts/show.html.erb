@@ -1,23 +1,73 @@
 <h1>BillingAccout Detail</h1>
 
 <p>
-  <strong>CreditAccountName:</strong>
-  <%= @billing_account.credit_account.name %><br />
-  <strong>BillingClosingDay:</strong>
-  <%= @billing_account.billing_closing_day %><br />
-  <strong>WithdrawalDay:</strong>
-  <%= "#{@billing_account.withdrawal_day}(#{withdrawal_month_offset_value(@billing_account.withdrawal_month_offset)})" %><br />
-  <strong>BillingItemName:</strong>
-  <%= @billing_account.billing_item.name %><br />
-  <strong>BillingSubItemName:</strong>
-  <%= @billing_account.billing_sub_item.name %><br />
-  <strong>DebitAccountName:</strong>
-  <%= @billing_account.debit_account.name %><br />
-  <strong>DebitItemName:</strong>
-  <%= @billing_account.debit_item.name %><br />
-  <strong>DebitSubItemName:</strong>
-  <%= @billing_account.debit_sub_item.name %>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>CreditAccountName:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @billing_account.credit_account.name %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>BillingClosingDay:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @billing_account.billing_closing_day %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>WithdrawalDay:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= "#{@billing_account.withdrawal_day}(#{withdrawal_month_offset_value(@billing_account.withdrawal_month_offset)})" %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>BillingItemName:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @billing_account.billing_item.name %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>BillingSubItemName:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @billing_account.billing_sub_item.name %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>DebitAccountName:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @billing_account.debit_account.name %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>DebitItemName:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @billing_account.debit_item.name %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>DebitSubItemName:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @billing_account.debit_sub_item.name %>
+    </div>
+  </div>
 </p>
+
+<br />
 
 <p>
   <% if @is_billing_complement_activities %>
@@ -25,9 +75,9 @@
   <% else %>
     <h2>BillingActivities</h2>
   <% end %>
-  <table>
+  <table class='table table-sm table-hover'>
     <thead>
-      <tr>
+      <tr class='table-dark'>
         <th>TransactionDate</th>
         <th>Description</th>
         <th>Amount</th>
@@ -73,13 +123,17 @@
     </tbody>
   </table>
   <%= paginate @billing_activities %>
-  <br />
   <% if @is_billing_complement_activities %>
-    <%= link_to 'BillingActivities', @billing_account %>
+    <%= link_to 'BillingActivities', @billing_account, class: 'btn btn-secondary' %>
   <% else %>
-    <%= link_to 'BillingComplementActivities', billing_account_path(@billing_account, is_billing_complement_activities: 1) %>
+    <%= link_to 'BillingComplementActivities', billing_account_path(@billing_account, is_billing_complement_activities: 1), class: 'btn btn-secondary' %>
   <% end %>
 </p>
 
-<%= link_to 'Edit', edit_billing_account_path(@billing_account) %> |
-<%= link_to 'Back', @billing_account.simulation %>
+<br />
+<br />
+
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Edit', edit_billing_account_path(@billing_account), class: 'btn btn-secondary' %>
+  <%= link_to 'Back', @billing_account.simulation, class: 'btn btn-secondary' %>
+</div>

@@ -1,25 +1,63 @@
 <h1>AssetAccount Detail</h1>
 
 <p>
-  <strong>AssetName:</strong>
-  <%= @asset_account.asset.name %><br />
-  <strong>Name:</strong>
-  <%= @asset_account.name %><br />
-  <strong>AssetType:</strong>
-  <%= @asset_account.asset_type&.name.presence || '-' %><br />
-  <strong>InitialBalance:</strong>
-  <%= @asset_account.initial_balance.presence || '-' %><br />
-  <strong>InitialBalanceBaseDate:</strong>
-  <%= display_date_string(@asset_account.initial_balance_base_date) %><br />
-  <strong>AssetActivity_Counts:</strong>
-  <%= @asset_account.asset_activities.size %>
+  <div class='row'>
+    <div class='col-md-3'>
+      <strong>AssetName:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @asset_account.asset.name %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-3'>
+      <strong>AccountName:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @asset_account.name %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-3'>
+      <strong>AssetType:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @asset_account.asset_type&.name.presence || '-' %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-3'>
+      <strong>InitialBalance:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @asset_account.initial_balance.presence || '-' %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-3'>
+      <strong>InitialBalanceBaseDate:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= display_date_string(@asset_account.initial_balance_base_date) %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-3'>
+      <strong>AssetActivity_Counts:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @asset_account.asset_activities.size %>
+    </div>
+  </div>
 </p>
+
+<br />
 
 <p>
   <h2>AssetActivities</h2>
-  <table>
+  <table class='table table-sm table-hover'>
     <thead>
-      <tr>
+      <tr class='table-dark'>
         <th>TransactionDate</th>
         <th>Description</th>
         <th>Amount</th>
@@ -52,5 +90,10 @@
   <%= paginate @asset_activities %>
 </p>
 
-<%= link_to 'Edit', edit_asset_account_path(@asset_account) %> |
-<%= link_to 'Back', @asset_account.asset %>
+<br />
+<br />
+
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Edit', edit_asset_account_path(@asset_account), class: 'btn btn-secondary' %>
+  <%= link_to 'Back', @asset_account.asset, class: 'btn btn-secondary' %>
+</div>

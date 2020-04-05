@@ -1,12 +1,32 @@
 <h1>Editing Simulation</h1>
 
-<%= form_for @simulation do |f| %>
-  <%= render "devise/shared/error_messages", resource: f.object %>
-  <%= f.label :name %><%= f.text_field :name, id: :simulation_name %><br /><br />
-  <%= f.submit %>
-<% end %>
+</br>
+
+<div class='row'>
+  <div class='col-md-12'>
+    <%= render 'devise/shared/error_messages', resource: @simulation %>
+  </div>
+</div>
+
+<p>
+  <%= form_for @simulation do |f| %>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :name, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.text_field :name, class: 'form-control' %>
+      </div>
+    </div>
+    <br />
+    <%= f.submit class: 'btn btn-primary' %>
+  <% end %>
+</p>
 
 <br />
+<br />
 
-<%= link_to 'Show', @simulation %> |
-<%= link_to 'Back', @simulation.asset %>
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Show', @simulation, class: 'btn btn-secondary' %>
+  <%= link_to 'Back', @simulation.asset, class: 'btn btn-secondary' %>
+</div>

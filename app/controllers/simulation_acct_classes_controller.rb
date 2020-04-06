@@ -2,18 +2,13 @@ class SimulationAcctClassesController < ApplicationController
   before_action :sign_in_required
   before_action :set_sum_by_acct_class_setting, only: [:index, :new, :create]
   before_action -> { current_users_resource_filter(@sum_by_acct_class_setting.sum_by_account_class.simulation_summary.simulation.asset) }, only: [:index, :new, :create]
-  before_action :set_simulation_acct_class, only: [:show, :edit, :update, :destroy]
-  before_action -> { current_users_resource_filter(@simulation_acct_class.sum_by_acct_class_setting.sum_by_account_class.simulation_summary.simulation.asset) }, only: [:show, :edit, :update, :destroy]
+  before_action :set_simulation_acct_class, only: [:edit, :update, :destroy]
+  before_action -> { current_users_resource_filter(@simulation_acct_class.sum_by_acct_class_setting.sum_by_account_class.simulation_summary.simulation.asset) }, only: [:edit, :update, :destroy]
 
   # GET /simulation_acct_classes
   # GET /simulation_acct_classes.json
   def index
     @simulation_acct_classes = @sum_by_acct_class_setting.simulation_acct_classes
-  end
-
-  # GET /simulation_acct_classes/1
-  # GET /simulation_acct_classes/1.json
-  def show
   end
 
   # GET /simulation_acct_classes/new

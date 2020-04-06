@@ -1,16 +1,56 @@
 <h1>Editing Simulation Summary</h1>
 
-<%= form_for @simulation_summary do |f| %>
-  <%= render "devise/shared/error_messages", resource: f.object %>
-  <%= f.label :main_breakdown %><%= f.select :main_breakdown, main_breakdown_options(@simulation_summary), include_blank: true, selected: selected_main_breakdown(@simulation_summary) %><br />
-  <%= f.label :main_section %><%= f.select :main_section, main_section_options(@simulation_summary), include_blank: true, selected: selected_main_section(@simulation_summary) %><br />
-  <%= f.label :search_from %><%= f.select :search_from, simulation_summary_search_from_options, include_blank: true %><br />
-  <%= f.label :search_to %><%= f.select :search_to, simulation_summary_search_to_options, include_blank: true %><br />
-  <br />
-  <%= f.submit %>
-<% end %>
+</br>
+
+<div class='row'>
+  <div class='col-md-12'>
+    <%= render 'devise/shared/error_messages', resource: @simulation_summary %>
+  </div>
+</div>
+
+<p>
+  <%= form_for @simulation_summary do |f| %>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :main_breakdown, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.select :main_breakdown, main_breakdown_options(@simulation_summary), { include_blank: true, selected: selected_main_breakdown(@simulation_summary) }, { class: 'form-control' } %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :main_section, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.select :main_section, main_section_options(@simulation_summary), { include_blank: true, selected: selected_main_section(@simulation_summary) }, { class: 'form-control' } %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :search_from, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.select :search_from, simulation_summary_search_from_options, { include_blank: true }, { class: 'form-control' } %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :search_to, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.select :search_to, simulation_summary_search_to_options, { include_blank: true }, { class: 'form-control' } %>
+      </div>
+    </div>
+    <br />
+    <%= f.submit class: 'btn btn-primary' %>
+  <% end %>
+</p>
 
 <br />
+<br />
 
-<%= link_to 'Show', @simulation_summary %> |
-<%= link_to 'Back', @simulation_summary.simulation %>
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Show', @simulation_summary, class: 'btn btn-secondary' %>
+  <%= link_to 'Back', @simulation_summary.simulation, class: 'btn btn-secondary' %>
+</div>

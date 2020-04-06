@@ -8,7 +8,7 @@ class SimulationSummary < ApplicationRecord
 
   validate :validate_unity_within_simulation, on: :create
   validates :main_breakdown_type_id, :main_breakdown_id, :main_section_type_id, :main_section_id, :search_from, :search_to,
-              presence: { message: 'main_breakdown, main_section, search_from, search_to must be all filled or all blank' }, on: :update, if: :main_view_setting?
+              presence: { message: 'can not be blank (main_breakdown, main_section, search_from, search_to must be all filled or all blank)' }, on: :update, if: :main_view_setting?
   validates :main_breakdown_type_id, inclusion: { in: :existing_breakdown_type_ids }, allow_nil: true
   validates :main_breakdown_id, inclusion: { in: :related_breakdown_ids }, allow_nil: true
   validates :main_section_type_id, inclusion: { in: :breakdown_related_section_type_ids }, allow_nil: true

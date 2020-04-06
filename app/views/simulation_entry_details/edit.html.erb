@@ -1,38 +1,133 @@
 <h1>Editing Simulation Entry Detail</h1>
 
+</br>
+
+<div class='row'>
+  <div class='col-md-12'>
+    <%= render 'devise/shared/error_messages', resource: @simulation_entry_detail %>
+  </div>
+</div>
+
 <p>
-  <strong>SimulationEntryType:</strong>
-  <%= @simulation_entry_detail.simulation_entry.simulation_entry_type.name %>
+  <div class='row'>
+    <div class='col-md-3'>
+      Simulation entry type
+    </div>
+    <div class='col-md-5'>
+      <%= @simulation_entry_detail.simulation_entry.simulation_entry_type.name %>
+    </div>
+  </div>
 </p>
 
-<%= form_for @simulation_entry_detail do |f| %>
-  <%= render "devise/shared/error_messages", resource: f.object %>
-  <% asset = @simulation_entry_detail.simulation_entry.simulation.asset %>
-  <% simulation_entry_type_id = @simulation_entry_detail.simulation_entry.simulation_entry_type_id %>
-  <% if simulation_entry_type_id.in?([1]) # any_time %>
-    <%= f.label :transaction_date_year %><%= f.select :transaction_date_year, year_options, include_blank: true %><br />
+<p>
+  <%= form_for @simulation_entry_detail do |f| %>
+    <% asset = @simulation_entry_detail.simulation_entry.simulation.asset %>
+    <% simulation_entry_type_id = @simulation_entry_detail.simulation_entry.simulation_entry_type_id %>
+    <% if simulation_entry_type_id.in?([1]) # any_time %>
+      <div class='form-group row'>
+        <div class='col-md-3'>
+          <%= f.label :transaction_date_year, class: 'col-form-label' %>
+        </div>
+        <div class='col-md-5'>
+          <%= f.select :transaction_date_year, year_options, { include_blank: true }, { class: 'form-control' } %>
+        </div>
+      </div>
+    <% end %>
+    <% if simulation_entry_type_id.in?([1, 5]) # any_time, yearly %>
+      <div class='form-group row'>
+        <div class='col-md-3'>
+          <%= f.label :transaction_date_month, class: 'col-form-label' %>
+        </div>
+        <div class='col-md-5'>
+          <%= f.select :transaction_date_month, month_options, { include_blank: true }, { class: 'form-control' } %>
+        </div>
+      </div>
+    <% end %>
+    <% if simulation_entry_type_id.in?([1, 4, 5]) # any_time, monthly, yearly %>
+      <div class='form-group row'>
+        <div class='col-md-3'>
+          <%= f.label :transaction_date_day, class: 'col-form-label' %>
+        </div>
+        <div class='col-md-5'>
+          <%= f.select :transaction_date_day, day_options, { include_blank: true }, { class: 'form-control' } %>
+        </div>
+      </div>
+    <% end %>
+    <% if simulation_entry_type_id.in?([3]) # weekly %>
+      <div class='form-group row'>
+        <div class='col-md-3'>
+          <%= f.label :transaction_date_weekday, class: 'col-form-label' %>
+        </div>
+        <div class='col-md-5'>
+          <%= f.select :transaction_date_weekday, weekday_options, { include_blank: true }, { class: 'form-control' } %>
+        </div>
+      </div>
+    <% end %>
+    <div class='form-group row'>
+      <div class='col-md-3'>
+        <%= f.label :description, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.text_area :description, placeholder: 'description text', class: 'form-control' %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-3'>
+        <%= f.label :amount, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.text_field :amount, placeholder: 'amount', class: 'form-control' %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-3'>
+        <%= f.label :asset_account_id, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.select :asset_account_id, asset_account_options(asset), { include_blank: true }, { class: 'form-control' } %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-3'>
+        <%= f.label :item_id, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.select :item_id, item_options(asset), { include_blank: true }, { class: 'form-control' } %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-3'>
+        <%= f.label :sub_item_id, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.select :sub_item_id, sub_item_options(asset), { include_blank: true }, { class: 'form-control' } %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-3'>
+        <%= f.label :is_transfer, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.check_box :is_transfer, class: 'col-form-label' %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-3'>
+        <%= f.label :is_calculation_target, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.check_box :is_calculation_target, class: 'col-form-label' %>
+      </div>
+    </div>
+    <br />
+    <%= f.submit class: 'btn btn-primary' %>
   <% end %>
-  <% if simulation_entry_type_id.in?([1, 5]) # any_time, yearly %>
-    <%= f.label :transaction_date_month %><%= f.select :transaction_date_month, month_options, include_blank: true %><br />
-  <% end %>
-  <% if simulation_entry_type_id.in?([1, 4, 5]) # any_time, monthly, yearly %>
-    <%= f.label :transaction_date_day %><%= f.select :transaction_date_day, day_options, include_blank: true %><br />
-  <% end %>
-  <% if simulation_entry_type_id.in?([3]) # weekly %>
-    <%= f.label :transaction_date_weekday %><%= f.select :transaction_date_weekday, weekday_options, include_blank: true %><br />
-  <% end %>
-  <%= f.label :description %><%= f.text_area :description %><br />
-  <%= f.label :amount %><%= f.text_field :amount %><br />
-  <%= f.label :asset_account_id, 'Asset account name' %><%= f.select :asset_account_id, asset_account_options(asset), include_blank: true %><br />
-  <%= f.label :item_id, 'Item name' %><%= f.select :item_id, item_options(asset), include_blank: true %><br />
-  <%= f.label :sub_item_id, 'Sub item name' %><%= f.select :sub_item_id, sub_item_options(asset), include_blank: true %><br />
-  <%= f.label :is_transfer %><%= f.check_box :is_transfer %><br />
-  <%= f.label :is_calculation_target %><%= f.check_box :is_calculation_target %><br />
-  <br />
-  <%= f.submit %>
-<% end %>
+</p>
 
 <br />
+<br />
 
-<%= link_to 'Show', @simulation_entry_detail %> |
-<%= link_to 'Back', @simulation_entry_detail.simulation_entry %>
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Show', @simulation_entry_detail, class: 'btn btn-secondary' %>
+  <%= link_to 'Back', @simulation_entry_detail.simulation_entry, class: 'btn btn-secondary' %>
+</div>

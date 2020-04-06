@@ -1,37 +1,76 @@
 <h1>SimulationSummary Detail</h1>
 
 <p>
-  <strong>SimulationName:</strong>
-  <%= @simulation_summary.simulation.name %><br />
-  <strong>MainBreakdown:</strong>
-  <%= main_breakdown_name(@simulation_summary) %><br />
-  <strong>MainSection:</strong>
-  <%= main_section_name(@simulation_summary) %><br />
-  <strong>SearchFrom:</strong>
-  <%= simulation_summary_search_from_name(@simulation_summary.search_from) %><br />
-  <strong>SearchTo:</strong>
-  <%= simulation_summary_search_to_name(@simulation_summary.search_to) %><br />
-  <strong>SummarizedAt:</strong>
-  <%= display_datetime_string(@simulation_summary.summarized_at) %>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>SimulationName:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @simulation_summary.simulation.name %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>MainBreakdown:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= main_breakdown_name(@simulation_summary) %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>MainSection:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= main_section_name(@simulation_summary) %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>SearchFrom:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= simulation_summary_search_from_name(@simulation_summary.search_from) %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>SearchTo:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= simulation_summary_search_to_name(@simulation_summary.search_to) %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>SummarizedAt:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= display_datetime_string(@simulation_summary.summarized_at) %>
+    </div>
+  </div>
 </p>
+
+<br />
 
 <% if @data.present? %>
   <p>
     <h2>MainSummaryBreakdownChart</h2>
     <%= area_chart @data, points: false, thousands: ',' %>
   </p>
+  <br />
 <% end %>
 
 <p>
   <h2>SimulationSummaryBreakdowns</h2>
-  <table>
+  <table class='table table-sm table-hover'>
     <thead>
-      <tr>
+      <tr class='table-dark'>
         <th>Type</th>
         <th>Name</th>
         <th>IsActive</th>
         <th>SummarizedAt</th>
-        <th colspan="4">Actions</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -42,8 +81,12 @@
         <td><%= simulation_summary_by_account&.is_active.presence || '-' %></td>
         <td><%= display_datetime_string(simulation_summary_by_account&.summarized_at) %></td>
         <% if simulation_summary_by_account.present? %>
-          <td><%= link_to 'Show', simulation_summary_by_account %></td>
-          <td><%= link_to 'Edit', edit_simulation_summary_by_account_path(simulation_summary_by_account) %></td>
+          <td>
+            <div class='btn-group' role='group' aria-label='action_menu'>
+              <%= link_to 'Show', simulation_summary_by_account, class: 'btn btn-secondary btn-sm' %>
+              <%= link_to 'Edit', edit_simulation_summary_by_account_path(simulation_summary_by_account), class: 'btn btn-secondary btn-sm' %>
+            </div>
+          </td>
         <% else %>
           <td>-</td>
         <% end %>
@@ -55,8 +98,12 @@
         <td><%= summary_by_asset_type&.is_active.presence || '-' %></td>
         <td><%= display_datetime_string(summary_by_asset_type&.summarized_at) %></td>
         <% if summary_by_asset_type.present? %>
-          <td><%= link_to 'Show', summary_by_asset_type %></td>
-          <td><%= link_to 'Edit', edit_summary_by_asset_type_path(summary_by_asset_type) %></td>
+          <td>
+            <div class='btn-group' role='group' aria-label='action_menu'>
+              <%= link_to 'Show', summary_by_asset_type, class: 'btn btn-secondary btn-sm' %>
+              <%= link_to 'Edit', edit_summary_by_asset_type_path(summary_by_asset_type), class: 'btn btn-secondary btn-sm' %>
+            </div>
+          </td>
         <% else %>
           <td>-</td>
         <% end %>
@@ -67,17 +114,25 @@
           <td><%= sum_by_account_class.name.presence || '-' %></td>
           <td><%= sum_by_account_class.is_active.presence || '-' %></td>
           <td><%= display_datetime_string(sum_by_account_class.summarized_at) %></td>
-          <td><%= link_to 'Show', sum_by_account_class %></td>
-          <td><%= link_to 'Edit', edit_sum_by_account_class_path(sum_by_account_class) %></td>
-          <td><%= link_to 'Settings', sum_by_account_class.sum_by_acct_class_setting %></td>
-          <td><%= link_to 'Destroy', sum_by_account_class, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td>
+            <div class='btn-group' role='group' aria-label='action_menu'>
+              <%= link_to 'Show', sum_by_account_class, class: 'btn btn-secondary btn-sm' %>
+              <%= link_to 'Edit', edit_sum_by_account_class_path(sum_by_account_class), class: 'btn btn-secondary btn-sm' %>
+              <%= link_to 'Settings', sum_by_account_class.sum_by_acct_class_setting, class: 'btn btn-secondary btn-sm' %>
+              <%= link_to 'Destroy', sum_by_account_class, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-secondary btn-sm' %>
+            </div>
+          </td>
         </tr>
       <% end %>
     </tbody>
   </table>
-  <br />
-  <%= link_to 'New ByAccountClass', new_sum_by_account_class_path(simulation_summary_id: @simulation_summary.id) %>
+  <%= link_to 'New ByAccountClass', new_sum_by_account_class_path(simulation_summary_id: @simulation_summary.id), class: 'btn btn-primary' %>
 </p>
 
-<%= link_to 'Edit', edit_simulation_summary_path(@simulation_summary) %> |
-<%= link_to 'Back', @simulation_summary.simulation %>
+<br />
+<br />
+
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Edit', edit_simulation_summary_path(@simulation_summary), class: 'btn btn-secondary' %>
+  <%= link_to 'Back', @simulation_summary.simulation, class: 'btn btn-secondary' %>
+</div>

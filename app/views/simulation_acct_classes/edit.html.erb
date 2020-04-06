@@ -1,12 +1,31 @@
 <h1>Editing Account Class</h1>
 
-<%= form_for @simulation_acct_class do |f| %>
-  <%= render "devise/shared/error_messages", resource: f.object %>
-  <%= f.label :name %><%= f.text_field :name %><br />
-  <br />
-  <%= f.submit 'Update Account class' %>
-<% end %>
+</br>
+
+<div class='row'>
+  <div class='col-md-12'>
+    <%= render 'devise/shared/error_messages', resource: @simulation_acct_class %>
+  </div>
+</div>
+
+<p>
+  <%= form_for @simulation_acct_class do |f| %>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :name, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.text_field :name, placeholder: 'account class name', class: 'form-control' %>
+      </div>
+    </div>
+    <br />
+    <%= f.submit 'Update Account class', class: 'btn btn-primary' %>
+  <% end %>
+</p>
 
 <br />
+<br />
 
-<%= link_to 'Back', simulation_acct_classes_path(sum_by_acct_class_setting_id: @simulation_acct_class.sum_by_acct_class_setting.id) %>
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Back', simulation_acct_classes_path(sum_by_acct_class_setting_id: @simulation_acct_class.sum_by_acct_class_setting.id), class: 'btn btn-secondary' %>
+</div>

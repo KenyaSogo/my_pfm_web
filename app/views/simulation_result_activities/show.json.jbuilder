@@ -1,1 +1,0 @@
-json.partial! "simulation_result_activities/simulation_result_activity", simulation_result_activity: @simulation_result_activity

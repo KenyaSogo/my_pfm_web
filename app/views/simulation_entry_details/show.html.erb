@@ -1,43 +1,107 @@
 <h1>SimulationEntryDetail</h1>
 
 <p>
-  <strong>SimulationEntryName:</strong>
-  <%= @simulation_entry_detail.simulation_entry.name %><br />
-  <strong>SimulationEntryType:</strong>
-  <%= @simulation_entry_detail.simulation_entry.simulation_entry_type.name %><br />
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>SimulationEntryName:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @simulation_entry_detail.simulation_entry.name %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>SimulationEntryType:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @simulation_entry_detail.simulation_entry.simulation_entry_type.name %>
+    </div>
+  </div>
   <% simulation_entry_type_id = @simulation_entry_detail.simulation_entry.simulation_entry_type_id %>
   <% date_header_name = simulation_entry_detail_date_header_name(simulation_entry_type_id) %>
   <% if date_header_name.present? %>
-    <strong><%= date_header_name %>:</strong>
-    <%= simulation_entry_detail_date_value(simulation_entry_type_id, @simulation_entry_detail) %><br />
+    <div class='row'>
+      <div class='col-md-2'>
+        <strong><%= date_header_name %>:</strong>
+      </div>
+      <div class='col-md-5'>
+        <%= simulation_entry_detail_date_value(simulation_entry_type_id, @simulation_entry_detail) %>
+      </div>
+    </div>
   <% end %>
-  <strong>Description:</strong>
-  <%= @simulation_entry_detail.description %><br />
-  <strong>Amount:</strong>
-  <%= @simulation_entry_detail.amount %><br />
-  <strong>AssetAccountName:</strong>
-  <%= @simulation_entry_detail.asset_account.name %><br />
-  <strong>ItemName:</strong>
-  <%= @simulation_entry_detail.item.name %><br />
-  <strong>SubItemName:</strong>
-  <%= @simulation_entry_detail.sub_item.name %><br />
-  <strong>IsTransfer:</strong>
-  <%= @simulation_entry_detail.is_transfer %><br />
-  <strong>IsCalculationTarget:</strong>
-  <%= @simulation_entry_detail.is_calculation_target %><br />
-  <strong>CreatedAt:</strong>
-  <%= display_datetime_string(@simulation_entry_detail.created_at) %><br />
-  <strong>UpdatedAt:</strong>
-  <%= display_datetime_string(@simulation_entry_detail.updated_at) %><br />
-  <strong>ResultActivity_Counts:</strong>
-  <%= @simulation_entry_detail.simulation_result_activities.size %><br />
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>Description:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @simulation_entry_detail.description %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>Amount:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @simulation_entry_detail.amount %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>AssetAccountName:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @simulation_entry_detail.asset_account.name %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>ItemName:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @simulation_entry_detail.item.name %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>SubItemName:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @simulation_entry_detail.sub_item.name %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>IsTransfer:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @simulation_entry_detail.is_transfer %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>IsCalculationTarget:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @simulation_entry_detail.is_calculation_target %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>ResultActivity_Counts:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @simulation_entry_detail.simulation_result_activities.size %>
+    </div>
+  </div>
 </p>
+
+<br />
 
 <p>
   <h2>SimulationResultActivities</h2>
-  <table>
+  <table class='table table-sm table-hover'>
     <thead>
-      <tr>
+      <tr class='table-dark'>
         <th>TransactionDate</th>
         <th>Description</th>
         <th>Amount</th>
@@ -83,8 +147,12 @@
     </tbody>
   </table>
   <%= paginate @simulation_result_activities %>
-  <br />
 </p>
 
-<%= link_to 'Edit', edit_simulation_entry_detail_path(@simulation_entry_detail) %> |
-<%= link_to 'Back', @simulation_entry_detail.simulation_entry %>
+<br />
+<br />
+
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Edit', edit_simulation_entry_detail_path(@simulation_entry_detail), class: 'btn btn-secondary' %>
+  <%= link_to 'Back', @simulation_entry_detail.simulation_entry, class: 'btn btn-secondary' %>
+</div>

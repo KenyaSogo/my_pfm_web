@@ -62,8 +62,6 @@
         <th>SubItemName</th>
         <th>IsTransfer</th>
         <th>IsCalculationTarget</th>
-        <th>CreatedAt</th>
-        <th>UpdatedAt</th>
         <th>ResultActivity_Counts</th>
         <th>Actions</th>
       </tr>
@@ -74,8 +72,6 @@
           <% if date_header_name.present? %>
             <td>-</td>
           <% end %>
-          <td>-</td>
-          <td>-</td>
           <td>-</td>
           <td>-</td>
           <td>-</td>
@@ -99,8 +95,6 @@
             <td><%= simulation_entry_detail.sub_item.name %></td>
             <td><%= simulation_entry_detail.is_transfer %></td>
             <td><%= simulation_entry_detail.is_calculation_target %></td>
-            <td><%= display_datetime_string(simulation_entry_detail.created_at) %></td>
-            <td><%= display_datetime_string(simulation_entry_detail.updated_at) %></td>
             <td><%= @result_activity_counts_by_entry_detail[simulation_entry_detail.id].presence || 0 %></td>
             <td>
               <div class='btn-group' role='group' aria-label='action_menu'>

@@ -1,12 +1,42 @@
 <h1>Editing Asset Account Classification</h1>
 
-<%= form_for @acct_to_class_map do |f| %>
-  <%= render "devise/shared/error_messages", resource: f.object %>
-  <%= f.label :simulation_acct_class_id %><%= f.select :simulation_acct_class_id, simulation_acct_class_options(@acct_to_class_map), include_blank: true %><br />
-  <br />
-  <%= f.submit 'Update Asset account classification' %>
-<% end %>
+</br>
+
+<div class='row'>
+  <div class='col-md-12'>
+    <%= render 'devise/shared/error_messages', resource: @acct_to_class_map %>
+  </div>
+</div>
+
+<p>
+  <div class='row'>
+    <div class='col-md-2'>
+      Asset account
+    </div>
+    <div class='col-md-5'>
+      <%= @acct_to_class_map.asset_account&.name.presence || '-' %>
+    </div>
+  </div>
+</p>
+
+<p>
+  <%= form_for @acct_to_class_map do |f| %>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :simulation_acct_class_id, 'Account class', class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.select :simulation_acct_class_id, simulation_acct_class_options(@acct_to_class_map), { include_blank: true }, { class: 'form-control' } %>
+      </div>
+    </div>
+    <br />
+    <%= f.submit 'Update Asset account classification', class: 'btn btn-primary' %>
+  <% end %>
+</p>
 
 <br />
+<br />
 
-<%= link_to 'Back', @acct_to_class_map.sum_by_acct_class_setting %>
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Back', @acct_to_class_map.sum_by_acct_class_setting, class: 'btn btn-secondary' %>
+</div>

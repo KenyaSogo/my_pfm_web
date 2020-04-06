@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resources :simulation_summaries
   resources :billing_accounts, except: [:index]
   resources :simulation_result_activities
-  resources :simulation_entry_details
+  resources :simulation_entry_details, except: [:index]
   resources :simulation_entries, except: [:index]
   resources :simulations, except: [:index] do
     member do

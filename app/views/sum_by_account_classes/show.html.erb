@@ -3,45 +3,84 @@
 <% has_sum_acct_class_dailies = @sum_by_account_class.sum_acct_class_dailies.present? %>
 
 <p>
+  <div class='form-group row'>
+    <div class='col-md-2'>
+      <strong>Name:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @sum_by_account_class.name.presence || '-' %>
+    </div>
+  </div>
+  <div class='form-group row'>
+    <div class='col-md-2'>
+      <strong>IsActive:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @sum_by_account_class.is_active.presence || '-' %>
+    </div>
+  </div>
+  <div class='form-group row'>
+    <div class='col-md-2'>
+      <strong>SummarizedAt:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= display_datetime_string(@sum_by_account_class.summarized_at) %>
+    </div>
+  </div>
+
   <%= search_form_for(@query, url: @sum_by_account_class) do |f| %>
-    <table>
-      <tr>
-        <td><strong>Name:</strong>
-        <td><%= @sum_by_account_class.name.presence || '-' %>
-      <tr>
-        <td><strong>IsActive:</strong>
-        <td><%= @sum_by_account_class.is_active.presence || '-' %>
-      <tr>
-        <td><strong>SummarizedAt:</strong>
-        <td><%= display_datetime_string(@sum_by_account_class.summarized_at) %>
-      <% if has_sum_acct_class_dailies %>
-        <tr>
-          <td><strong>AccountClassName:</strong>
-          <td colspan="3"><%= f.select :simulation_acct_class_id_eq, simulation_acct_class_search_options(@sum_by_account_class) %>
-        <tr>
-          <td><strong><%= f.label :base_date, "BaseDate:" %></strong>
-          <td><%= f.date_select :base_date_gteq, {include_blank: true, use_month_numbers: true, date_separator: ' / '}, class: "form-control" %> ~
-          <td><%= f.date_select :base_date_lteq, {include_blank: true, use_month_numbers: true, date_separator: ' / '}, class: "form-control" %>
-          <td width="300" align="right"><span class="actions"><%= f.submit "Search" %></span>
-      <% end %>
-    </table>
+    <% if has_sum_acct_class_dailies %>
+      <div class='form-group row'>
+        <div class='col-md-2 d-flex align-items-center'>
+          <strong>AccountClassName:</strong>
+        </div>
+        <div class='col-md-5'>
+          <%= f.select :simulation_acct_class_id_eq, simulation_acct_class_search_options(@sum_by_account_class), {}, { class: 'form-control' } %>
+        </div>
+      </div>
+      <div class='form-group row'>
+        <div class='col-md-2 d-flex align-items-center'>
+          <strong><%= f.label :base_date, 'BaseDate:' %></strong>
+        </div>
+        <div class='col-md-3'>
+          <%= f.text_field :base_date_gteq, id: 'base_date_gteq', class: 'form-control datetimepicker-input', data: { toggle: 'datetimepicker', target: '#base_date_gteq' } %>
+        </div>
+        <span>~</span>
+        <div class='col-md-3'>
+          <%= f.text_field :base_date_lteq, id: 'base_date_lteq', class: 'form-control datetimepicker-input', data: { toggle: 'datetimepicker', target: '#base_date_lteq' } %>
+        </div>
+        <div class='col-md-3'>
+          <%= f.submit 'Search', class: 'btn btn-primary float-md-right' %>
+        </div>
+      </div>
+    <% end %>
   <% end %>
 </p>
+
+<% if has_sum_acct_class_dailies %>
+  <br />
+  <p>
+    <%= area_chart @data, points: false, thousands: ',' %>
+  </p>
+  <br />
+<% end %>
 
 <p>
-  <% if has_sum_acct_class_dailies %>
-    <%= area_chart @data, points: false, thousands: ',' %>
-  <% end %>
+  <div class='form-group row'>
+    <div class='col-md-2'>
+      <strong>Memo:</strong>
+    </div>
+    <div class='col-md-5 text-break'>
+      <%= nl2br(@sum_by_account_class.memo).presence || '-' %>
+    </div>
+  </div>
 </p>
 
-<table>
-  <tr>
-    <td><strong>Memo:</strong>
-    <td><%= @sum_by_account_class.memo.presence || '-' %>
-</table>
-
+<br />
 <br />
 
-<%= link_to 'Edit', edit_sum_by_account_class_path(@sum_by_account_class) %> |
-<%= link_to 'Settings', @sum_by_account_class.sum_by_acct_class_setting %> |
-<%= link_to 'Back', @sum_by_account_class.simulation_summary %>
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Edit', edit_sum_by_account_class_path(@sum_by_account_class), class: 'btn btn-secondary' %>
+  <%= link_to 'Settings', @sum_by_account_class.sum_by_acct_class_setting, class: 'btn btn-secondary' %>
+  <%= link_to 'Back', @sum_by_account_class.simulation_summary, class: 'btn btn-secondary' %>
+</div>

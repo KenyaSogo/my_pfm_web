@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :acct_to_class_maps
+  resources :acct_to_class_maps, only: [:edit, :update]
   resources :simulation_acct_classes, except: [:show]
   resources :sum_by_acct_class_settings, only: [:show]
   resources :sum_by_account_classes, except: [:index]

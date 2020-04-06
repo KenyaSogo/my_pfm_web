@@ -1,17 +1,51 @@
 <h1>Editing Simulation Entry</h1>
 
-<%= form_for @simulation_entry do |f| %>
-  <%= render "devise/shared/error_messages", resource: f.object %>
-  <%= f.label :name %><%= f.text_field :name, id: :simulation_entry_name %><br />
-  <% unless @simulation_entry.entry_type_any_time? %>
-    <%= f.label :apply_from %><%= f.date_select :apply_from, {include_blank: true, use_month_numbers: true, date_separator: ' / ', selected: @simulation_entry.apply_from} %><br />
-    <%= f.label :apply_to %><%= f.date_select :apply_to, {include_blank: true, use_month_numbers: true, date_separator: ' / ', selected: @simulation_entry.apply_to} %><br />
+</br>
+
+<div class='row'>
+  <div class='col-md-12'>
+    <%= render 'devise/shared/error_messages', resource: @simulation_entry %>
+  </div>
+</div>
+
+<p>
+  <%= form_for @simulation_entry do |f| %>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :name, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.text_field :name, placeholder: 'simulation entry name', class: 'form-control' %>
+      </div>
+    </div>
+
+    <% unless @simulation_entry.entry_type_any_time? %>
+      <div class='form-group row'>
+        <div class='col-md-2'>
+          <%= f.label :apply_from, class: 'col-form-label' %>
+        </div>
+        <div class='col-md-5'>
+          <%= f.text_field :apply_from, id: 'apply_from', class: 'form-control datetimepicker-input', data: { toggle: 'datetimepicker', target: '#apply_from' } %>
+        </div>
+      </div>
+      <div class='form-group row'>
+        <div class='col-md-2'>
+          <%= f.label :apply_to, class: 'col-form-label' %>
+        </div>
+        <div class='col-md-5'>
+          <%= f.text_field :apply_to, id: 'apply_to', class: 'form-control datetimepicker-input', data: { toggle: 'datetimepicker', target: '#apply_to' } %>
+        </div>
+      </div>
+    <% end %>
+    <br />
+    <%= f.submit class: 'btn btn-primary' %>
   <% end %>
-  <br />
-  <%= f.submit %>
-<% end %>
+</p>
 
 <br />
+<br />
 
-<%= link_to 'Show', @simulation_entry %> |
-<%= link_to 'Back', @simulation_entry.simulation %>
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Show', @simulation_entry, class: 'btn btn-secondary' %>
+  <%= link_to 'Back', @simulation_entry.simulation, class: 'btn btn-secondary' %>
+</div>

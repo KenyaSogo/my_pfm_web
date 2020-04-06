@@ -1,11 +1,13 @@
 <h1>Account Classes</h1>
 
+<br />
+
 <p>
-  <table>
+  <table class='table table-sm table-hover'>
     <thead>
-      <tr>
+      <tr class='table-dark'>
         <th>Name</th>
-        <th colspan="2">Actions</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -18,15 +20,23 @@
         <% @simulation_acct_classes.each do |simulation_acct_class| %>
           <tr>
             <td><%= simulation_acct_class.name %></td>
-            <td><%= link_to 'Edit', edit_simulation_acct_class_path(simulation_acct_class) %></td>
-            <td><%= link_to 'Destroy', simulation_acct_class, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td>
+              <div class='btn-group' role='group' aria-label='action_menu'>
+                <%= link_to 'Edit', edit_simulation_acct_class_path(simulation_acct_class), class: 'btn btn-secondary btn-sm' %>
+                <%= link_to 'Destroy', simulation_acct_class, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-secondary btn-sm' %>
+              </div>
+            </td>
           </tr>
         <% end %>
       <% end %>
     </tbody>
   </table>
-  <br />
-  <%= link_to 'New Account Class', new_simulation_acct_class_path(sum_by_acct_class_setting_id: @sum_by_acct_class_setting.id) %>
+  <%= link_to 'New Account Class', new_simulation_acct_class_path(sum_by_acct_class_setting_id: @sum_by_acct_class_setting.id), class: 'btn btn-primary' %>
 </p>
 
-<%= link_to 'Back', @sum_by_acct_class_setting %>
+<br />
+<br />
+
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Back', @sum_by_acct_class_setting, class: 'btn btn-secondary' %>
+</div>

@@ -59,6 +59,6 @@ class SimulationSummaryByAccountsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def simulation_summary_by_account_params
-      params.require(:simulation_summary_by_account).permit(:is_active, :memo, :asset_account_id_eq)
+      params.require(:simulation_summary_by_account).permit(:is_active, :memo)
     end
 end

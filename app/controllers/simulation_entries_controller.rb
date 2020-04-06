@@ -1,15 +1,9 @@
 class SimulationEntriesController < ApplicationController
   before_action :sign_in_required
-  before_action :set_simulation, only: [:index, :new, :create]
-  before_action -> { current_users_resource_filter(@simulation.asset) }, only: [:index, :new, :create]
+  before_action :set_simulation, only: [:new, :create]
+  before_action -> { current_users_resource_filter(@simulation.asset) }, only: [:new, :create]
   before_action :set_simulation_entry, only: [:show, :edit, :update, :destroy]
   before_action -> { current_users_resource_filter(@simulation_entry.simulation.asset) }, only: [:show, :edit, :update, :destroy]
-
-  # GET /simulation_entries
-  # GET /simulation_entries.json
-  def index
-    @simulation_entries = SimulationEntry.where(simulation_id: @simulation.id)
-  end
 
   # GET /simulation_entries/1
   # GET /simulation_entries/1.json

@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   resources :billing_accounts, except: [:index]
   resources :simulation_result_activities
   resources :simulation_entry_details
-  resources :simulation_entries
+  resources :simulation_entries, except: [:index]
   resources :simulations, except: [:index] do
     member do
       get 'generate'

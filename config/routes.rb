@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   resources :sum_by_account_classes
   resources :summary_by_asset_types
   resources :simulation_summary_by_accounts
-  resources :simulation_summaries
+  resources :simulation_summaries, only: [:show, :edit, :update]
   resources :billing_accounts, except: [:index]
   resources :simulation_entry_details, except: [:index]
   resources :simulation_entries, except: [:index]

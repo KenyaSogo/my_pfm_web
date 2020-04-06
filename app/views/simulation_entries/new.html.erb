@@ -1,16 +1,56 @@
 <h1>New Simulation Entry</h1>
 
-<%= form_for @simulation_entry do |f| %>
-  <%= render "devise/shared/error_messages", resource: f.object %>
-  <%= f.hidden_field :simulation_id, value: @simulation.id %>
-  <%= f.label :name %><%= f.text_field :name, id: :simulation_entry_name %><br />
-  <%= f.label :simulation_entry_type_id, 'Simulation entry type' %><%= f.select :simulation_entry_type_id, simulation_entry_type_options, include_blank: true %><br />
-  <%= f.label :apply_from %><%= f.date_select :apply_from, {include_blank: true, use_month_numbers: true, date_separator: ' / '} %><br />
-  <%= f.label :apply_to %><%= f.date_select :apply_to, {include_blank: true, use_month_numbers: true, date_separator: ' / '} %><br />
-  <br />
-  <%= f.submit %>
-<% end %>
+</br>
+
+<div class='row'>
+  <div class='col-md-12'>
+    <%= render 'devise/shared/error_messages', resource: @simulation_entry %>
+  </div>
+</div>
+
+<p>
+  <%= form_for @simulation_entry do |f| %>
+    <%= f.hidden_field :simulation_id, value: @simulation.id %>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :name, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.text_field :name, placeholder: 'simulation entry name', class: 'form-control' %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :simulation_entry_type_id, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.select :simulation_entry_type_id, simulation_entry_type_options, { include_blank: true }, { class: 'form-control' } %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :apply_from, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.text_field :apply_from, id: 'apply_from', class: 'form-control datetimepicker-input', data: { toggle: 'datetimepicker', target: '#apply_from' } %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :apply_to, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.text_field :apply_to, id: 'apply_to', class: 'form-control datetimepicker-input', data: { toggle: 'datetimepicker', target: '#apply_to' } %>
+      </div>
+    </div>
+    <br />
+    <%= f.submit class: 'btn btn-primary' %>
+  <% end %>
+</p>
 
 <br />
+<br />
 
-<%= link_to 'Back', @simulation %>
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Back', @simulation, class: 'btn btn-secondary' %>
+</div>

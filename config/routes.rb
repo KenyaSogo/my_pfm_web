@@ -6,7 +6,6 @@ Rails.application.routes.draw do
   resources :summary_by_asset_types
   resources :simulation_summary_by_accounts
   resources :simulation_summaries
-  resources :billing_activities
   resources :billing_accounts, except: [:index]
   resources :simulation_result_activities
   resources :simulation_entry_details

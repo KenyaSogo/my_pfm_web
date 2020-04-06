@@ -1,15 +1,51 @@
 <h1>New Simulation Summary By Account Class</h1>
 
-<%= form_for @sum_by_account_class do |f| %>
-  <%= render "devise/shared/error_messages", resource: f.object %>
-  <%= f.hidden_field :simulation_summary_id, value: @simulation_summary.id %>
-  <%= f.label :name %><%= f.text_field :name %><br />
-  <%= f.label :is_active %><%= f.check_box :is_active %><br />
-  <%= f.label :memo %><%= f.text_area :memo %><br />
-  <br />
-  <%= f.submit %>
-<% end %>
+</br>
+
+<div class='row'>
+  <div class='col-md-12'>
+    <%= render 'devise/shared/error_messages', resource: @sum_by_account_class %>
+  </div>
+</div>
+
+<p>
+  <%= form_for @sum_by_account_class do |f| %>
+    <%= f.hidden_field :simulation_summary_id, value: @simulation_summary.id %>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :name, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.text_field :name, placeholder: 'breakdown name', class: 'form-control' %>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :is_active, class: 'form-check-label' %>
+      </div>
+      <div class='col-md-5 d-flex align-items-center'>
+        <div class='custom-control custom-checkbox'>
+          <%= f.check_box :is_active, class: 'custom-control-input' %>
+          <%= f.label :is_active, class: 'custom-control-label text-muted' %>
+        </div>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :memo, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.text_area :memo, placeholder: 'memo text', rows: '5', class: 'form-control' %>
+      </div>
+    </div>
+    <br />
+    <%= f.submit 'Create Simulation summary by account class', class: 'btn btn-primary' %>
+  <% end %>
+</p>
 
 <br />
+<br />
 
-<%= link_to 'Back', @simulation_summary %>
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Back', @simulation_summary, class: 'btn btn-secondary' %>
+</div>

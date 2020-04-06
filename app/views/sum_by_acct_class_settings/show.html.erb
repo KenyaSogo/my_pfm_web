@@ -24,19 +24,17 @@
       </tr>
     </thead>
     <tbody>
-      <% asset_accounts = @sum_by_acct_class_setting.sum_by_account_class.simulation_summary.simulation.asset.asset_accounts %>
-      <% if asset_accounts.blank? %>
+      <% if @asset_accounts.blank? %>
         <tr>
           <td>-</td>
           <td>-</td>
           <td>-</td>
         </tr>
       <% else %>
-        <% acct_to_class_maps = @sum_by_acct_class_setting.acct_to_class_maps %>
-        <% asset_accounts.each do |asset_account| %>
+        <% @asset_accounts.each do |asset_account| %>
           <tr>
             <td><%= asset_account.name.presence || '-' %></td>
-            <% acct_to_class_map = acct_to_class_maps.find { |m| m.asset_account_id == asset_account.id } %>
+            <% acct_to_class_map = @acct_to_class_maps.find { |m| m.asset_account_id == asset_account.id } %>
             <td><%= acct_to_class_map.simulation_acct_class&.name.presence || '-' %></td>
             <td>
               <div class='btn-group' role='group' aria-label='action_menu'>

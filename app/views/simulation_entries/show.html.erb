@@ -1,25 +1,57 @@
 <h1>SimulationEntry Detail</h1>
 
 <p>
-  <strong>SimulationName:</strong>
-  <%= @simulation_entry.simulation.name %><br />
-  <strong>SimulationEntryName:</strong>
-  <%= @simulation_entry.name %><br />
-  <strong>SimulationEntryType:</strong>
-  <%= @simulation_entry.simulation_entry_type&.name.presence || '-' %><br />
-  <strong>ApplyFrom:</strong>
-  <%= display_date_string(@simulation_entry.apply_from) %><br />
-  <strong>ApplyTo:</strong>
-  <%= display_date_string(@simulation_entry.apply_to) %>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>SimulationName:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @simulation_entry.simulation.name %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>SimulationEntryName:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @simulation_entry.name %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>SimulationEntryType:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @simulation_entry.simulation_entry_type&.name.presence || '-' %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>ApplyFrom:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= display_date_string(@simulation_entry.apply_from) %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-2'>
+      <strong>ApplyTo:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= display_date_string(@simulation_entry.apply_to) %>
+    </div>
+  </div>
 </p>
+
+<br />
 
 <p>
   <h2>SimulationEntryDetails</h2>
-  <table>
+  <table class='table table-sm table-hover'>
     <% entry_type_id = @simulation_entry.simulation_entry_type&.id %>
     <% date_header_name = simulation_entry_detail_date_header_name(entry_type_id) %>
     <thead>
-      <tr>
+      <tr class='table-dark'>
         <% if date_header_name.present? %>
           <th><%= date_header_name %></th>
         <% end %>
@@ -33,7 +65,7 @@
         <th>CreatedAt</th>
         <th>UpdatedAt</th>
         <th>ResultActivity_Counts</th>
-        <th colspan="3">Actions</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -52,7 +84,7 @@
           <td>-</td>
           <td>-</td>
           <td>-</td>
-          <td colspan="3">-</td>
+          <td>-</td>
         </tr>
       <% else %>
         <% @simulation_entry_details.each do |simulation_entry_detail| %>
@@ -70,18 +102,26 @@
             <td><%= display_datetime_string(simulation_entry_detail.created_at) %></td>
             <td><%= display_datetime_string(simulation_entry_detail.updated_at) %></td>
             <td><%= @result_activity_counts_by_entry_detail[simulation_entry_detail.id].presence || 0 %></td>
-            <td><%= link_to 'Show', simulation_entry_detail %></td>
-            <td><%= link_to 'Edit', edit_simulation_entry_detail_path(simulation_entry_detail) %></td>
-            <td><%= link_to 'Destroy', simulation_entry_detail, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td>
+              <div class='btn-group' role='group' aria-label='action_menu'>
+                <%= link_to 'Show', simulation_entry_detail, class: 'btn btn-secondary btn-sm' %>
+                <%= link_to 'Edit', edit_simulation_entry_detail_path(simulation_entry_detail), class: 'btn btn-secondary btn-sm' %>
+                <%= link_to 'Destroy', simulation_entry_detail, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-secondary btn-sm' %>
+              </div>
+            </td>
           </tr>
         <% end %>
       <% end %>
     </tbody>
   </table>
   <%= paginate @simulation_entry_details %>
-  <br />
-  <%= link_to 'New SimulationEntryDetail', new_simulation_entry_detail_path(simulation_entry_id: @simulation_entry.id) %>
+  <%= link_to 'New SimulationEntryDetail', new_simulation_entry_detail_path(simulation_entry_id: @simulation_entry.id), class: 'btn btn-primary' %>
 </p>
 
-<%= link_to 'Edit', edit_simulation_entry_path(@simulation_entry) %> |
-<%= link_to 'Back', @simulation_entry.simulation %>
+<br />
+<br />
+
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Edit', edit_simulation_entry_path(@simulation_entry), class: 'btn btn-secondary' %>
+  <%= link_to 'Back', @simulation_entry.simulation, class: 'btn btn-secondary' %>
+</div>

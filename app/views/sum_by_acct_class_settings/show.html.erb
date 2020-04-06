@@ -1,18 +1,26 @@
 <h1>SimulationSummaryByAccountClass Setting</h1>
 
 <p>
-  <strong>SummaryByAccountClassName:</strong>
-  <%= @sum_by_acct_class_setting.sum_by_account_class.name.presence || '-' %>
+  <div class='form-group row'>
+    <div class='col-md-3'>
+      <strong>SummaryByAccountClassName:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @sum_by_acct_class_setting.sum_by_account_class.name.presence || '-' %>
+    </div>
+  </div>
 </p>
+
+<br />
 
 <p>
   <h2>AssetAccountClassifications</h2>
-  <table>
+  <table class='table table-sm table-hover'>
     <thead>
-      <tr>
+      <tr class='table-dark'>
         <th>AssetAccountName</th>
         <th>AccountClassName</th>
-        <th colspan="1">Actions</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -21,7 +29,7 @@
         <tr>
           <td>-</td>
           <td>-</td>
-          <td colspan="1">-</td>
+          <td>-</td>
         </tr>
       <% else %>
         <% acct_to_class_maps = @sum_by_acct_class_setting.acct_to_class_maps %>
@@ -30,14 +38,22 @@
             <td><%= asset_account.name.presence || '-' %></td>
             <% acct_to_class_map = acct_to_class_maps.find { |m| m.asset_account_id == asset_account.id } %>
             <td><%= acct_to_class_map.simulation_acct_class&.name.presence || '-' %></td>
-            <td><%= link_to 'Edit', edit_acct_to_class_map_path(acct_to_class_map) %></td>
+            <td>
+              <div class='btn-group' role='group' aria-label='action_menu'>
+                <%= link_to 'Edit', edit_acct_to_class_map_path(acct_to_class_map), class: 'btn btn-secondary btn-sm' %>
+              </div>
+            </td>
           </tr>
         <% end %>
       <% end %>
     </tbody>
   </table>
-  <br />
-  <%= link_to 'AccountClasses', simulation_acct_classes_path(sum_by_acct_class_setting_id: @sum_by_acct_class_setting.id) %>
+  <%= link_to 'AccountClasses', simulation_acct_classes_path(sum_by_acct_class_setting_id: @sum_by_acct_class_setting.id), class: 'btn btn-primary' %>
 </p>
 
-<%= link_to 'Back', @sum_by_acct_class_setting.sum_by_account_class %>
+<br />
+<br />
+
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Back', @sum_by_acct_class_setting.sum_by_account_class, class: 'btn btn-secondary' %>
+</div>

@@ -32,4 +32,8 @@ module ApplicationHelper
   def day_options
     Range.new(1, 31).map { |d| [d, d] }
   end
+  def nl2br(str)
+    return str if str.blank?
+    raw(h(str).gsub(/\R/, "<br />"))
+  end
 end

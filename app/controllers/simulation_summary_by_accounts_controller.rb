@@ -34,12 +34,8 @@ class SimulationSummaryByAccountsController < ApplicationController
         condition = params[:q][:asset_account_id_eq].blank? ? { asset_account_id_null: true } : { asset_account_id_eq: params[:q][:asset_account_id_eq] }
         condition.merge!(
           {
-            'base_date_gteq(1i)': params[:q]['base_date_gteq(1i)'],
-            'base_date_gteq(2i)': params[:q]['base_date_gteq(2i)'],
-            'base_date_gteq(3i)': params[:q]['base_date_gteq(3i)'],
-            'base_date_lteq(1i)': params[:q]['base_date_lteq(1i)'],
-            'base_date_lteq(2i)': params[:q]['base_date_lteq(2i)'],
-            'base_date_lteq(3i)': params[:q]['base_date_lteq(3i)'],
+            base_date_gteq: params[:q][:base_date_gteq],
+            base_date_lteq: params[:q][:base_date_lteq],
           }
         )
       else

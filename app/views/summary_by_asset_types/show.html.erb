@@ -3,41 +3,75 @@
 <% has_sum_asset_type_dailies = @summary_by_asset_type.sum_asset_type_dailies.present? %>
 
 <p>
+  <div class='form-group row'>
+    <div class='col-md-2'>
+      <strong>IsActive:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= @summary_by_asset_type.is_active.presence || '-' %>
+    </div>
+  </div>
+  <div class='form-group row'>
+    <div class='col-md-2'>
+      <strong>SummarizedAt:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= display_datetime_string(@summary_by_asset_type.summarized_at) %>
+    </div>
+  </div>
+
   <%= search_form_for(@query, url: @summary_by_asset_type) do |f| %>
-    <table>
-      <tr>
-        <td><strong>IsActive:</strong>
-        <td><%= @summary_by_asset_type.is_active.presence || '-' %>
-      <tr>
-        <td><strong>SummarizedAt:</strong>
-        <td><%= display_datetime_string(@summary_by_asset_type.summarized_at) %>
-      <% if has_sum_asset_type_dailies %>
-        <tr>
-          <td><strong>AssetTypeName:</strong>
-          <td colspan="3"><%= f.select :asset_type_id_eq, summary_by_asset_type_options(@summary_by_asset_type) %>
-        <tr>
-          <td><strong><%= f.label :base_date, "BaseDate:" %></strong>
-          <td><%= f.date_select :base_date_gteq, {include_blank: true, use_month_numbers: true, date_separator: ' / '}, class: "form-control" %> ~
-          <td><%= f.date_select :base_date_lteq, {include_blank: true, use_month_numbers: true, date_separator: ' / '}, class: "form-control" %>
-          <td width="300" align="right"><span class="actions"><%= f.submit "Search" %></span>
-      <% end %>
-    </table>
+    <% if has_sum_asset_type_dailies %>
+      <div class='form-group row'>
+        <div class='col-md-2'>
+          <strong>AssetTypeName:</strong>
+        </div>
+        <div class='col-md-5'>
+          <%= f.select :asset_type_id_eq, summary_by_asset_type_options(@summary_by_asset_type), {}, { class: 'form-control' } %>
+        </div>
+      </div>
+      <div class='form-group row'>
+        <div class='col-md-2'>
+          <strong><%= f.label :base_date, 'BaseDate:' %></strong>
+        </div>
+        <div class='col-md-3'>
+          <%= f.text_field :base_date_gteq, id: 'base_date_gteq', class: 'form-control datetimepicker-input', data: { toggle: 'datetimepicker', target: '#base_date_gteq' } %>
+        </div>
+        <span>~</span>
+        <div class='col-md-3'>
+          <%= f.text_field :base_date_lteq, id: 'base_date_lteq', class: 'form-control datetimepicker-input', data: { toggle: 'datetimepicker', target: '#base_date_lteq' } %>
+        </div>
+        <div class='col-md-3'>
+          <%= f.submit 'Search', class: 'btn btn-primary float-md-right' %>
+        </div>
+      </div>
+    <% end %>
   <% end %>
 </p>
 
 <% if has_sum_asset_type_dailies %>
+  <br />
   <p>
     <%= area_chart @data, points: false, thousands: ',' %>
   </p>
+  <br />
 <% end %>
 
-<table>
-  <tr>
-    <td><strong>Memo:</strong>
-    <td><%= @summary_by_asset_type.memo.presence || '-' %>
-</table>
+<p>
+  <div class='form-group row'>
+    <div class='col-md-2'>
+      <strong>Memo:</strong>
+    </div>
+    <div class='col-md-5 text-break'>
+      <%= nl2br(@summary_by_asset_type.memo).presence || '-' %>
+    </div>
+  </div>
+</p>
 
 <br />
+<br />
 
-<%= link_to 'Edit', edit_summary_by_asset_type_path(@summary_by_asset_type) %> |
-<%= link_to 'Back', @summary_by_asset_type.simulation_summary %>
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Edit', edit_summary_by_asset_type_path(@summary_by_asset_type), class: 'btn btn-secondary' %>
+  <%= link_to 'Back', @summary_by_asset_type.simulation_summary, class: 'btn btn-secondary' %>
+</div>

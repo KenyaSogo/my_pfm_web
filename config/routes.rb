@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :acct_to_class_maps
   resources :simulation_acct_classes
-  resources :sum_by_acct_class_settings
+  resources :sum_by_acct_class_settings, only: [:show]
   resources :sum_by_account_classes, except: [:index]
   resources :summary_by_asset_types, only: [:show, :edit, :update]
   resources :simulation_summary_by_accounts, only: [:show, :edit, :update]

@@ -1,13 +1,43 @@
 <h1>Editing Simulation Summary By Asset Type</h1>
 
-<%= form_for @summary_by_asset_type do |f| %>
-  <%= render "devise/shared/error_messages", resource: f.object %>
-  <%= f.label :is_active %><%= f.check_box :is_active %><br />
-  <%= f.label :memo %><%= f.text_area :memo, size: '80x5' %><br /><br />
-  <%= f.submit %>
-<% end %>
+</br>
+
+<div class='row'>
+  <div class='col-md-12'>
+    <%= render 'devise/shared/error_messages', resource: @summary_by_asset_type %>
+  </div>
+</div>
+
+<p>
+  <%= form_for @summary_by_asset_type do |f| %>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :is_active, class: 'form-check-label' %>
+      </div>
+      <div class='col-md-5 d-flex align-items-center'>
+        <div class='custom-control custom-checkbox'>
+          <%= f.check_box :is_active, class: 'custom-control-input' %>
+          <%= f.label :is_active, class: 'custom-control-label text-muted' %>
+        </div>
+      </div>
+    </div>
+    <div class='form-group row'>
+      <div class='col-md-2'>
+        <%= f.label :memo, class: 'col-form-label' %>
+      </div>
+      <div class='col-md-5'>
+        <%= f.text_area :memo, placeholder: 'memo text', rows: '5', class: 'form-control' %>
+      </div>
+    </div>
+    <br />
+    <%= f.submit 'Update Simulation summary by asset type', class: 'btn btn-primary' %>
+  <% end %>
+</p>
 
 <br />
+<br />
 
-<%= link_to 'Show', @summary_by_asset_type %> |
-<%= link_to 'Back', @summary_by_asset_type.simulation_summary %>
+<div class='btn-group' role='group' aria-label='footer_menu'>
+  <%= link_to 'Show', @summary_by_asset_type, class: 'btn btn-secondary' %>
+  <%= link_to 'Back', @summary_by_asset_type.simulation_summary, class: 'btn btn-secondary' %>
+</div>

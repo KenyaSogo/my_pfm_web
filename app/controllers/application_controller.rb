@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   private
 
   def sign_in_required
-    redirect_to new_user_session_url unless user_signed_in?
+    redirect_to homes_index_path unless user_signed_in?
   end
 
   def current_users_resource_filter(resource)

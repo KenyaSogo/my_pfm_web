@@ -48,6 +48,54 @@
 <br />
 
 <p>
+  <h2>AssetAccounts</h2>
+  <table class='table table-sm table-hover'>
+    <thead>
+      <tr class='table-dark'>
+        <th>Name</th>
+        <th>Type</th>
+        <th>InitialBalance</th>
+        <th>InitialBalanceBaseDate</th>
+        <th>AssetActivity_Counts</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @asset.asset_accounts.blank? %>
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+      <% else %>
+        <% @asset.asset_accounts.each do |asset_account| %>
+          <tr>
+            <td><%= asset_account.name %></td>
+            <td><%= asset_account.asset_type&.name.presence || '-' %></td>
+            <td><%= asset_account.initial_balance.presence || '-' %></td>
+            <td><%= display_date_string(asset_account.initial_balance_base_date) %></td>
+            <td><%= @asset_activity_counts_by_account[asset_account.id].presence || 0 %></td>
+            <td>
+              <div class='btn-group' role='group' aria-label='action_menu'>
+                <%= link_to 'Show', asset_account, class: 'btn btn-secondary btn-sm' %>
+                <%= link_to 'Edit', edit_asset_account_path(asset_account), class: 'btn btn-secondary btn-sm' %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <%= link_to 'Aggregate', aggregate_asset_path(@asset), class: 'btn btn-primary' %>
+  <%= link_to 'AssetActivities_BulkInquiry', asset_activities_path(asset_id: @asset.id), class: 'btn btn-secondary' %>
+</p>
+
+<br />
+
+<p>
   <h2>Simulations</h2>
   <table class='table table-sm table-hover'>
     <thead>
@@ -95,54 +143,6 @@
     </tbody>
   </table>
   <%= link_to 'New Simulation', new_simulation_path(asset_id: @asset.id), class: 'btn btn-primary' %>
-</p>
-
-<br />
-
-<p>
-  <h2>AssetAccounts</h2>
-  <table class='table table-sm table-hover'>
-    <thead>
-      <tr class='table-dark'>
-        <th>Name</th>
-        <th>Type</th>
-        <th>InitialBalance</th>
-        <th>InitialBalanceBaseDate</th>
-        <th>AssetActivity_Counts</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% if @asset.asset_accounts.blank? %>
-        <tr>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-        </tr>
-      <% else %>
-        <% @asset.asset_accounts.each do |asset_account| %>
-          <tr>
-            <td><%= asset_account.name %></td>
-            <td><%= asset_account.asset_type&.name.presence || '-' %></td>
-            <td><%= asset_account.initial_balance.presence || '-' %></td>
-            <td><%= display_date_string(asset_account.initial_balance_base_date) %></td>
-            <td><%= @asset_activity_counts_by_account[asset_account.id].presence || 0 %></td>
-            <td>
-              <div class='btn-group' role='group' aria-label='action_menu'>
-                <%= link_to 'Show', asset_account, class: 'btn btn-secondary btn-sm' %>
-                <%= link_to 'Edit', edit_asset_account_path(asset_account), class: 'btn btn-secondary btn-sm' %>
-              </div>
-            </td>
-          </tr>
-        <% end %>
-      <% end %>
-    </tbody>
-  </table>
-  <%= link_to 'Aggregate', aggregate_asset_path(@asset), class: 'btn btn-primary' %>
-  <%= link_to 'AssetActivities_BulkInquiry', asset_activities_path(asset_id: @asset.id), class: 'btn btn-primary' %>
 </p>
 
 <br />

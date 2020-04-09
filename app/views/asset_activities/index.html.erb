@@ -18,11 +18,11 @@
         <strong><%= f.label :transaction_date, "TransactionDate:" %></strong>
       </div>
       <div class='col-md-3'>
-        <%= f.text_field :transaction_date_gteq, id: 'transaction_date_gteq', class: 'form-control datetimepicker-input', data: { toggle: 'datetimepicker', target: '#transaction_date_gteq' } %>
+        <%= f.text_field :transaction_date_gteq, id: 'transaction_date_gteq', autocomplete: 'off', class: 'form-control datetimepicker-input', data: { toggle: 'datetimepicker', target: '#transaction_date_gteq' } %>
       </div>
       <span>~</span>
       <div class='col-md-3'>
-        <%= f.text_field :transaction_date_lteq, id: 'transaction_date_lteq', class: 'form-control datetimepicker-input', data: { toggle: 'datetimepicker', target: '#transaction_date_lteq' } %>
+        <%= f.text_field :transaction_date_lteq, id: 'transaction_date_lteq', autocomplete: 'off', class: 'form-control datetimepicker-input', data: { toggle: 'datetimepicker', target: '#transaction_date_lteq' } %>
       </div>
       <div class='col-md-3'>
         <%= f.submit 'Search', class: 'btn btn-primary float-md-right' %>

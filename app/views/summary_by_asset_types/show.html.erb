@@ -37,11 +37,11 @@
           <strong><%= f.label :base_date, 'BaseDate:' %></strong>
         </div>
         <div class='col-md-3'>
-          <%= f.text_field :base_date_gteq, id: 'base_date_gteq', class: 'form-control datetimepicker-input', data: { toggle: 'datetimepicker', target: '#base_date_gteq' } %>
+          <%= f.text_field :base_date_gteq, id: 'base_date_gteq', autocomplete: 'off', class: 'form-control datetimepicker-input', data: { toggle: 'datetimepicker', target: '#base_date_gteq' } %>
         </div>
         <span>~</span>
         <div class='col-md-3'>
-          <%= f.text_field :base_date_lteq, id: 'base_date_lteq', class: 'form-control datetimepicker-input', data: { toggle: 'datetimepicker', target: '#base_date_lteq' } %>
+          <%= f.text_field :base_date_lteq, id: 'base_date_lteq', autocomplete: 'off', class: 'form-control datetimepicker-input', data: { toggle: 'datetimepicker', target: '#base_date_lteq' } %>
         </div>
         <div class='col-md-3'>
           <%= f.submit 'Search', class: 'btn btn-primary float-md-right' %>

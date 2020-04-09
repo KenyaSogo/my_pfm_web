@@ -11,7 +11,7 @@ class BillingAccount < ApplicationRecord
 
   validates :simulation, :credit_account, :billing_closing_day, :withdrawal_day, :withdrawal_month_offset,
     :billing_item, :billing_sub_item, :debit_account, :debit_item, :debit_sub_item, presence: true
-  validate :validation_abort_if_errors_present
+  validate :abort_validation_if_errors_present
   validates :credit_account, uniqueness: { scope: :simulation }
   validates :credit_account_id, inclusion: { in: :related_asset_account_ids }
   validates :billing_closing_day, :withdrawal_day, inclusion: { in: 1..31 }
@@ -24,7 +24,7 @@ class BillingAccount < ApplicationRecord
 
   private
 
-  def validation_abort_if_errors_present
+  def abort_validation_if_errors_present
     throw :abort if errors.present?
   end
 

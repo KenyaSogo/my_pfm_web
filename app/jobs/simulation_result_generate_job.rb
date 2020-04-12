@@ -286,7 +286,7 @@ class SimulationResultGenerateJob < ApplicationJob
       group by
         asset_account_id, transaction_date
     SQL
-    sanitize_sql = ActiveRecord::Base.send(:sanitize_sql_array, [sql, simulation.id, simulation.id])
+    sanitize_sql = ActiveRecord::Base.send(:sanitize_sql_array, [sql, simulation.asset.id, simulation.id])
     activity_daily_sums = ActiveRecord::Base.connection.select_all(sanitize_sql).to_hash
 
     activity_daily_sums_to_h(activity_daily_sums)

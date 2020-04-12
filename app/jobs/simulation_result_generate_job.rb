@@ -1,4 +1,6 @@
 class SimulationResultGenerateJob < ApplicationJob
+  include ActiveJob::Status
+
   class SimulationResultError < StandardError; end
 
   queue_as :default

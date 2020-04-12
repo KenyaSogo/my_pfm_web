@@ -1,6 +1,8 @@
 require 'csv'
 
 class ScrapeMyPfmJob < ApplicationJob
+  include ActiveJob::Status
+
   class ScrapingError < StandardError; end
 
   queue_as :default

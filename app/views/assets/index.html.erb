@@ -9,6 +9,7 @@
       <th>AssetName</th>
       <th>AssetActivity_Counts</th>
       <th>LastAggregatedAt</th>
+      <th>AggregateStatus</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -21,6 +22,7 @@
         <td>-</td>
         <td>-</td>
         <td>-</td>
+        <td>-</td>
       </tr>
     <% else %>
       <% @assets.each do |asset| %>
@@ -29,6 +31,7 @@
           <td><%= asset.name %></td>
           <td><%= @asset_activity_counts[asset.id] %></td>
           <td><%= display_datetime_string(asset.last_aggregate_succeeded_at) %></td>
+          <td><%= latest_aggretate_status(asset) %></td>
           <td>
             <%= link_to 'Aggregate', aggregate_asset_path(asset), class: 'btn btn-primary btn-sm' %>
             <div class='btn-group' role='group' aria-label='action_menu'>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200412080854) do
+ActiveRecord::Schema.define(version: 20200412095518) do
 
   create_table "acct_to_class_maps", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "sum_by_acct_class_setting_id"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 20200412080854) do
     t.string   "name"
     t.datetime "last_aggregate_started_at"
     t.datetime "last_aggregate_succeeded_at"
+    t.string   "last_job_id"
     t.index ["user_id"], name: "index_assets_on_user_id", using: :btree
   end
 
@@ -241,6 +242,7 @@ ActiveRecord::Schema.define(version: 20200412080854) do
     t.integer  "asset_id"
     t.string   "name"
     t.datetime "last_generated_at"
+    t.string   "last_job_id"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.index ["asset_id"], name: "index_simulations_on_asset_id", using: :btree

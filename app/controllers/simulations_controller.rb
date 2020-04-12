@@ -83,7 +83,9 @@ class SimulationsController < ApplicationController
       end
     end
 
-    SimulationResultGenerateJob.perform_later(@simulation.id)
+    job = SimulationResultGenerateJob.perform_later(@simulation.id)
+    @simulation.update!(last_job_id: job.job_id)
+
     respond_to do |format|
       format.html { redirect_to @simulation, notice: 'Simulation generate was successfully kicked.' }
       format.json { head :no_content }

@@ -43,6 +43,14 @@
       <%= display_datetime_string(@asset.last_aggregate_succeeded_at) %>
     </div>
   </div>
+  <div class='row'>
+    <div class='col-md-3'>
+      <strong>LatestAggregateStatus:</strong>
+    </div>
+    <div class='col-md-5'>
+      <%= latest_aggretate_status(@asset) %>
+    </div>
+  </div>
 </p>
 
 <br />
@@ -106,12 +114,14 @@
         <th>Entry_Counts</th>
         <th>ResultActivity_Counts</th>
         <th>LastGeneratedAt</th>
+        <th>GenerateStatus</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <% if @asset.simulations.blank? %>
         <tr>
+          <td>-</td>
           <td>-</td>
           <td>-</td>
           <td>-</td>
@@ -129,6 +139,7 @@
             <td><%= (@entry_detail_counts_by_simulation[simulation.id].presence || 0) + (@billing_account_counts_by_simulation[simulation.id].presence || 0) %></td>
             <td><%= (@result_activity_counts_by_simulation[simulation.id].presence || 0) + (@billing_activity_counts_by_simulation[simulation.id].presence || 0) %></td>
             <td><%= display_datetime_string(simulation.last_generated_at) %></td>
+            <td><%= latest_generate_status(simulation) %></td>
             <td>
               <%= link_to 'Generate', generate_simulation_path(simulation), class: 'btn btn-primary btn-sm' %>
               <div class='btn-group' role='group' aria-label='action_menu'>

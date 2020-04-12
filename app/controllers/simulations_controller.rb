@@ -101,7 +101,7 @@ class SimulationsController < ApplicationController
       if params[:from_menu]
         @simulation = Simulation.where(id: params[:id]).first || current_user.current_asset&.simulations&.first
         if @simulation.blank?
-          redirect_to homes_show_path, notice: 'Simulation is not exists.'
+          redirect_to homes_show_path, alert: 'Simulation is not exists.'
         end
       else
         @simulation = Simulation.find(params[:id])

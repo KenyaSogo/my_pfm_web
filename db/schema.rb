@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200322115703) do
+ActiveRecord::Schema.define(version: 20200412080854) do
 
   create_table "acct_to_class_maps", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "sum_by_acct_class_setting_id"
@@ -329,6 +329,7 @@ ActiveRecord::Schema.define(version: 20200322115703) do
     t.string   "encrypted_pfm_account_password_iv"
     t.integer  "current_asset_id"
     t.integer  "current_simulation_id"
+    t.boolean  "is_admin"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end

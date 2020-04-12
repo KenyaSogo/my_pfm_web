@@ -76,6 +76,13 @@ class SimulationsController < ApplicationController
   end
 
   def generate
+    if @simulation.asset.asset_accounts.any? { |a| a.asset_type.blank? }
+      respond_to do |format|
+        format.html { redirect_to @simulation, alert: 'There is unset asset account.' and return }
+        format.json { head :no_content }
+      end
+    end
+
     SimulationResultGenerateJob.perform_later(@simulation.id)
     respond_to do |format|
       format.html { redirect_to @simulation, notice: 'Simulation generate was successfully kicked.' }

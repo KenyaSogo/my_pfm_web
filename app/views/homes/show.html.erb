@@ -11,11 +11,68 @@
   <p>
     <div class='jumbotron'>
       <h3>( ... setting not completed yet:</h3>
+
       <br />
-      1) complete profile at edit_profile page.<br />
-      2) create asset (at your assets page), and do aggregate.<br />
-      3) create simulation (at asset page), make simulation_entry, and do generate.<br />
-      4) edit simulation_summary setting.<br />
+
+      <% if profile_completed? %>
+        <span class='text-muted'>1) complete profile (at edit profile page).</span>
+      <% else %>
+        1) complete profile (at <%= link_to 'edit profile', edit_user_registration_path %> page).
+      <% end %>
+
+      <br />
+
+      <% if asset_aggregate_completed? %>
+        <span class='text-muted'>2) create asset (at your assets page), and do aggregate (at the asset page).</span>
+      <% else %>
+        2) create asset (at <%= link_to 'your assets page', assets_path %>), and do aggregate
+        <% if current_user.current_or_first_asset.present? %>
+          (at <%= link_to 'the asset page', current_user.current_or_first_asset %>).
+        <% else %>
+          (at the asset page).
+        <% end %>
+      <% end %>
+
+      <br />
+
+      <% if asset_accounts_setting_completed? %>
+        <span class='text-muted'>3) edit asset_accounts setting (from asset_accounts table).</span>
+      <% else %>
+        <% if asset_aggregate_completed? %>
+          3) edit asset_account settings (from <%= link_to 'asset_accounts table', current_user.current_or_first_asset %>).
+        <% else %>
+          3) edit asset_account settings (from asset_accounts table).
+        <% end %>
+      <% end %>
+
+      <br />
+
+      <% if simulation_generate_completed? %>
+        <span class='text-muted'>4) create simulation (at asset page), then make simulation_entry, and do generate (at the simulation page).</span>
+      <% else %>
+        <% if asset_accounts_setting_completed? %>
+          4) create simulation (at <%= link_to 'asset page', current_user.current_or_first_asset %>), then make simulation_entry, and do generate
+          <% if current_user.current_or_first_simulation.present? %>
+            (at <%= link_to 'the simulation page', current_user.current_or_first_simulation %>).
+          <% else %>
+            (at the simulation page).
+          <% end %>
+        <% else %>
+          4) create simulation (at asset page), then make simulation_entry, and do generate (at the simulation page).
+        <% end %>
+      <% end %>
+
+      <br />
+
+      5) so, you can see your future cash flow
+      <% summary_at_current_or_first_simulation = current_user.current_or_first_simulation&.simulation_summary %>
+      <% if summary_at_current_or_first_simulation.present? &&  %>
+        (at <%= link_to 'summary page', summary_at_current_or_first_simulation %>).
+      <% else %>
+        (at summary page).
+      <% end %>
+
+      <br />
   </p>
   </div>
 <% end %>

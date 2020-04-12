@@ -4,6 +4,7 @@ class SimulationAcctClassesController < ApplicationController
   before_action -> { current_users_resource_filter(@sum_by_acct_class_setting.sum_by_account_class.simulation_summary.simulation.asset) }, only: [:index, :new, :create]
   before_action :set_simulation_acct_class, only: [:edit, :update, :destroy]
   before_action -> { current_users_resource_filter(@simulation_acct_class.sum_by_acct_class_setting.sum_by_account_class.simulation_summary.simulation.asset) }, only: [:edit, :update, :destroy]
+  before_action :set_current_menu
 
   # GET /simulation_acct_classes
   # GET /simulation_acct_classes.json
@@ -80,5 +81,9 @@ class SimulationAcctClassesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def simulation_acct_class_params
       params.require(:simulation_acct_class).permit(:name)
+    end
+
+    def set_current_menu
+      @current_menu = :summary
     end
 end

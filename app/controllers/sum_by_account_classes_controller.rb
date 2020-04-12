@@ -4,6 +4,7 @@ class SumByAccountClassesController < ApplicationController
   before_action -> { current_users_resource_filter(@simulation_summary.simulation.asset) }, only: [:new, :create]
   before_action :set_sum_by_account_class, only: [:show, :edit, :update, :destroy]
   before_action -> { current_users_resource_filter(@sum_by_account_class.simulation_summary.simulation.asset) }, only: [:show, :edit, :update, :destroy]
+  before_action :set_current_menu
 
   # GET /sum_by_account_classes/1
   # GET /sum_by_account_classes/1.json
@@ -100,5 +101,9 @@ class SumByAccountClassesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def sum_by_account_class_params
       params.require(:sum_by_account_class).permit(:name, :is_active, :memo)
+    end
+
+    def set_current_menu
+      @current_menu = :summary
     end
 end

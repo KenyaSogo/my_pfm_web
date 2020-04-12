@@ -4,6 +4,7 @@ class SimulationsController < ApplicationController
   before_action -> { current_users_resource_filter(@asset) }, only: [:new, :create]
   before_action :set_simulation, only: [:show, :edit, :update, :destroy, :generate]
   before_action -> { current_users_resource_filter(@simulation.asset) }, only: [:show, :edit, :update, :destroy, :generate]
+  before_action :set_current_menu
 
   # GET /simulations/1
   # GET /simulations/1.json
@@ -113,5 +114,9 @@ class SimulationsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def simulation_params
       params.require(:simulation).permit(:name)
+    end
+
+    def set_current_menu
+      @current_menu = :simulation
     end
 end

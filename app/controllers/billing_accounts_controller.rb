@@ -4,6 +4,7 @@ class BillingAccountsController < ApplicationController
   before_action -> { current_users_resource_filter(@simulation.asset) }, only: [:new, :create]
   before_action :set_billing_account, only: [:show, :edit, :update, :destroy]
   before_action -> { current_users_resource_filter(@billing_account.simulation.asset) }, only: [:show, :edit, :update, :destroy]
+  before_action :set_current_menu
 
   # GET /billing_accounts/1
   # GET /billing_accounts/1.json
@@ -78,5 +79,9 @@ class BillingAccountsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def billing_account_params
       params.require(:billing_account).permit(:credit_account_id, :billing_closing_day, :withdrawal_day, :withdrawal_month_offset, :billing_item_id, :billing_sub_item_id, :debit_account_id, :debit_item_id, :debit_sub_item_id)
+    end
+
+    def set_current_menu
+      @current_menu = :simulation
     end
 end

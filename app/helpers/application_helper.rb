@@ -44,4 +44,8 @@ module ApplicationHelper
     return str if str.blank?
     raw(h(str).gsub(/\R/, "<br />"))
   end
+
+  def menu_link_class(menu_sym)
+    @current_menu == menu_sym ? 'nav-link active' : 'nav-link'
+  end
 end

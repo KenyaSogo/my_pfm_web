@@ -19,43 +19,43 @@
         <div class='collapse navbar-collapse' id='navbar'>
           <ul class='navbar-nav mr-auto'>
             <% if user_signed_in? %>
-              <li class='nav-item'><%= link_to 'home', homes_show_path, class: 'nav-link' %></li>
+              <li class='nav-item'><%= link_to 'home', homes_show_path, class: menu_link_class(:home) %></li>
               <% current_or_first_asset = current_user.current_or_first_asset %>
               <% current_or_first_simulation = current_user.current_or_first_simulation %>
               <% summary_at_current_or_first_simulation = current_user.current_or_first_simulation&.simulation_summary %>
               <li class='nav-item'>
                 <% if current_or_first_asset.present? %>
-                  <%= link_to 'asset', asset_path(current_or_first_asset, from_menu: true), class: 'nav-link' %>
+                  <%= link_to 'asset', asset_path(current_or_first_asset, from_menu: true), class: menu_link_class(:asset) %>
                 <% else %>
                   <a class='nav-link text-light'>asset</a>
                 <% end %>
               </li>
               <li class='nav-item'>
                 <% if current_or_first_simulation.present? %>
-                  <%= link_to 'simulation', simulation_path(current_or_first_simulation, from_menu: true), class: 'nav-link' %>
+                  <%= link_to 'simulation', simulation_path(current_or_first_simulation, from_menu: true), class: menu_link_class(:simulation) %>
                 <% else %>
                   <a class='nav-link text-light'>simulation</a>
                 <% end %>
               </li>
               <li class='nav-item'>
                 <% if summary_at_current_or_first_simulation.present? %>
-                  <%= link_to 'summary', simulation_summary_path(summary_at_current_or_first_simulation, from_menu: true), class: 'nav-link' %>
+                  <%= link_to 'summary', simulation_summary_path(summary_at_current_or_first_simulation, from_menu: true), class: menu_link_class(:summary) %>
                 <% else %>
                   <a class='nav-link text-light'>summary</a>
                 <% end %>
               </li>
             <% else %>
-              <li class='nav-item'><%= link_to 'top', homes_index_path, class: 'nav-link' %></li>
+              <li class='nav-item'><%= link_to 'top', homes_index_path, class: menu_link_class(:home) %></li>
             <% end %>
           </ul>
 
           <ul class='navbar-nav'>
             <% if user_signed_in? %>
-              <li class='nav-item'><%= link_to 'edit profile', edit_user_registration_path, class: 'nav-link' %></li>
+              <li class='nav-item'><%= link_to 'edit profile', edit_user_registration_path, class: menu_link_class(:edit_profile) %></li>
               <li class='nav-item'><%= link_to 'logout', destroy_user_session_path, method: :delete, class: 'nav-link' %></li>
             <% else %>
-              <li class='nav-item'><%= link_to 'sign up', new_user_registration_path, class: 'nav-link' %></li>
-              <li class='nav-item'><%= link_to 'log in', new_user_session_path, class: 'nav-link' %></li>
+              <li class='nav-item'><%= link_to 'sign up', new_user_registration_path, class: menu_link_class(:sign_up) %></li>
+              <li class='nav-item'><%= link_to 'log in', new_user_session_path, class: menu_link_class(:log_in) %></li>
             <% end %>
           </ul>
         </div>

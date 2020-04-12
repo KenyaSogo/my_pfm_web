@@ -2,6 +2,7 @@ class AcctToClassMapsController < ApplicationController
   before_action :sign_in_required
   before_action :set_acct_to_class_map, only: [:edit, :update]
   before_action -> { current_users_resource_filter(@acct_to_class_map.sum_by_acct_class_setting.sum_by_account_class.simulation_summary.simulation.asset) }, only: [:edit, :update]
+  before_action :set_current_menu
 
   def edit
   end
@@ -26,5 +27,9 @@ class AcctToClassMapsController < ApplicationController
 
   def acct_to_class_map_params
     params.require(:acct_to_class_map).permit(:simulation_acct_class_id)
+  end
+
+  def set_current_menu
+    @current_menu = :summary
   end
 end

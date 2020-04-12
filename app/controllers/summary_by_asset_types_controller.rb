@@ -2,6 +2,7 @@ class SummaryByAssetTypesController < ApplicationController
   before_action :sign_in_required
   before_action :set_summary_by_asset_type, only: [:show, :edit, :update]
   before_action -> { current_users_resource_filter(@summary_by_asset_type.simulation_summary.simulation.asset) }, only: [:show, :edit, :update]
+  before_action :set_current_menu
 
   # GET /summary_by_asset_types/1
   # GET /summary_by_asset_types/1.json
@@ -56,5 +57,9 @@ class SummaryByAssetTypesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def summary_by_asset_type_params
       params.require(:summary_by_asset_type).permit(:is_active, :memo)
+    end
+
+    def set_current_menu
+      @current_menu = :summary
     end
 end

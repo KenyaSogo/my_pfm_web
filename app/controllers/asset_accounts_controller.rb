@@ -2,6 +2,7 @@ class AssetAccountsController < ApplicationController
   before_action :sign_in_required
   before_action :set_asset_account, only: [:show, :edit, :update]
   before_action -> { current_users_resource_filter(@asset_account.asset) }, only: [:show, :edit, :update]
+  before_action :set_current_menu
 
   # GET /asset_accounts/1
   # GET /asset_accounts/1.json
@@ -36,5 +37,9 @@ class AssetAccountsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def asset_account_params
       params.require(:asset_account).permit(:asset_type_id, :initial_balance, :initial_balance_base_date)
+    end
+
+    def set_current_menu
+      @current_menu = :asset
     end
 end

@@ -1,5 +1,6 @@
 class HomesController < ApplicationController
   before_action :sign_in_required, only: [:show]
+  before_action :set_current_menu
 
   def index
   end
@@ -10,5 +11,11 @@ class HomesController < ApplicationController
       @simulation_summary = simulation_summary
       @data = @simulation_summary.main_view_data
     end
+  end
+
+  private
+
+  def set_current_menu
+    @current_menu = :home
   end
 end

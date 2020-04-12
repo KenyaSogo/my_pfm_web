@@ -2,6 +2,7 @@ class AssetsController < ApplicationController
   before_action :sign_in_required
   before_action :set_asset, only: [:show, :edit, :update, :destroy, :aggregate]
   before_action -> { current_users_resource_filter(@asset) }, only: [:show, :edit, :update, :destroy, :aggregate]
+  before_action :set_current_menu
 
   # GET /assets
   # GET /assets.json
@@ -105,5 +106,9 @@ class AssetsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def asset_params
       params.require(:asset).permit(:name)
+    end
+
+    def set_current_menu
+      @current_menu = :asset
     end
 end

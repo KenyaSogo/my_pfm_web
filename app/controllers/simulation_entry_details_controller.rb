@@ -4,6 +4,7 @@ class SimulationEntryDetailsController < ApplicationController
   before_action -> { current_users_resource_filter(@simulation_entry.simulation.asset) }, only: [:new, :create]
   before_action :set_simulation_entry_detail, only: [:show, :edit, :update, :destroy]
   before_action -> { current_users_resource_filter(@simulation_entry_detail.simulation_entry.simulation.asset) }, only: [:show, :edit, :update, :destroy]
+  before_action :set_current_menu
 
   # GET /simulation_entry_details/1
   # GET /simulation_entry_details/1.json
@@ -76,5 +77,9 @@ class SimulationEntryDetailsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def simulation_entry_detail_params
       params.require(:simulation_entry_detail).permit(:asset_account_id, :transaction_date_year, :transaction_date_month, :transaction_date_day, :transaction_date_weekday, :description, :amount, :item_id, :sub_item_id, :is_transfer, :is_calculation_target)
+    end
+
+    def set_current_menu
+      @current_menu = :simulation
     end
 end

@@ -2,6 +2,7 @@ class SimulationSummariesController < ApplicationController
   before_action :sign_in_required
   before_action :set_simulation_summary, only: [:show, :edit, :update]
   before_action -> { current_users_resource_filter(@simulation_summary.simulation.asset) }, only: [:show, :edit, :update]
+  before_action :set_current_menu
 
   # GET /simulation_summaries/1
   # GET /simulation_summaries/1.json
@@ -55,5 +56,9 @@ class SimulationSummariesController < ApplicationController
         end
       end
       resolved_params.merge!(permitted_params.slice(:search_from, :search_to))
+    end
+
+    def set_current_menu
+      @current_menu = :summary
     end
 end

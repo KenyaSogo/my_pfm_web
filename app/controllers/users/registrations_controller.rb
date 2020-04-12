@@ -3,6 +3,8 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
+  before_action :set_current_menu_edit_profile, only: [:edit]
+  before_action :set_current_menu_sign_up, only: [:new]
 
   # GET /resource/sign_up
   # def new
@@ -59,4 +61,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+
+  private
+
+  def set_current_menu_edit_profile
+    @current_menu = :edit_profile
+  end
+
+  def set_current_menu_sign_up
+    @current_menu = :sign_up
+  end
 end

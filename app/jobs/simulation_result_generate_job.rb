@@ -54,7 +54,10 @@ class SimulationResultGenerateJob < ApplicationJob
         end
       end
 
-      simulation_summary = SimulationSummary.find_or_create_by!(simulation_id: simulation.id)
+      simulation_summary = SimulationSummary.find_or_initialize_by(simulation_id: simulation.id)
+      is_first_time = simulation_summary.new_record?
+      simulation_summary.save! if is_first_time
+
       simulation_summary_by_account = SimulationSummaryByAccount.find_or_create_by!(simulation_summary_id: simulation_summary.id)
       summary_by_asset_type = SummaryByAssetType.find_or_create_by!(simulation_summary_id: simulation_summary.id)
 
@@ -129,6 +132,22 @@ class SimulationResultGenerateJob < ApplicationJob
         else
           sum_by_account_class.sum_acct_class_dailies.delete_all
           sum_by_account_class.update!(summarized_at: nil)
+        end
+      end
+
+      if is_first_time
+        if simulation_summary_by_account.is_active && simulation_summary_by_account.sum_account_dailies.exists?
+          main_section_id = simulation_summary_by_account.sum_account_dailies.select(:asset_account_id).distinct.pluck(:asset_account_id).compact.min
+          if main_section_id
+            simulation_summary.update_attributes!(
+              main_breakdown_type_id: 1, # by_account
+              main_breakdown_id: simulation_summary_by_account.id,
+              main_section_type_id: 1, # asset_account
+              main_section_id: main_section_id,
+              search_from: -3,
+              search_to: 3,
+            )
+          end
         end
       end
 

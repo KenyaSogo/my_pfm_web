@@ -1,0 +1,35 @@
+<h1>Admin::Users</h1>
+
+<br />
+
+<p>
+  <table class='table table-sm table-hover'>
+    <thead>
+      <tr class='table-dark'>
+        <th>Name</th>
+        <th>Email</th>
+        <th>CreatedAt</th>
+        <th>Admin</th>
+        <th>AssetsCount</th>
+        <th>AggregatedAt</th>
+        <th>EntryCount</th>
+        <th>GeneratedAt</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user_display_name(user) %></td>
+          <td><%= user.email %></td>
+          <td><%= display_datetime_string(user.created_at) %></td>
+          <td><%= user.is_admin || '' %></td>
+          <td><%= user.assets.size %></td>
+          <td><%= display_datetime_string(user.assets.map(&:last_aggregate_succeeded_at)&.compact&.max) %></td>
+          <td><%= user.assets.joins(simulations: { simulation_entries: :simulation_entry_details }).size %></td>
+          <td><%= display_datetime_string(user.assets.joins(:simulations).pluck(:last_generated_at)&.compact&.max) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= paginate @users %>
+</p>

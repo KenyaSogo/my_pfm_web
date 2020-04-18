@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    get 'users/index'
+  end
+
+  namespace :admin do
+    get 'users/show'
+  end
+
   resources :acct_to_class_maps, only: [:edit, :update]
   resources :simulation_acct_classes, except: [:show]
   resources :sum_by_acct_class_settings, only: [:show]

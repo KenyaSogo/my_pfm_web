@@ -22,4 +22,8 @@ class ApplicationController < ActionController::Base
   def current_users_resource_filter(resource)
     redirect_to homes_show_path, alert: 'Unknown resource requested.' if resource&.user_id != current_user.id
   end
+
+  def admin_permission_required
+    redirect_to homes_show_path unless current_user&.is_admin
+  end
 end

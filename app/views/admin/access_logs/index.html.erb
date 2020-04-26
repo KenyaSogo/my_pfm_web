@@ -1,0 +1,31 @@
+<h1>Admin::AccessLogs</h1>
+
+<br />
+
+<p>
+  <table class='table table-sm table-hover'>
+    <thead>
+      <tr class='table-dark'>
+        <th>AccessedAt</th>
+        <th>UserId</th>
+        <th>AssetId</th>
+        <th>SimulationId</th>
+        <th>ControllerName</th>
+        <th>ActionName</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @access_logs.each do |access_log| %>
+        <tr>
+          <td><%= display_datetime_string(access_log.accessed_at) %></td>
+          <td><%= access_log.user_id.presence || '' %></td>
+          <td><%= access_log.asset_id.presence || '' %></td>
+          <td><%= access_log.simulation_id.presence || '' %></td>
+          <td><%= access_log.controller_name.presence || '' %></td>
+          <td><%= access_log.action_name.presence || '' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= paginate @access_logs %>
+</p>

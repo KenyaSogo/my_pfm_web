@@ -24,7 +24,7 @@
           <td><%= user.assets.size %></td>
           <td><%= display_datetime_string(user.assets.map(&:last_aggregate_succeeded_at)&.compact&.max) %></td>
           <td><%= user.assets.joins(simulations: { simulation_entries: :simulation_entry_details }).size %></td>
-          <td><%= display_datetime_string(user.assets.joins(:simulations).pluck(:last_generated_at)&.compact&.max) %></td>
+          <td><%= display_datetime_string(user.assets.flat_map(&:simulations).map(&:last_generated_at)&.compact&.max) %></td>
         </tr>
       <% end %>
     </tbody>

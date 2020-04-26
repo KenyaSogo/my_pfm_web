@@ -32,7 +32,7 @@
       <strong>LatestGenerateStatus:</strong>
     </div>
     <div class='col-md-5'>
-      <%= latest_generate_status(@simulation) %>
+      <%= render_async generate_status_simulation_path(@simulation), interval: 3000 %>
     </div>
   </div>
 </p>

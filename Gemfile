@@ -86,3 +86,5 @@ gem 'font-awesome-rails'
 gem 'jquery-turbolinks'
 
 gem 'activejob-status'
+
+gem 'render_async'

@@ -2,8 +2,8 @@ class SimulationsController < ApplicationController
   before_action :sign_in_required
   before_action :set_asset, only: [:new, :create]
   before_action -> { current_users_resource_filter(@asset) }, only: [:new, :create]
-  before_action :set_simulation, only: [:show, :edit, :update, :destroy, :generate]
-  before_action -> { current_users_resource_filter(@simulation.asset) }, only: [:show, :edit, :update, :destroy, :generate]
+  before_action :set_simulation, only: [:show, :edit, :update, :destroy, :generate, :generate_status]
+  before_action -> { current_users_resource_filter(@simulation.asset) }, only: [:show, :edit, :update, :destroy, :generate, :generate_status]
   before_action :set_current_menu
 
   # GET /simulations/1
@@ -91,6 +91,10 @@ class SimulationsController < ApplicationController
       format.html { redirect_to @simulation, notice: 'Simulation generate was successfully kicked.' }
       format.json { head :no_content }
     end
+  end
+
+  def generate_status
+    render partial: 'generate_status'
   end
 
   private

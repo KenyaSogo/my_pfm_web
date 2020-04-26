@@ -216,6 +216,7 @@ GEM
       redis-store (>= 1.2, < 2)
     redis-store (1.8.2)
       redis (>= 4, < 5)
+    render_async (2.1.5)
     responders (3.0.0)
       actionpack (>= 5.0)
       railties (>= 5.0)
@@ -316,6 +317,7 @@ DEPENDENCIES
   rails (~> 5.0.7, >= 5.0.7.2)
   ransack
   redis-rails
+  render_async
   sass-rails (~> 5.0)
   sidekiq
   sidekiq-failures

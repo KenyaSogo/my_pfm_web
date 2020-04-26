@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   resources :simulations, except: [:index] do
     member do
       get 'generate'
+      get 'generate_status'
     end
   end
   resources :asset_activities, only: [:index]

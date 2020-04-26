@@ -1,7 +1,7 @@
 class AssetsController < ApplicationController
   before_action :sign_in_required
-  before_action :set_asset, only: [:show, :edit, :update, :destroy, :aggregate]
-  before_action -> { current_users_resource_filter(@asset) }, only: [:show, :edit, :update, :destroy, :aggregate]
+  before_action :set_asset, only: [:show, :edit, :update, :destroy, :aggregate, :aggregate_status]
+  before_action -> { current_users_resource_filter(@asset) }, only: [:show, :edit, :update, :destroy, :aggregate, :aggregate_status]
   before_action :set_current_menu
 
   # GET /assets
@@ -88,6 +88,10 @@ class AssetsController < ApplicationController
       format.html { redirect_to @asset, notice: 'Asset Aggregation was successfully kicked.' }
       format.json { head :no_content }
     end
+  end
+
+  def aggregate_status
+    render partial: 'aggregate_status'
   end
 
   private

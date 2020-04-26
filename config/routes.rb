@@ -32,6 +32,7 @@ Rails.application.routes.draw do
   resources :assets do
     member do
       get 'aggregate'
+      get 'aggregate_status'
     end
   end
   root 'homes#show'

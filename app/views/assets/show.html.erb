@@ -48,7 +48,7 @@
       <strong>LatestAggregateStatus:</strong>
     </div>
     <div class='col-md-5'>
-      <%= latest_aggretate_status(@asset) %>
+      <%= render_async aggregate_status_asset_path(@asset), interval: 3000 %>
     </div>
   </div>
 </p>

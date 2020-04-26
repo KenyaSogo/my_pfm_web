@@ -243,6 +243,13 @@ GEM
       rack (~> 2.0)
       rack-protection (>= 2.0.0)
       redis (>= 4.1.0)
+    sidekiq-failures (1.0.0)
+      sidekiq (>= 4.0.0)
+    sidekiq-history (0.0.11)
+      sidekiq (>= 3.0.0)
+    sidekiq-statistic (1.4.0)
+      sidekiq (>= 5.0)
+      tilt (~> 2.0)
     spring (2.1.0)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -311,6 +318,9 @@ DEPENDENCIES
   redis-rails
   sass-rails (~> 5.0)
   sidekiq
+  sidekiq-failures
+  sidekiq-history
+  sidekiq-statistic
   spring
   spring-watcher-listen (~> 2.0.0)
   turbolinks (~> 5)

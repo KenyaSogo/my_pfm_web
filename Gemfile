@@ -63,6 +63,9 @@ gem 'nokogiri'
 gem 'mechanize'
 
 gem 'sidekiq'
+gem 'sidekiq-failures'
+gem 'sidekiq-history'
+gem 'sidekiq-statistic'
 
 gem 'redis-rails'
 

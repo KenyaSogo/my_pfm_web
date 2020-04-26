@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200412095518) do
+ActiveRecord::Schema.define(version: 20200426074036) do
+
+  create_table "access_logs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.datetime "accessed_at"
+    t.integer  "user_id"
+    t.integer  "asset_id"
+    t.integer  "simulation_id"
+    t.string   "controller_name"
+    t.string   "action_name"
+    t.string   "accessed_url"
+    t.string   "referer_url"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
 
   create_table "acct_to_class_maps", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "sum_by_acct_class_setting_id"

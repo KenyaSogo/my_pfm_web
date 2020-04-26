@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  accessed_at: 2020-04-26 07:40:36
+  user_id: 1
+  asset_id: 1
+  simulation_id: 1
+  controller_name: MyString
+  action_name: MyString
+  accessed_url: MyString
+  referer_url: MyString
+
+two:
+  accessed_at: 2020-04-26 07:40:36
+  user_id: 1
+  asset_id: 1
+  simulation_id: 1
+  controller_name: MyString
+  action_name: MyString
+  accessed_url: MyString
+  referer_url: MyString

@@ -52,7 +52,14 @@
           <ul class='navbar-nav'>
             <% if user_signed_in? %>
               <% if current_user&.is_admin %>
-                <li class='nav-item'><%= link_to 'admin', admin_users_index_path, class: menu_link_class(:admin) %></li>
+                <li class='nav-item dropdown'>
+                  <a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                    admin
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <%= link_to 'users', admin_users_index_path, class: 'dropdown-item' %>
+                  </div>
+                </li>
               <% end %>
               <li class='nav-item'><%= link_to 'edit profile', edit_user_registration_path, class: menu_link_class(:edit_profile) %></li>
               <li class='nav-item'><%= link_to 'logout', destroy_user_session_path, method: :delete, class: 'nav-link' %></li>
